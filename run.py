@@ -11,7 +11,7 @@ from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
 import plotly.graph_objects as go
 import pandas as pd
-
+import requests
 
 st.set_page_config(layout="wide")
 
@@ -41,9 +41,9 @@ st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 # Helpers
 # -------------------------
-def load_yaml(path):
-    with open(path) as f:
-        return yaml.safe_load(f)
+# def load_yaml(path):
+#     with open(path) as f:
+#         return yaml.safe_load(f)
 
 def icon(status):
     return {
@@ -118,6 +118,18 @@ def duration(start_str, end_str=None):
     else:
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
+
+def load_yaml(path_or_url):
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        # fetch from URL
+        resp = requests.get(path_or_url)
+        resp.raise_for_status()  # fail if request failed
+        data = yaml.safe_load(resp.text)
+    else:
+        # local file
+        with open(path_or_url, "r") as f:
+            data = yaml.safe_load(f)
+    return data
 
 # -------------------------
 # Header
@@ -372,4 +384,5 @@ with left2:
 with right2:
     fig2 = render_stair_chart_outline("HEC-RAS Stair-Step Pipeline", hecras)
     st.plotly_chart(fig2, use_container_width=True)
+
 
