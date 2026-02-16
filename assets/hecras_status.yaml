@@ -1,0 +1,72 @@
+pre:
+  tide_construct:
+    status: waiting
+    log: 'Waiting for IFLOOD to complete'
+    start: null
+    end: null
+  metforecast_processor:
+    status: waiting
+    log: null
+    start: null
+    end: null
+
+nowcast:
+  hotstart_sim:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  attach_hotstart:
+    status: waiting
+    log: null
+    start: null
+    end: null
+
+forecast:
+  forecast_cycle_start:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  copy_forecast_results:
+    status: waiting
+    log: null
+    start: null
+    end: null
+
+post:
+  gen_nws_forecast:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  create_timeseries:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  fetch_competing_model:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  gen_spatial_maps:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  gen_flood_alerts:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  push_to_s3:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  pipeline_completion:
+    status: waiting
+    log: null
+    start: null
+    end: null

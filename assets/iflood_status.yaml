@@ -1,0 +1,82 @@
+pre:
+  tide_construct:
+    status: completed
+    log: 'tides used from the most hindcast file.'
+    start: "2026-02-16 18:00:03"
+    end: "2026-02-16 18:03:11"
+  metforecast_processor:
+    status: completed
+    log:
+      - time: "18:03:12"
+        msg: "NAM data downloaded"
+      - time: "18:03:45"
+        msg: "Converted to ADCIRC format"
+    start: "2026-02-16 18:03:11"
+    end: "2026-02-16 18:28:11"
+
+nowcast:
+  hotstart_sim:
+    status: running
+    log:
+    - time: "18:03:12"
+      msg: "setting up hotstart simulation"
+    - time: "18:06:45"
+      msg: "started hotstart simulation"
+    - time: "18:36:45"
+      msg: "50% completed"
+    start: "2026-02-16 18:28:11"
+    end: null
+  attach_hotstart:
+    status: waiting
+    log: null
+    start: null
+    end: null
+
+forecast:
+  forecast_cycle_start:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  copy_forecast_results:
+    status: waiting
+    log: null
+    start: null
+    end: null
+
+post:
+  gen_nws_forecast:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  create_timeseries:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  fetch_competing_model:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  gen_spatial_maps:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  gen_flood_alerts:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  push_to_s3:
+    status: waiting
+    log: null
+    start: null
+    end: null
+  pipeline_completion:
+    status: waiting
+    log: null
+    start: null
+    end: null
