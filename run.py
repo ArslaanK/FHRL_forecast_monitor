@@ -5,72 +5,6 @@ Created on Sun Feb 15 23:59:18 2026
 @author: akhal
 """
 
-# pseudo code
-
-
-# forecast_scheduled = date1, date2
-
-# # in each forecast scheduled
-
-# 2 sequential forecasts
-
-# StormSurge through ADCIRC+SWAN called iFLOOD
-# Riverforecast through HECRAS2D called Compound DC
-
-# # in iflood
-
-# config yml file with preloaded options
-# change the key value from waiting to running based on the process started.
-# when process ends, change status from running to completed
-# keep doing the same until you get to the end
-# pre
-#     tide construct: waiting
-#     metforecast processor: waiting
-# nowcast    
-#     nowcast sim for next forecast cycle called hotstart file: waiting
-#     attach hotstart: waiting
-# forecast
-#     forecast cycle start: waiting
-#     copy forecast results: waiting
-# post
-#     gen NWS forecasts: waiting
-#     create forecasted timeseries: waiting
-#     fetch competing model forecast: waiting
-#     gen spatial maps: waiting
-#     gen flood alerts: waiting
-#     push forecast to S3: waiting
-#     forecast pipleline completion: waiting 
-# nowcast status
-#     0
-# forecast status
-#     0
-
-# # in hecras2d
-
-# config yml file with preloaded options
-# change the key value from waiting to running based on the process started.
-# when process ends, change status from running to completed
-# keep doing the same until you get to the end
-# pre
-#     BC construct: waiting
-#     metforecast processor: waiting
-# nowcast    
-#     nowcast sim for next forecast cycle called hotstart file: waiting
-#     attach hotstart: waiting
-# forecast
-#     forecast cycle start: waiting
-#     copy forecast results: waiting
-# post
-#     create forecasted timeseries: waiting
-#     fetch competing model forecast: waiting
-#     gen spatial maps: waiting
-#     push forecast to S3: waiting
-#     forecast pipleline completion: waiting 
-# nowcast status
-#     0
-# forecast status
-#     0 
-
 import streamlit as st
 import yaml
 from datetime import datetime
@@ -146,13 +80,6 @@ def status_badge(status):
     """
 
 
-# def duration(start, end):
-#     if not start:
-#         return ""
-#     start = datetime.fromisoformat(start)
-#     end = datetime.fromisoformat(end) if end else datetime.now()
-#     return str(end - start).split(".")[0]
-
 def pipeline_progress(data):
     total = 0
     done = 0
@@ -207,8 +134,8 @@ st.divider()
 # -------------------------
 # Load data
 # -------------------------
-iflood = load_yaml("iflood_status.yaml")
-hecras = load_yaml("hecras_status.yaml")
+iflood = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/iflood_status.yaml")
+hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/hecras_status.yaml")
 
 # -------------------------
 # Top progress bars
@@ -255,24 +182,6 @@ def get_current_task(data):
 
 
 phase, task, meta = get_current_task(iflood)
-
-# if task:
-#     #st.warning(f"🟡 CURRENT PROCESS → {phase.upper()} / {task}")
-
-#     cols = st.columns([1,2])
-
-#     with cols[0]:
-#         with st.spinner("Running"):
-#             st.write("Processing...")
-
-#     with cols[1]:
-#         if meta.get("log"):
-#             st.write(meta["log"])
-
-#         if meta.get("start"):
-#             st.write(f"⏱ Running for {duration(meta['start'], None)}")
-
-
 
 def render_pipeline(title, data):
 
@@ -326,7 +235,6 @@ def render_pipeline(title, data):
                                 st.write(f"- {item}")
 
 
-
 with st.expander("Status Legend", expanded=True):
 
     c1, c2, c3, c4 = st.columns(4)
@@ -335,15 +243,6 @@ with st.expander("Status Legend", expanded=True):
     c2.markdown(status_badge("running") + " In progress", unsafe_allow_html=True)
     c3.markdown(status_badge("completed") + " Finished successfully", unsafe_allow_html=True)
     c4.markdown(status_badge("failed") + " Failed – needs attention", unsafe_allow_html=True)
-
-
-# left, right = st.columns(2)
-
-# with left:
-#     render_pipeline("iFLOOD – ADCIRC + SWAN", iflood)
-
-# with right:
-#     render_pipeline("HEC-RAS 2D – Compound DC", hecras)
 
 
 def yaml_to_stair_outline(data):
@@ -473,3 +372,4 @@ with left2:
 with right2:
     fig2 = render_stair_chart_outline("HEC-RAS Stair-Step Pipeline", hecras)
     st.plotly_chart(fig2, use_container_width=True)
+
