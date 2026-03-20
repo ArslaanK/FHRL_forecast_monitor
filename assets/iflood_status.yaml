@@ -1,57 +1,34 @@
-cycle_start: '2026-03-20 04:31:27'
+cycle_start: '2026-03-20 13:45:02'
 forecast:
-  copy_forecast_results:
-    end: '2026-03-20 04:33:09'
-    log:
-    - {msg: copying results, time: '04:32:58'}
-    - {msg: copied results, time: '04:33:09'}
-    start: '2026-03-20 04:32:58'
-    status: completed
-  forecast_cycle_start:
-    end: '2026-03-20 04:32:48'
-    log:
-    - {msg: starting forecast, time: '04:32:38'}
-    - {msg: Forecast running, time: '04:32:48'}
-    start: '2026-03-20 04:32:38'
-    status: running
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  forecast_cycle_start: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  attach_hotstart:
-    end: '2026-03-20 04:32:28'
-    log:
-    - {msg: hotstart ready for next forecast, time: '04:32:28'}
-    start: '2026-03-20 04:32:28'
-    status: completed
+  attach_hotstart: {end: null, log: null, start: null, status: waiting}
   hotstart_sim:
-    end: '2026-03-20 04:32:18'
+    end: null
     log:
-    - {msg: started nowcast, time: '04:32:08'}
-    - {msg: Nowcast completed, time: '04:32:18'}
-    start: '2026-03-20 04:32:08'
-    status: completed
+    - {msg: started nowcast, time: '13:45:12'}
+    start: '2026-03-20 13:45:12'
+    status: running
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
-  pipeline_completion:
-    end: '2026-03-20 04:33:19'
-    log:
-    - {msg: forecast cycle completed, time: '04:33:19'}
-    start: '2026-03-20 04:33:19'
-    status: completed
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   metforecast_processor:
-    end: '2026-03-20 04:31:47'
+    end: '2026-03-20 13:45:04'
     log:
-    - {msg: downloading met, time: '04:31:37'}
-    - {msg: processed met, time: '04:31:47'}
-    start: '2026-03-20 04:31:37'
+    - {msg: downloading met, time: '13:45:02'}
+    - {msg: processed met, time: '13:45:04'}
+    start: '2026-03-20 13:45:02'
     status: completed
   tide_construct:
-    end: '2026-03-20 04:31:58'
+    end: '2026-03-20 13:45:08'
     log:
-    - {msg: tide used from the recent hindcast file, time: '04:31:58'}
-    start: '2026-03-20 04:31:58'
+    - {msg: tide used from the recent hindcast file, time: '13:45:08'}
+    start: '2026-03-20 13:45:08'
     status: completed
