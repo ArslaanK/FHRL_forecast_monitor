@@ -11,7 +11,7 @@ from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
 import plotly.graph_objects as go
 import pandas as pd
-
+import requests
 
 st.set_page_config(layout="wide")
 
@@ -34,24 +34,24 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ?? auto refresh, 10 sec
+# 🔄 auto refresh, 10 sec
 #st_autorefresh(interval=10000, key="refresh")
-# ?? auto refresh every 5 minutes
+# 🔄 auto refresh every 5 minutes
 st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 # Helpers
 # -------------------------
-def load_yaml(path):
-    with open(path) as f:
-        return yaml.safe_load(f)
+# def load_yaml(path):
+#     with open(path) as f:
+#         return yaml.safe_load(f)
 
 def icon(status):
     return {
-        "waiting": "?",
-        "running": "??",
-        "completed": "??",
-        "failed": "??",
-    }.get(status, "?")
+        "waiting": "⚪",
+        "running": "🔵",
+        "completed": "🟢",
+        "failed": "🔴",
+    }.get(status, "⚪")
 
 def status_badge(status):
 
@@ -80,25 +80,14 @@ def status_badge(status):
     """
 
 
-# def duration(start, end):
-#     if not start:
-#         return ""
-#     start = datetime.fromisoformat(start)
-#     end = datetime.fromisoformat(end) if end else datetime.now()
-#     return str(end - start).split(".")[0]
-
 def pipeline_progress(data):
     total = 0
     done = 0
-
-    for phase_name in ["pre", "nowcast", "forecast", "post"]:
-        phase = data.get(phase_name, {})
-
+    for phase in data.values():
         for task in phase.values():
             total += 1
-            if task.get("status") == "completed":
+            if task["status"] == "completed":
                 done += 1
-
     return done / total if total else 0
 
 
@@ -130,10 +119,22 @@ def duration(start_str, end_str=None):
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 
+def load_yaml(path_or_url):
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        # fetch from URL
+        resp = requests.get(path_or_url)
+        resp.raise_for_status()  # fail if request failed
+        data = yaml.safe_load(resp.text)
+    else:
+        # local file
+        with open(path_or_url, "r") as f:
+            data = yaml.safe_load(f)
+    return data
+
 # -------------------------
 # Header
 # -------------------------
-st.title("?? FHRL Operational Forecast Dashboard")
+st.title("🌊 FHRL Operational Forecast Dashboard")
 
 
 colA, colB = st.columns([2,1])
@@ -154,19 +155,19 @@ hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_mon
 c1, c2, c3 = st.columns(3)
 
 # ------------------ Column 1: System Overview ------------------
-c1.subheader("?? System Overview\nSpecs: 54 cores � 512GB RAM")
+c1.subheader("🖥 System Overview\nSpecs: 54 cores × 512GB RAM")
 c1.metric("System Health", "RUNNING", "Nominal")
 c1.metric("System Usage", "80%", "High")            # CPU/memory load
-# c1.metric("System Specs", "54 cores � 512GB RAM", "")  # total cores & memory
+# c1.metric("System Specs", "54 cores × 512GB RAM", "")  # total cores & memory
 
 # ------------------ Column 2: Jobs / Queues ------------------
-c2.subheader("?? Job Status")
+c2.subheader("📊 Job Status")
 c2.metric("iFLOOD Jobs", "2 running", "")
 c2.metric("HEC-RAS Jobs", "0 running", "")
 
 
 # ------------------ Column 3: Timing / Forecast Cycle ------------------
-c3.subheader("? Forecast Cycle")
+c3.subheader("⏱ Forecast Cycle")
 c3.metric("Current Cycle", "2026-02-16 06Z", "")
 c3.metric("Next Cycle ETA", "12:00 UTC", "")
 
@@ -184,61 +185,39 @@ def get_status(meta):
     return meta.get("status", "waiting")
 
 def get_current_task(data):
-    for phase_name in ["pre", "nowcast", "forecast", "post"]:
-        tasks = data.get(phase_name, {})
-
+    for phase, tasks in data.items():
         for name, meta in tasks.items():
-            if isinstance(meta, dict) and meta.get("status") == "running":
-                return phase_name, name, meta
-
+            if get_status(meta) == "running":
+                return phase, name, meta
     return None, None, None
 
 
 
 phase, task, meta = get_current_task(iflood)
 
-# if task:
-#     #st.warning(f"?? CURRENT PROCESS ? {phase.upper()} / {task}")
-
-#     cols = st.columns([1,2])
-
-#     with cols[0]:
-#         with st.spinner("Running"):
-#             st.write("Processing...")
-
-#     with cols[1]:
-#         if meta.get("log"):
-#             st.write(meta["log"])
-
-#         if meta.get("start"):
-#             st.write(f"? Running for {duration(meta['start'], None)}")
-
-
 def render_pipeline(title, data):
+
     st.subheader(title)
 
-    for phase_name in ["pre", "nowcast", "forecast", "post"]:
-        tasks = data.get(phase_name, {})
-        if not isinstance(tasks, dict):
-            continue  # safety
+    for phase_name, tasks in data.items():
 
         with st.expander(phase_name.upper(), expanded=True):
 
             for task_name, meta in tasks.items():
-                if not isinstance(meta, dict):
-                    continue  # safety
 
-                status = meta.get("status", "waiting")
+                status = get_status(meta)
                 start = meta.get("start")
                 end = meta.get("end")
                 log = meta.get("log")
 
+                cols = st.columns([0.05, 0.55, 0.4])
                 cols = st.columns([0.1, 0.6, 0.3])
 
-                # Status badge
+                #cols[0].markdown(icon(status))
                 cols[0].markdown(status_badge(status), unsafe_allow_html=True)
 
-                # Task name and running loader
+
+                # 🔄 RUNNING TASK
                 if status == "running":
                     cols[1].markdown(
                         f"**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{task_name}** <span class='loader'></span>",
@@ -247,22 +226,25 @@ def render_pipeline(title, data):
                 else:
                     cols[1].write(f"**{task_name}**")
 
-                # Timing
+                # ⏱ timing
                 if start:
                     cols[2].write(
-                        f"Start: {start.split()[1]} | ? {duration(start, end)}"
+                        f"Start: {start.split()[1]} | ⏱ {duration(start, end)}"
                     )
 
-                # Optional log details
+                # 📜 MORE INFO PANEL
+                # if log:
+                #     with st.expander("More info", expanded=False):
+                #         st.write(log)
+                        
                 if isinstance(log, list):
                     with st.expander("More info", expanded=False):
                         for item in log:
+                        
                             if isinstance(item, dict):
                                 st.write(f"[{item['time']}] {item['msg']}")
                             else:
                                 st.write(f"- {item}")
-
-
 
 
 with st.expander("Status Legend", expanded=True):
@@ -272,16 +254,7 @@ with st.expander("Status Legend", expanded=True):
     c1.markdown(status_badge("waiting") + " Not started", unsafe_allow_html=True)
     c2.markdown(status_badge("running") + " In progress", unsafe_allow_html=True)
     c3.markdown(status_badge("completed") + " Finished successfully", unsafe_allow_html=True)
-    c4.markdown(status_badge("failed") + " Failed � needs attention", unsafe_allow_html=True)
-
-
-# left, right = st.columns(2)
-
-# with left:
-#     render_pipeline("iFLOOD � ADCIRC + SWAN", iflood)
-
-# with right:
-#     render_pipeline("HEC-RAS 2D � Compound DC", hecras)
+    c4.markdown(status_badge("failed") + " Failed – needs attention", unsafe_allow_html=True)
 
 
 def yaml_to_stair_outline(data):
@@ -333,7 +306,7 @@ def render_stair_chart_outline(title, data):
                 layer="below"
             )
     
-    # Draw vertical + 90� connectors between phases
+    # Draw vertical + 90° connectors between phases
     for i in range(len(phase_order)-1):
         upper_phase = phase_order[i]
         lower_phase = phase_order[i+1]
@@ -392,37 +365,24 @@ def render_stair_chart_outline(title, data):
     )
     return fig
 
-# -------------------------
-# Tabs for Forecast Groups
-# -------------------------
-tab1, tab2 = st.tabs([
-    "?? iFLOOD (ADCIRC + SWAN)",
-    "?? HEC-RAS 2D (Compound DC)"
-])
 
-# -------------------------
-# Tab 1: iFLOOD
-# -------------------------
-with tab1:
-    col1, col2 = st.columns([1,1])
+left, right = st.columns([1,1])
 
-    with col1:
-        render_pipeline("iFLOOD � Pipeline Status", iflood)
+with left:
+    render_pipeline("iFLOOD – ADCIRC + SWAN", iflood)
 
-    with col2:
-        fig = render_stair_chart_outline("iFLOOD Pipeline", iflood)
-        st.plotly_chart(fig, use_container_width=True)
+with right:
+    fig = render_stair_chart_outline("iFLOOD Stair-Step Pipeline", iflood)
+    st.plotly_chart(fig, use_container_width=True)
 
-# -------------------------
-# Tab 2: HEC-RAS
-# -------------------------
-with tab2:
-    col1, col2 = st.columns([1,1])
+st.divider()
 
-    with col1:
-        render_pipeline("HEC-RAS 2D - Pipeline Status", hecras)
+left2, right2 = st.columns([1,1])
+with left2:
+    render_pipeline("HEC-RAS 2D – Compound DC", hecras)
 
-    with col2:
-        fig2 = render_stair_chart_outline("HEC-RAS Pipeline", hecras)
-        st.plotly_chart(fig2, use_container_width=True)
+with right2:
+    fig2 = render_stair_chart_outline("HEC-RAS Stair-Step Pipeline", hecras)
+    st.plotly_chart(fig2, use_container_width=True)
+
 
