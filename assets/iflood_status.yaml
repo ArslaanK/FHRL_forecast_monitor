@@ -11,9 +11,9 @@ forecast:
     end: '2026-03-20 04:32:48'
     log:
     - {msg: starting forecast, time: '04:32:38'}
-    - {msg: Forecast simulation completed, time: '04:32:48'}
+    - {msg: Forecast running, time: '04:32:48'}
     start: '2026-03-20 04:32:38'
-    status: completed
+    status: running
 nowcast:
   attach_hotstart:
     end: '2026-03-20 04:32:28'
