@@ -1,82 +1,57 @@
-pre:
-  tide_construct:
-    status: completed
-    log: 'tides used from the most hindcast file.'
-    start: "2026-02-16 18:00:03"
-    end: "2026-02-16 18:03:11"
-  metforecast_processor:
-    status: completed
-    log:
-      - time: "18:03:12"
-        msg: "NAM data downloaded"
-      - time: "18:03:45"
-        msg: "Converted to ADCIRC format"
-    start: "2026-02-16 18:03:11"
-    end: "2026-02-16 18:28:11"
-
-nowcast:
-  hotstart_sim:
-    status: running
-    log:
-    - time: "18:03:12"
-      msg: "setting up hotstart simulation"
-    - time: "18:06:45"
-      msg: "started hotstart simulation"
-    - time: "18:36:45"
-      msg: "50% completed"
-    start: "2026-02-16 18:28:11"
-    end: null
-  attach_hotstart:
-    status: waiting
-    log: null
-    start: null
-    end: null
-
+cycle_start: '2026-03-20 04:14:49'
 forecast:
-  forecast_cycle_start:
-    status: waiting
-    log: null
-    start: null
-    end: null
   copy_forecast_results:
-    status: waiting
-    log: null
-    start: null
-    end: null
-
+    end: '2026-03-20 04:16:31'
+    log:
+    - {msg: copying results, time: '04:16:21'}
+    - {msg: copied results, time: '04:16:31'}
+    start: '2026-03-20 04:16:21'
+    status: completed
+  forecast_cycle_start:
+    end: '2026-03-20 04:16:10'
+    log:
+    - {msg: starting forecast, time: '04:16:00'}
+    - {msg: Forecast simulation completed, time: '04:16:10'}
+    start: '2026-03-20 04:16:00'
+    status: completed
+nowcast:
+  attach_hotstart:
+    end: '2026-03-20 04:15:50'
+    log:
+    - {msg: hotstart ready for next forecast, time: '04:15:50'}
+    start: '2026-03-20 04:15:50'
+    status: completed
+  hotstart_sim:
+    end: '2026-03-20 04:15:40'
+    log:
+    - {msg: started nowcast, time: '04:15:30'}
+    - {msg: Nowcast completed, time: '04:15:40'}
+    start: '2026-03-20 04:15:30'
+    status: completed
 post:
-  gen_nws_forecast:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  create_timeseries:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  fetch_competing_model:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  gen_spatial_maps:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  gen_flood_alerts:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  push_to_s3:
-    status: waiting
-    log: null
-    start: null
-    end: null
+  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion:
-    status: waiting
-    log: null
-    start: null
-    end: null
+    end: '2026-03-20 04:16:41'
+    log:
+    - {msg: forecast cycle completed, time: '04:16:41'}
+    start: '2026-03-20 04:16:41'
+    status: completed
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
+pre:
+  metforecast_processor:
+    end: '2026-03-20 04:15:10'
+    log:
+    - {msg: downloading met, time: '04:14:59'}
+    - {msg: processed met, time: '04:15:10'}
+    start: '2026-03-20 04:14:59'
+    status: completed
+  tide_construct:
+    end: '2026-03-20 04:15:20'
+    log:
+    - {msg: tide used from the recent hindcast file, time: '04:15:20'}
+    start: '2026-03-20 04:15:20'
+    status: completed
