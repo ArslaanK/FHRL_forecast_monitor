@@ -54,11 +54,11 @@ def load_yaml(path_or_url):
 
 def icon(status):
     return {
-        "waiting": "?",
-        "running": "??",
-        "completed": "??",
-        "failed": "??",
-    }.get(status, "?")
+        "waiting": "⚪",
+        "running": "🔵",
+        "completed": "🟢",
+        "failed": "🔴",
+    }.get(status, "⚪")
 
 def status_badge(status):
 
@@ -140,7 +140,7 @@ def duration(start_str, end_str=None):
 # -------------------------
 # Header
 # -------------------------
-st.title("?? FHRL Operational Forecast Dashboard")
+st.title("🌊 FHRL Operational Forecast Dashboard")
 
 
 colA, colB = st.columns([2,1])
@@ -161,19 +161,19 @@ hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_mon
 c1, c2, c3 = st.columns(3)
 
 # ------------------ Column 1: System Overview ------------------
-c1.subheader("?? System Overview\nSpecs: 54 cores  512GB RAM")
+c1.subheader("🖥 System Overview\nSpecs: 54 cores × 512GB RAM")
 c1.metric("System Health", "RUNNING", "Nominal")
 c1.metric("System Usage", "80%", "High")            # CPU/memory load
-# c1.metric("System Specs", "54 cores  512GB RAM", "")  # total cores & memory
+# c1.metric("System Specs", "54 cores × 512GB RAM", "")  # total cores & memory
 
 # ------------------ Column 2: Jobs / Queues ------------------
-c2.subheader("?? Job Status")
+c2.subheader("📊 Job Status")
 c2.metric("iFLOOD Jobs", "2 running", "")
 c2.metric("HEC-RAS Jobs", "0 running", "")
 
 
 # ------------------ Column 3: Timing / Forecast Cycle ------------------
-c3.subheader("? Forecast Cycle")
+c3.subheader("⏱ Forecast Cycle")
 c3.metric("Current Cycle", "2026-02-16 06Z", "")
 c3.metric("Next Cycle ETA", "12:00 UTC", "")
 
@@ -257,7 +257,7 @@ def render_pipeline(title, data):
                 # Timing
                 if start:
                     cols[2].write(
-                        f"Start: {start.split()[1]} | ? {duration(start, end)}"
+                        f"Start: {start.split()[1]} | ⏱ {duration(start, end)}"
                     )
 
                 # Optional log details
@@ -279,16 +279,16 @@ with st.expander("Status Legend", expanded=True):
     c1.markdown(status_badge("waiting") + " Not started", unsafe_allow_html=True)
     c2.markdown(status_badge("running") + " In progress", unsafe_allow_html=True)
     c3.markdown(status_badge("completed") + " Finished successfully", unsafe_allow_html=True)
-    c4.markdown(status_badge("failed") + " Failed  needs attention", unsafe_allow_html=True)
+    c4.markdown(status_badge("failed") + " Failed – needs attention", unsafe_allow_html=True)
 
 
 # left, right = st.columns(2)
 
 # with left:
-#     render_pipeline("iFLOOD  ADCIRC + SWAN", iflood)
+#     render_pipeline("iFLOOD – ADCIRC + SWAN", iflood)
 
 # with right:
-#     render_pipeline("HEC-RAS 2D  Compound DC", hecras)
+#     render_pipeline("HEC-RAS 2D – Compound DC", hecras)
 
 
 def yaml_to_stair_outline(data):
@@ -340,7 +340,7 @@ def render_stair_chart_outline(title, data):
                 layer="below"
             )
     
-    # Draw vertical + 90 connectors between phases
+    # Draw vertical + 90° connectors between phases
     for i in range(len(phase_order)-1):
         upper_phase = phase_order[i]
         lower_phase = phase_order[i+1]
@@ -403,8 +403,8 @@ def render_stair_chart_outline(title, data):
 # Tabs for Forecast Groups
 # -------------------------
 tab1, tab2 = st.tabs([
-    "?? iFLOOD (ADCIRC + SWAN)",
-    "?? HEC-RAS 2D (Compound DC)"
+    "🌊 iFLOOD (ADCIRC + SWAN)",
+    "🌊 HEC-RAS 2D (Compound DC)"
 ])
 
 # -------------------------
@@ -414,7 +414,7 @@ with tab1:
     col1, col2 = st.columns([1,1])
 
     with col1:
-        render_pipeline("iFLOOD  Pipeline Status", iflood)
+        render_pipeline("iFLOOD – Pipeline Status", iflood)
 
     with col2:
         fig = render_stair_chart_outline("iFLOOD Pipeline", iflood)
