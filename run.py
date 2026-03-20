@@ -11,10 +11,9 @@ from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
 import plotly.graph_objects as go
 import pandas as pd
-
+import requests
 
 st.set_page_config(layout="wide")
-
 
 st.markdown("""
 <style>
