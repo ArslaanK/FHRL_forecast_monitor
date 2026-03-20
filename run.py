@@ -41,9 +41,17 @@ st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 # Helpers
 # -------------------------
-def load_yaml(path):
-    with open(path) as f:
-        return yaml.safe_load(f)
+def load_yaml(path_or_url):
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        # fetch from URL
+        resp = requests.get(path_or_url)
+        resp.raise_for_status()  # fail if request failed
+        data = yaml.safe_load(resp.text)
+    else:
+        # local file
+        with open(path_or_url, "r") as f:
+            data = yaml.safe_load(f)
+    return data
 
 def icon(status):
     return {
