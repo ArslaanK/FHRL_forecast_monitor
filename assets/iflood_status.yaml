@@ -1,12 +1,19 @@
 cycle_start: '2026-03-21 13:45:02'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  copy_forecast_results:
+    end: '2026-03-21 16:58:27'
+    log:
+    - {msg: copying results, time: '16:58:24'}
+    - {msg: copied results, time: '16:58:27'}
+    start: '2026-03-21 16:58:24'
+    status: completed
   forecast_cycle_start:
-    end: null
+    end: '2026-03-21 16:58:24'
     log:
     - {msg: starting forecast, time: '14:13:00'}
+    - {msg: Forecast simulation completed, time: '16:58:24'}
     start: '2026-03-21 14:13:00'
-    status: running
+    status: completed
 nowcast:
   attach_hotstart:
     end: '2026-03-21 14:12:58'
