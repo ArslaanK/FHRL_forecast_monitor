@@ -34,7 +34,12 @@ post:
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-03-20 22:02:51'
+    log:
+    - {msg: forecast cycle completed, time: '22:02:51'}
+    start: '2026-03-20 22:02:51'
+    status: completed
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   metforecast_processor:
