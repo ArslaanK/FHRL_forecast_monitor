@@ -219,7 +219,7 @@ def duration(start_str, end_str=None):
 # -------------------------
 iflood = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/iflood_status.yaml")
 hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/hecras_status.yaml")
-print(iflood)
+
 
 # -------------------------
 # Forecast Cycle
@@ -279,9 +279,9 @@ with col1:
 # Column 2: Pipeline Progress
 with col2:
     st.subheader("📊 Pipeline Progress")
-    st.markdown("**iFLOOD Progress**")
+    st.markdown("**iFLOOD**")
     st.progress(pipeline_progress(iflood))
-    st.markdown("**HEC-RAS Progress**")
+    st.markdown("**HEC-RAS**")
     st.progress(pipeline_progress(hecras))
 
 # Column 3: Forecast Cycle
