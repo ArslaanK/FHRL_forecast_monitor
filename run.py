@@ -14,6 +14,7 @@ import pandas as pd
 import requests
 import re
 from zoneinfo import ZoneInfo
+
 # -------------------------
 # Last Refresh from GitHub commit
 # -------------------------
@@ -34,7 +35,9 @@ else:
 eastern = ZoneInfo("America/New_York")
 last_refresh_est = last_refresh_utc.astimezone(eastern)
 
-
+# -------------------------
+# Helpers
+# -------------------------
 st.set_page_config(layout="wide")
 
 st.markdown("""
@@ -64,6 +67,16 @@ st_autorefresh(interval=300000, key="refresh")
 # Helpers
 # -------------------------
 
+def get_progress_color(status):
+    if status.lower() == "completed":
+        return "#4CAF50"  # green
+    elif status.lower() == "running":
+        return "#2196F3"  # blue
+    elif status.lower() == "waiting":
+        return "#9E9E9E"  # gray
+    else:
+        return "#FFC107"  # amber for other statuses
+        
 PIPELINE_ORDER = [
     ("pre", "metforecast_processor"),
     ("pre", "prep_simulation"),
@@ -350,6 +363,15 @@ def render_pipeline(title, data):
         # Progress bar column
         cols[3].progress(progress_val)
 
+        # Progress bar column with matching color
+        color = get_progress_color(status)
+        progress_html = f"""
+        <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
+            <div style='width:{progress_val*100}%; background-color:{color}; height:16px; border-radius:4px;'></div>
+        </div>
+        """
+        cols[3].markdown(progress_html, unsafe_allow_html=True)
+
         # Logs in expander
         if isinstance(log, list):
             with st.expander("More info", expanded=False):
@@ -358,7 +380,6 @@ def render_pipeline(title, data):
                         st.write(f"[{item['time']}] {item['msg']}")
                     else:
                         st.write(f"- {item}")
-
 
 
 with st.expander("Status Legend", expanded=True):
