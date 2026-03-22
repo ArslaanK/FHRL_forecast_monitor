@@ -1,15 +1,27 @@
 cycle_start: '2026-03-22 13:45:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  forecast_cycle_start: {end: null, log: null, start: null, status: waiting}
-nowcast:
-  attach_hotstart: {end: null, log: null, start: null, status: waiting}
-  hotstart_sim:
+  forecast_cycle_start:
     end: null
     log:
-    - {msg: started nowcast, time: '13:45:25'}
-    start: '2026-03-22 13:45:25'
+    - {msg: starting forecast, time: '14:11:16'}
+    - {msg: 10% completed, time: '14:28:41'}
+    start: '2026-03-22 14:11:16'
     status: running
+nowcast:
+  attach_hotstart:
+    end: '2026-03-22 14:11:14'
+    log:
+    - {msg: hotstart ready for next forecast, time: '14:11:14'}
+    start: '2026-03-22 14:11:14'
+    status: completed
+  hotstart_sim:
+    end: '2026-03-22 14:10:24'
+    log:
+    - {msg: started nowcast, time: '13:45:25'}
+    - {msg: Nowcast completed, time: '14:10:24'}
+    start: '2026-03-22 13:45:25'
+    status: completed
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
