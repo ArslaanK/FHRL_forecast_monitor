@@ -281,7 +281,7 @@ with col2:
     st.subheader("📊 Pipeline Progress")
     st.markdown("**iFLOOD**")
     st.progress(pipeline_progress(iflood))
-    st.markdown("**HEC-RAS**")
+    st.markdown("**Compound DC**")
     st.progress(pipeline_progress(hecras))
 
 # Column 3: Forecast Cycle
