@@ -43,24 +43,23 @@ st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 
 PIPELINE_ORDER = [
-    ("pre", "tide_construct"),
     ("pre", "metforecast_processor"),
+    ("pre", "tide_construct"),
 
     ("nowcast", "hotstart_sim"),
     ("nowcast", "attach_hotstart"),
 
     ("forecast", "forecast_cycle_start"),
     ("forecast", "copy_forecast_results"),
-
+  
     ("post", "gen_nws_forecast"),
     ("post", "create_timeseries"),
     ("post", "fetch_competing_model"),
+    ("post", "gen_flood_alerts"),
+    ("post", "gen_spatial_maps"),
     ("post", "push_to_s3"),
     ("post", "pipeline_completion"),
 
-    # async tasks (still shown last)
-    ("post", "gen_flood_alerts"),
-    ("post", "gen_spatial_maps"),
 ]
 
 def get_latest_progress(data, phase_name):
