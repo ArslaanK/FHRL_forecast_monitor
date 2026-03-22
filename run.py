@@ -531,9 +531,9 @@ with tab2:
     col1, col2 = st.columns([1,1])
 
     with col1:
-        render_pipeline("HEC-RAS 2D - Pipeline Status", hecras)
+        render_pipeline("Compound DC - Pipeline Status", hecras)
 
     with col2:
-        fig2 = render_stair_chart_outline("HEC-RAS Pipeline", hecras)
+        fig2 = render_stair_chart_outline("Compound DC Pipeline", hecras)
         st.plotly_chart(fig2, use_container_width=True)
 
