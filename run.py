@@ -74,8 +74,8 @@ def get_progress_color(status):
         return "#1f77b4"  # blue
     elif status.lower() == "waiting":
         return "#9e9e9e"  # gray
-    elif status.lower() == "failed":
-        return "#d62728"  # red
+    # elif status.lower() == "failed":
+    #     return "#d62728"  # red
     else:
         return "#FFC107"  # amber for other statuses
 
