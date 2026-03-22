@@ -1,7 +1,7 @@
 cycle_start: '2026-03-22 13:45:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  forecast_cycle_start:
+  run_forecast:
     end: null
     log:
     - {msg: starting forecast, time: '14:11:16'}
@@ -12,13 +12,7 @@ forecast:
     start: '2026-03-22 14:11:16'
     status: running
 nowcast:
-  attach_hotstart:
-    end: '2026-03-22 14:11:14'
-    log:
-    - {msg: hotstart ready for next forecast, time: '14:11:14'}
-    start: '2026-03-22 14:11:14'
-    status: completed
-  hotstart_sim:
+  prep_restart_for_next_forecast:
     end: '2026-03-22 14:10:24'
     log:
     - {msg: started nowcast, time: '13:45:25'}
@@ -41,7 +35,7 @@ pre:
     - {msg: processed met, time: '13:45:03'}
     start: '2026-03-22 13:45:01'
     status: completed
-  tide_construct:
+  prep_simulation:
     end: '2026-03-22 13:45:07'
     log:
     - {msg: tide used from the recent hindcast file, time: '13:45:07'}
