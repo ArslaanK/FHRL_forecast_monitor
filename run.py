@@ -221,21 +221,23 @@ elif usage > 70:
 c1.metric("System Health", "RUNNING", status)
 c1.metric("System Usage", f"{usage:.1f}%", status)
 
-# ------------------ Column 2: Jobs / Queues ------------------
-c2.subheader("📊 Pipeline Progress" )
-# c2.metric("iFLOOD Jobs", "2 running", "")
-# c2.metric("HEC-RAS Jobs", "0 running", "")
+# -------- Column 2: Pipeline Progress --------
+with col2:
+    st.subheader("📊 Pipeline Progress")
+    
+    st.markdown("**iFLOOD Progress**")
+    st.progress(pipeline_progress(iflood))
+    
+    st.markdown("**HEC-RAS Progress**")
+    st.progress(pipeline_progress(hecras))
 
-c2.markdown("**iFLOOD Progress**")
-c2.progress(pipeline_progress(iflood))
+# -------- Column 3: Forecast Cycle --------
+with col3:
+    st.subheader("⏱ Forecast Cycle")
+    st.metric("Current Cycle", "2026-02-16 06Z")
+    st.metric("Next Cycle ETA", "12:00 UTC")
 
-c3.markdown("**HEC-RAS Progress**")
-c3.progress(pipeline_progress(hecras))
-
-# ------------------ Column 3: Timing / Forecast Cycle ------------------
-c3.subheader("⏱ Forecast Cycle")
-c3.metric("Current Cycle", "2026-02-16 06Z", "")
-c3.metric("Next Cycle ETA", "12:00 UTC", "")
+st.divider()
 
 
 
