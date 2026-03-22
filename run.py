@@ -178,38 +178,56 @@ def duration(start_str, end_str=None):
 
 
 # -------------------------
-# Header
-# -------------------------
-st.title("🌊 FHRL Operational Forecast Dashboard")
-
-
-colA, colB = st.columns([2,1])
-#colA.markdown("**Forecast Cycle:** 2026-02-16 06Z")
-colB.markdown(f"**Last Refresh:** {datetime.now().strftime('%H:%M:%S')}")
-
-st.divider()
-
-# -------------------------
 # Load data
 # -------------------------
 iflood = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/iflood_status.yaml")
 hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/hecras_status.yaml")
 
 # -------------------------
-# Get System Diagnostic
+# Get Last Refresh from YAML
+# -------------------------
+# Assuming the YAML has a field like: system['last_update'] in ISO format
+last_update_str = iflood.get("system", {}).get("last_update", None)
+if last_update_str:
+    last_refresh = datetime.fromisoformat(last_update_str)
+else:
+    last_refresh = datetime.now()  # fallback
+
+# -------------------------
+# Forecast Cycle
+# -------------------------
+# Read current cycle from YAML
+cycle_str = iflood.get("forecast", {}).get("current_cycle", None)
+if cycle_str:
+    cycle_dt = datetime.fromisoformat(cycle_str)
+else:
+    cycle_dt = datetime.utcnow()
+
+# Round to nearest 00Z or 12Z
+hour = cycle_dt.hour
+if hour < 6 or hour >= 18:
+    cycle_dt = cycle_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+else:
+    cycle_dt = cycle_dt.replace(hour=12, minute=0, second=0, microsecond=0)
+
+# Next cycle is 12 hours later
+next_cycle_dt = cycle_dt + timedelta(hours=12)
+
+# -------------------------
+# Display Header
+# -------------------------
+st.title("🌊 FHRL Operational Forecast Dashboard")
+colA, colB = st.columns([3,1])
+colB.markdown(f"**Last Refresh:** {last_refresh.strftime('%Y-%m-%d %H:%M:%S')}")
+
+st.divider()
+
+# -------------------------
+# System Overview
 # -------------------------
 system = iflood.get("system", {})
 cpu = float(system.get("cpu", 0))
 ram = float(system.get("ram", 0))
-
-# -------------------------
-# Top progress bars
-# -------------------------
-col1, col2, col3 = st.columns(3)
-
-# ------------------ Column 1: System Overview ------------------
-col1.subheader("🖥 System Overview\nSpecs: 54 cores × 512GB RAM")
-
 usage = max(cpu, ram)
 
 status = "Nominal"
@@ -218,29 +236,28 @@ if usage > 85:
 elif usage > 70:
     status = "High"
 
-col1.metric("System Health", "RUNNING", status)
-col1.metric("System Usage", f"{usage:.1f}%", status)
+col1, col2, col3 = st.columns(3)
 
+# Column 1: System
+with col1:
+    st.subheader("🖥 System Overview")
+    st.markdown("**Specs:** 54 cores × 512GB RAM")
+    st.metric("System Health", "RUNNING", delta=status)
+    st.metric("System Usage", f"{usage:.1f}%", delta=status)
 
-# -------- Column 2: Pipeline Progress --------
+# Column 2: Pipeline Progress
 with col2:
     st.subheader("📊 Pipeline Progress")
-    
     st.markdown("**iFLOOD Progress**")
     st.progress(pipeline_progress(iflood))
-    
     st.markdown("**HEC-RAS Progress**")
     st.progress(pipeline_progress(hecras))
 
-# -------- Column 3: Forecast Cycle --------
+# Column 3: Forecast Cycle
 with col3:
     st.subheader("⏱ Forecast Cycle")
-    st.metric("Current Cycle", "2026-02-16 06Z")
-    st.metric("Next Cycle ETA", "12:00 UTC")
-
-st.divider()
-
-
+    st.metric("Current Cycle", f"{cycle_dt.strftime('%Y-%m-%d %HZ')}")
+    st.metric("Next Cycle ETA", f"{next_cycle_dt.strftime('%Y-%m-%d %HZ')}")
 
 st.divider()
 
