@@ -205,10 +205,10 @@ ram = float(system.get("ram", 0))
 # -------------------------
 # Top progress bars
 # -------------------------
-c1, c2, c3 = st.columns(3)
+col1, col2, col3 = st.columns(3)
 
 # ------------------ Column 1: System Overview ------------------
-c1.subheader("🖥 System Overview\nSpecs: 54 cores × 512GB RAM")
+col1.subheader("🖥 System Overview\nSpecs: 54 cores × 512GB RAM")
 
 usage = max(cpu, ram)
 
@@ -218,8 +218,9 @@ if usage > 85:
 elif usage > 70:
     status = "High"
 
-c1.metric("System Health", "RUNNING", status)
-c1.metric("System Usage", f"{usage:.1f}%", status)
+col1.metric("System Health", "RUNNING", status)
+col1.metric("System Usage", f"{usage:.1f}%", status)
+
 
 # -------- Column 2: Pipeline Progress --------
 with col2:
