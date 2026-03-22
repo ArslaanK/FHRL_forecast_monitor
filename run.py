@@ -205,10 +205,15 @@ else:
 
 # Round to nearest 00Z or 12Z
 hour = cycle_dt.hour
-if hour < 6 or hour >= 18:
+if hour < 6:
+    # Round down to 00Z same day
     cycle_dt = cycle_dt.replace(hour=0, minute=0, second=0, microsecond=0)
-else:
+elif hour < 18:
+    # Round to 12Z same day
     cycle_dt = cycle_dt.replace(hour=12, minute=0, second=0, microsecond=0)
+else:
+    # Round up to 00Z next day
+    cycle_dt = (cycle_dt + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
 
 # Next cycle is 12 hours later
 next_cycle_dt = cycle_dt + timedelta(hours=12)
