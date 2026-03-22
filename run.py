@@ -13,7 +13,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import requests
 import re
-
+from zoneinfo import ZoneInfo
 # -------------------------
 # Last Refresh from GitHub commit
 # -------------------------
