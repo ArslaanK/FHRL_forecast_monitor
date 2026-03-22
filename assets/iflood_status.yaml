@@ -1,24 +1,15 @@
-cycle_start: '2026-03-22 13:45:01'
+cycle_start: '2026-03-22 16:44:42'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast:
-    end: null
-    log:
-    - {msg: starting forecast, time: '14:11:16'}
-    - {msg: 10% completed, time: '14:28:41'}
-    - {msg: 16% completed, time: '14:39:07'}
-    - {msg: 22% completed, time: '14:49:08'}
-    - {msg: 28% completed, time: '14:59:08'}
-    start: '2026-03-22 14:11:16'
-    status: running
+  run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
   run_nowcast:
-    end: '2026-03-22 14:10:24'
+    end: null
     log:
-    - {msg: started nowcast, time: '13:45:25'}
-    - {msg: Nowcast completed, time: '14:10:24'}
-    start: '2026-03-22 13:45:25'
-    status: completed
+    - {msg: copying previous restart file, time: '16:53:10'}
+    - {msg: Nowcast simulation started, time: '16:53:14'}
+    start: '2026-03-22 16:53:10'
+    status: running
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
@@ -29,15 +20,21 @@ post:
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   metforecast_processor:
-    end: '2026-03-22 13:45:03'
+    end: '2026-03-22 16:53:05'
     log:
-    - {msg: downloading met, time: '13:45:01'}
-    - {msg: processed met, time: '13:45:03'}
-    start: '2026-03-22 13:45:01'
+    - {msg: downloading met, time: '16:44:42'}
+    - {msg: processed met, time: '16:53:05'}
+    start: '2026-03-22 16:44:42'
     status: completed
   prep_simulation:
-    end: '2026-03-22 13:45:07'
+    end: '2026-03-22 16:53:10'
     log:
-    - {msg: tide used from the recent hindcast file, time: '13:45:07'}
-    start: '2026-03-22 13:45:07'
+    - {msg: Preparing Model files, time: '16:53:05'}
+    - {msg: Model files prepared for simulations, time: '16:53:10'}
+    start: '2026-03-22 16:53:05'
     status: completed
+
+system:
+  cpu: 98.23
+  ram: 22.18
+  timestamp: "2026-03-22 16:57:55"
