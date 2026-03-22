@@ -12,6 +12,7 @@ from streamlit_autorefresh import st_autorefresh
 import plotly.graph_objects as go
 import pandas as pd
 import requests
+import re
 
 st.set_page_config(layout="wide")
 
@@ -61,6 +62,25 @@ PIPELINE_ORDER = [
     ("post", "gen_flood_alerts"),
     ("post", "gen_spatial_maps"),
 ]
+
+def get_latest_progress(data, phase_name):
+    """
+    Returns the last logged progress % for a given phase (nowcast or forecast)
+    """
+    phase = data.get(phase_name, {})
+    for task_name, task in phase.items():
+        if task.get("status") == "running" and isinstance(task.get("log"), list):
+            # Find last msg like 'xx% completed'
+            for entry in reversed(task["log"]):
+                msg = entry.get("msg", "")
+                if "completed" in msg and "%" in msg:
+                    try:
+                        progress = float(msg.split("%")[0])
+                        return task_name, progress
+                    except:
+                        return task_name, 0
+    return None, 0
+  
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
         # fetch from URL
@@ -252,25 +272,42 @@ def render_pipeline(title, data):
         end = meta.get("end")
         log = meta.get("log")
 
-        cols = st.columns([0.1, 0.6, 0.3])
+        cols = st.columns([0.1, 0.5, 0.3, 0.3])
 
         # Status badge
         cols[0].markdown(status_badge(status), unsafe_allow_html=True)
 
         # Task name
-        if status == "running":
-            cols[1].markdown(
-                f"**{phase.upper()} / {task_name}** <span class='loader'></span>",
-                unsafe_allow_html=True
-            )
+        task_label = f"**{phase.upper()} / {task_name}**"
+        progress_val = 0
+        progress_text = ""
+
+        if status == "running" and isinstance(log, list):
+            # Find last logged progress like 'xx% completed'
+            for item in reversed(log):
+                msg = item.get("msg") if isinstance(item, dict) else str(item)
+                match = re.search(r"([\d\.]+)%", msg)
+                if match:
+                    progress_val = float(match.group(1)) / 100
+                    progress_text = f" — {match.group(1)}%"
+                    break
+
+            cols[1].markdown(f"{task_label} <span class='loader'></span>{progress_text}", unsafe_allow_html=True)
+
+        elif status == "completed":
+            progress_val = 1.0
+            progress_text = " — 100%"
+            cols[1].write(f"{task_label}{progress_text}")
+
         else:
-            cols[1].write(f"**{phase.upper()} / {task_name}**")
+            cols[1].write(task_label)
 
         # Timing
         if start:
-            cols[2].write(
-                f"Start: {start.split()[1]} | ⏱ {duration(start, end)}"
-            )
+            cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
+
+        # Progress bar
+        cols[3].progress(progress_val)
 
         # Logs
         if isinstance(log, list):
