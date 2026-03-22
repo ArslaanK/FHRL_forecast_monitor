@@ -14,13 +14,26 @@ import pandas as pd
 import requests
 import re
 
-url = "https://api.github.com/repos/ArslaanK/FHRL_forecast_monitor/commits?path=assets/iflood_status.yaml&page=1&per_page=1"
-resp = requests.get(url)
-if resp.status_code == 200:
+# -------------------------
+# Last Refresh from GitHub commit
+# -------------------------
+github_api_url = "https://api.github.com/repos/ArslaanK/FHRL_forecast_monitor/commits"
+file_path = "assets/iflood_status.yaml"
+
+# Get the latest commit for this file
+resp = requests.get(f"{github_api_url}?path={file_path}&page=1&per_page=1")
+if resp.status_code == 200 and len(resp.json()) > 0:
     commit_data = resp.json()[0]
-    last_refresh = datetime.fromisoformat(commit_data["commit"]["committer"]["date"].replace("Z", "+00:00"))
+    # Parse UTC time from GitHub
+    last_refresh_utc = datetime.fromisoformat(commit_data["commit"]["committer"]["date"].replace("Z", "+00:00"))
 else:
-    last_refresh = datetime.utcnow()
+    # fallback to current UTC time
+    last_refresh_utc = datetime.utcnow().replace(tzinfo=ZoneInfo("UTC"))
+
+# Convert to Eastern Time (EST/EDT automatically)
+eastern = ZoneInfo("America/New_York")
+last_refresh_est = last_refresh_utc.astimezone(eastern)
+
 
 st.set_page_config(layout="wide")
 
@@ -220,7 +233,7 @@ next_cycle_dt = cycle_dt + timedelta(hours=12)
 # -------------------------
 st.title("🌊 FHRL Operational Forecast Dashboard")
 colA, colB = st.columns([3,1])
-colB.markdown(f"**Last Refresh:** {last_refresh.strftime('%Y-%m-%d %H:%M:%S')}")
+colB.markdown(f"**Last Refresh:** {last_refresh_est.strftime('%Y-%m-%d %H:%M:%S')}")
 
 st.divider()
 
