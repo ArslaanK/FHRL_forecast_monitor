@@ -69,13 +69,16 @@ st_autorefresh(interval=300000, key="refresh")
 
 def get_progress_color(status):
     if status.lower() == "completed":
-        return "#4CAF50"  # green
+        return "#2ca02c"  # green
     elif status.lower() == "running":
-        return "#2196F3"  # blue
+        return "#1f77b4"  # blue
     elif status.lower() == "waiting":
-        return "#9E9E9E"  # gray
+        return "#9e9e9e"  # gray
+    elif status.lower() == "failed":
+        return "#d62728"  # red
     else:
         return "#FFC107"  # amber for other statuses
+
         
 PIPELINE_ORDER = [
     ("pre", "metforecast_processor"),
