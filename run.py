@@ -14,6 +14,14 @@ import pandas as pd
 import requests
 import re
 
+url = "https://api.github.com/repos/ArslaanK/FHRL_forecast_monitor/commits?path=assets/iflood_status.yaml&page=1&per_page=1"
+resp = requests.get(url)
+if resp.status_code == 200:
+    commit_data = resp.json()[0]
+    last_refresh = datetime.fromisoformat(commit_data["commit"]["committer"]["date"].replace("Z", "+00:00"))
+else:
+    last_refresh = datetime.utcnow()
+
 st.set_page_config(layout="wide")
 
 st.markdown("""
@@ -183,15 +191,6 @@ def duration(start_str, end_str=None):
 iflood = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/iflood_status.yaml")
 hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/hecras_status.yaml")
 
-# -------------------------
-# Get Last Refresh from YAML
-# -------------------------
-# Assuming the YAML has a field like: system['last_update'] in ISO format
-last_update_str = iflood.get("system", {}).get("last_update", None)
-if last_update_str:
-    last_refresh = datetime.fromisoformat(last_update_str)
-else:
-    last_refresh = datetime.now()  # fallback
 
 # -------------------------
 # Forecast Cycle
