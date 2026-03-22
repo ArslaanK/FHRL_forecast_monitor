@@ -310,12 +310,13 @@ def render_pipeline(title, data):
         # Status badge
         cols[0].markdown(status_badge(status), unsafe_allow_html=True)
 
-        # Task name
-        task_label = f"**{phase.upper()} / {task_name}**"
-      
+        # Default task label with spacing
+        base_label = f"{phase.upper()} / {task_name}"
+
+        # Progress tracking
         progress_val = 0
         progress_text = ""
-        
+
         if status == "running" and isinstance(log, list):
             for item in reversed(log):
                 msg = item.get("msg") if isinstance(item, dict) else str(item)
@@ -324,28 +325,32 @@ def render_pipeline(title, data):
                     progress_val = float(match.group(1)) / 100
                     progress_text = f" — {match.group(1)}%"
                     break
-        
+
+            # Use &nbsp; for indentation
             cols[1].markdown(
-                f"<span style='margin-left:10px'>{phase.upper()} / {task_name}</span> "
-                f"<span class='loader'></span>{progress_text}",
+                f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}",
                 unsafe_allow_html=True
             )
-        
+
         elif status == "completed":
             progress_val = 1.0
-            cols[1].write(f"{phase.upper()} / {task_name} — 100%")
-        
-        else:
-            cols[1].write(f"{phase.upper()} / {task_name}")
+            cols[1].markdown(
+                f"&nbsp;&nbsp;&nbsp;**{base_label} — 100%**",
+                unsafe_allow_html=True
+            )
 
-        # Timing
+        else:
+            # Waiting or other statuses
+            cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**", unsafe_allow_html=True)
+
+        # Timing column
         if start:
             cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
 
-        # Progress bar
+        # Progress bar column
         cols[3].progress(progress_val)
 
-        # Logs
+        # Logs in expander
         if isinstance(log, list):
             with st.expander("More info", expanded=False):
                 for item in log:
