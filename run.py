@@ -44,19 +44,18 @@ st_autorefresh(interval=300000, key="refresh")
 
 PIPELINE_ORDER = [
     ("pre", "metforecast_processor"),
-    ("pre", "tide_construct"),
+    ("pre", "prep_simulation"),
 
-    ("nowcast", "hotstart_sim"),
-    ("nowcast", "attach_hotstart"),
+    ("nowcast", "prep_restart_for_next_forecast"),
 
-    ("forecast", "forecast_cycle_start"),
+    ("forecast", "run_forecast"),
     ("forecast", "copy_forecast_results"),
   
     ("post", "gen_nws_forecast"),
+    ("post", "gen_spatial_maps"),  
     ("post", "create_timeseries"),
     ("post", "fetch_competing_model"),
     ("post", "gen_flood_alerts"),
-    ("post", "gen_spatial_maps"),
     ("post", "push_to_s3"),
     ("post", "pipeline_completion"),
 
@@ -244,22 +243,6 @@ def get_current_task(data):
 
 phase, task, meta = get_current_task(iflood)
 
-# if task:
-#     #st.warning(f"?? CURRENT PROCESS ? {phase.upper()} / {task}")
-
-#     cols = st.columns([1,2])
-
-#     with cols[0]:
-#         with st.spinner("Running"):
-#             st.write("Processing...")
-
-#     with cols[1]:
-#         if meta.get("log"):
-#             st.write(meta["log"])
-
-#         if meta.get("start"):
-#             st.write(f"? Running for {duration(meta['start'], None)}")
-
 def render_pipeline(title, data):
     st.subheader(title)
 
@@ -319,7 +302,6 @@ def render_pipeline(title, data):
 
 
 
-
 with st.expander("Status Legend", expanded=True):
 
     c1, c2, c3, c4 = st.columns(4)
@@ -328,15 +310,6 @@ with st.expander("Status Legend", expanded=True):
     c2.markdown(status_badge("running") + " In progress", unsafe_allow_html=True)
     c3.markdown(status_badge("completed") + " Finished successfully", unsafe_allow_html=True)
     c4.markdown(status_badge("failed") + " Failed – needs attention", unsafe_allow_html=True)
-
-
-# left, right = st.columns(2)
-
-# with left:
-#     render_pipeline("iFLOOD – ADCIRC + SWAN", iflood)
-
-# with right:
-#     render_pipeline("HEC-RAS 2D – Compound DC", hecras)
 
 
 def yaml_to_stair_outline(data):
