@@ -222,9 +222,9 @@ c1.metric("System Health", "RUNNING", status)
 c1.metric("System Usage", f"{usage:.1f}%", status)
 
 # ------------------ Column 2: Jobs / Queues ------------------
-c2.subheader("📊 Job Status")
-c2.metric("iFLOOD Jobs", "2 running", "")
-c2.metric("HEC-RAS Jobs", "0 running", "")
+# c2.subheader("📊 Job Status")
+# c2.metric("iFLOOD Jobs", "2 running", "")
+# c2.metric("HEC-RAS Jobs", "0 running", "")
 
 
 # ------------------ Column 3: Timing / Forecast Cycle ------------------
