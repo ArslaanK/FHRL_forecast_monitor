@@ -258,7 +258,7 @@ with col1:
     st.subheader("🖥 System Overview")
     st.markdown("**Specs:** 54 cores × 512GB RAM")
     st.metric("System Health", "RUNNING")
-    st.metric("System Usage", f"{usage:.1f}%", delta=status)
+    st.metric("System Usage", f"{usage:.1f}%", delta=status,delta_color='inverse')
 
 # Column 2: Pipeline Progress
 with col2:
