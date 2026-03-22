@@ -361,7 +361,7 @@ def render_pipeline(title, data):
             cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
 
         # Progress bar column
-        cols[3].progress(progress_val)
+        #cols[3].progress(progress_val)
 
         # Progress bar column with matching color
         color = get_progress_color(status)
