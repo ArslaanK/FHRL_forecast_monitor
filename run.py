@@ -40,6 +40,27 @@ st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 # Helpers
 # -------------------------
+
+PIPELINE_ORDER = [
+    ("pre", "tide_construct"),
+    ("pre", "metforecast_processor"),
+
+    ("nowcast", "hotstart_sim"),
+    ("nowcast", "attach_hotstart"),
+
+    ("forecast", "forecast_cycle_start"),
+    ("forecast", "copy_forecast_results"),
+
+    ("post", "gen_nws_forecast"),
+    ("post", "create_timeseries"),
+    ("post", "fetch_competing_model"),
+    ("post", "push_to_s3"),
+    ("post", "pipeline_completion"),
+
+    # async tasks (still shown last)
+    ("post", "gen_flood_alerts"),
+    ("post", "gen_spatial_maps"),
+]
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
         # fetch from URL
@@ -220,54 +241,45 @@ phase, task, meta = get_current_task(iflood)
 #         if meta.get("start"):
 #             st.write(f"? Running for {duration(meta['start'], None)}")
 
-
 def render_pipeline(title, data):
     st.subheader(title)
 
-    for phase_name in ["pre", "nowcast", "forecast", "post"]:
-        tasks = data.get(phase_name, {})
-        if not isinstance(tasks, dict):
-            continue  # safety
+    for phase, task_name in PIPELINE_ORDER:
+        meta = data.get(phase, {}).get(task_name, {})
 
-        with st.expander(phase_name.upper(), expanded=True):
+        status = meta.get("status", "waiting")
+        start = meta.get("start")
+        end = meta.get("end")
+        log = meta.get("log")
 
-            for task_name, meta in tasks.items():
-                if not isinstance(meta, dict):
-                    continue  # safety
+        cols = st.columns([0.1, 0.6, 0.3])
 
-                status = meta.get("status", "waiting")
-                start = meta.get("start")
-                end = meta.get("end")
-                log = meta.get("log")
+        # Status badge
+        cols[0].markdown(status_badge(status), unsafe_allow_html=True)
 
-                cols = st.columns([0.1, 0.6, 0.3])
+        # Task name
+        if status == "running":
+            cols[1].markdown(
+                f"**{phase.upper()} / {task_name}** <span class='loader'></span>",
+                unsafe_allow_html=True
+            )
+        else:
+            cols[1].write(f"**{phase.upper()} / {task_name}**")
 
-                # Status badge
-                cols[0].markdown(status_badge(status), unsafe_allow_html=True)
+        # Timing
+        if start:
+            cols[2].write(
+                f"Start: {start.split()[1]} | ⏱ {duration(start, end)}"
+            )
 
-                # Task name and running loader
-                if status == "running":
-                    cols[1].markdown(
-                        f"**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{task_name}** <span class='loader'></span>",
-                        unsafe_allow_html=True
-                    )
-                else:
-                    cols[1].write(f"**{task_name}**")
-
-                # Timing
-                if start:
-                    cols[2].write(
-                        f"Start: {start.split()[1]} | ⏱ {duration(start, end)}"
-                    )
-
-                # Optional log details
-                if isinstance(log, list):
-                    with st.expander("More info", expanded=False):
-                        for item in log:
-                            if isinstance(item, dict):
-                                st.write(f"[{item['time']}] {item['msg']}")
-                            else:
-                                st.write(f"- {item}")
+        # Logs
+        if isinstance(log, list):
+            with st.expander("More info", expanded=False):
+                for item in log:
+                    if isinstance(item, dict):
+                        st.write(f"[{item['time']}] {item['msg']}")
+                    else:
+                        st.write(f"- {item}")
 
 
 
@@ -293,17 +305,17 @@ with st.expander("Status Legend", expanded=True):
 
 def yaml_to_stair_outline(data):
     rows = []
-    step_counter = 0
-    for phase in ["pre", "nowcast", "forecast", "post"]:
-        tasks = data.get(phase, {})
-        for task_name, meta in tasks.items():
-            rows.append({
-                "Phase": phase.upper(),
-                "Task": task_name,
-                "Step": step_counter,
-                "Status": meta.get("status", "waiting")
-            })
-            step_counter += 1
+
+    for step, (phase, task_name) in enumerate(PIPELINE_ORDER):
+        meta = data.get(phase, {}).get(task_name, {})
+
+        rows.append({
+            "Phase": phase.upper(),
+            "Task": task_name,
+            "Step": step,
+            "Status": meta.get("status", "waiting")
+        })
+
     return pd.DataFrame(rows)
 
 def render_stair_chart_outline(title, data):
