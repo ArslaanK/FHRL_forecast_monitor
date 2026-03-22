@@ -508,7 +508,7 @@ def render_stair_chart_outline(title, data):
 # -------------------------
 tab1, tab2 = st.tabs([
     "🌊 iFLOOD (ADCIRC + SWAN)",
-    "🌊 HEC-RAS 2D (Compound DC)"
+    "🌧️ Compound DC (HEC-RAS 2D)"
 ])
 
 # -------------------------
