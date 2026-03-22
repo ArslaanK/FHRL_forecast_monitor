@@ -38,6 +38,7 @@ st.markdown("""
 #st_autorefresh(interval=10000, key="refresh")
 # ?? auto refresh every 5 minutes
 st_autorefresh(interval=300000, key="refresh")
+
 # -------------------------
 # Helpers
 # -------------------------
@@ -195,15 +196,30 @@ iflood = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_mon
 hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/hecras_status.yaml")
 
 # -------------------------
+# Get System Diagnostic
+# -------------------------
+system = iflood.get("system", {})
+cpu = float(system.get("cpu", 0))
+ram = float(system.get("ram", 0))
+
+# -------------------------
 # Top progress bars
 # -------------------------
 c1, c2, c3 = st.columns(3)
 
 # ------------------ Column 1: System Overview ------------------
 c1.subheader("🖥 System Overview\nSpecs: 54 cores × 512GB RAM")
-c1.metric("System Health", "RUNNING", "Nominal")
-c1.metric("System Usage", "80%", "High")            # CPU/memory load
-# c1.metric("System Specs", "54 cores × 512GB RAM", "")  # total cores & memory
+
+usage = max(cpu, ram)
+
+status = "Nominal"
+if usage > 85:
+    status = "Critical"
+elif usage > 70:
+    status = "High"
+
+c1.metric("System Health", "RUNNING", status)
+c1.metric("System Usage", f"{usage:.1f}%", status)
 
 # ------------------ Column 2: Jobs / Queues ------------------
 c2.subheader("📊 Job Status")
@@ -261,11 +277,11 @@ def render_pipeline(title, data):
 
         # Task name
         task_label = f"**{phase.upper()} / {task_name}**"
+      
         progress_val = 0
         progress_text = ""
-
+        
         if status == "running" and isinstance(log, list):
-            # Find last logged progress like 'xx% completed'
             for item in reversed(log):
                 msg = item.get("msg") if isinstance(item, dict) else str(item)
                 match = re.search(r"([\d\.]+)%", msg)
@@ -273,16 +289,19 @@ def render_pipeline(title, data):
                     progress_val = float(match.group(1)) / 100
                     progress_text = f" — {match.group(1)}%"
                     break
-
-            cols[1].markdown(f"{task_label} <span class='loader'></span>{progress_text}", unsafe_allow_html=True)
-
+        
+            cols[1].markdown(
+                f"<span style='margin-left:10px'>{phase.upper()} / {task_name}</span> "
+                f"<span class='loader'></span>{progress_text}",
+                unsafe_allow_html=True
+            )
+        
         elif status == "completed":
             progress_val = 1.0
-            progress_text = " — 100%"
-            cols[1].write(f"{task_label}{progress_text}")
-
+            cols[1].write(f"{phase.upper()} / {task_name} — 100%")
+        
         else:
-            cols[1].write(task_label)
+            cols[1].write(f"{phase.upper()} / {task_name}")
 
         # Timing
         if start:
