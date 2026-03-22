@@ -46,7 +46,7 @@ PIPELINE_ORDER = [
     ("pre", "metforecast_processor"),
     ("pre", "prep_simulation"),
 
-    ("nowcast", "prep_restart_for_next_forecast"),
+    ("nowcast", "run_nowcast"),
 
     ("forecast", "run_forecast"),
     ("forecast", "copy_forecast_results"),
