@@ -12,7 +12,7 @@ forecast:
     start: '2026-03-22 14:11:16'
     status: running
 nowcast:
-  prep_restart_for_next_forecast:
+  run_nowcast:
     end: '2026-03-22 14:10:24'
     log:
     - {msg: started nowcast, time: '13:45:25'}
