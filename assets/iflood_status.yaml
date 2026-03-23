@@ -72,7 +72,12 @@ post:
     - {msg: max and timeseries spatial maps generated, time: '20:40:53'}
     start: '2026-03-22 20:28:52'
     status: completed
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-03-23 00:28:51'
+    log:
+    - {msg: forecast cycle completed, time: '00:28:51'}
+    start: '2026-03-23 00:28:51'
+    status: completed
   push_to_s3:
     end: '2026-03-22 21:29:23'
     log:
@@ -97,24 +102,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '16:53:10'}
     start: '2026-03-22 16:53:05'
     status: completed
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-system:
-  cpu: 100.00
-  ram: 29.21
-  timestamp: "2026-03-23 00:10:02"
+system: {cpu: 100.0, ram: 29.22, timestamp: '2026-03-23 00:20:02'}
