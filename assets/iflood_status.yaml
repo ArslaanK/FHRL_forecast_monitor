@@ -1,12 +1,19 @@
 cycle_start: '2026-03-23 14:45:02'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  copy_forecast_results:
+    end: '2026-03-23 18:30:25'
+    log:
+    - {msg: copying results, time: '18:30:22'}
+    - {msg: copied results, time: '18:30:25'}
+    start: '2026-03-23 18:30:22'
+    status: completed
   run_forecast:
-    end: null
+    end: '2026-03-23 18:30:22'
     log:
     - {msg: starting forecast, time: '15:26:29'}
+    - {msg: 100% completed, time: '18:30:22'}
     start: '2026-03-23 15:26:29'
-    status: running
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-03-23 15:26:27'
@@ -22,7 +29,13 @@ post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
-  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast:
+    end: '2026-03-23 18:33:02'
+    log:
+    - {msg: started NWS forecast processing, time: '18:30:25'}
+    - {msg: iFLOOD forecasts uploaded for NWS, time: '18:33:02'}
+    start: '2026-03-23 18:30:25'
+    status: completed
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
@@ -42,24 +55,7 @@ pre:
     start: '2026-03-23 14:53:10'
     status: completed
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 system:
-  cpu: 98.24
-  ram: 22.34
-  timestamp: "2026-03-23 18:20:02"
+  cpu: 1.89
+  ram: 1.36
+  timestamp: "2026-03-23 18:40:02"
