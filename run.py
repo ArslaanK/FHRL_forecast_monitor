@@ -397,16 +397,19 @@ with st.expander("Status Legend", expanded=True):
 
 def yaml_to_stair_outline(data):
     rows = []
+    step = 0
 
-    for step, (phase, task_name) in enumerate(PIPELINE_ORDER):
-        meta = data.get(phase, {}).get(task_name, {})
+    for phase in ["pre", "nowcast", "forecast", "post"]:
+        tasks = data.get(phase, {})
 
-        rows.append({
-            "Phase": phase.upper(),
-            "Task": task_name,
-            "Step": step,
-            "Status": meta.get("status", "waiting")
-        })
+        for task_name, meta in tasks.items():
+            rows.append({
+                "Phase": phase.upper(),
+                "Task": task_name,
+                "Step": step,
+                "Status": meta.get("status", "waiting")
+            })
+            step += 1
 
     return pd.DataFrame(rows)
 
@@ -424,12 +427,16 @@ def render_stair_chart_outline(title, data):
     
     # Map y positions to numeric for line calculations
     phase_order = ["PRE", "NOWCAST", "FORECAST", "POST"]
-    y_map = {phase: i for i, phase in enumerate(reversed(phase_order))}  # reversed so top is PRE
+    
+    # Only keep phases that actually have tasks
+    phases_present = [p for p in phase_order if not df[df["Phase"] == p].empty]
+    
+    y_map = {phase: i for i, phase in enumerate(reversed(phases_present))}
 
     bar_width = 0.8
 
     # --- Draw stair-step connectors (behind bars) ---
-    for phase in phase_order:
+    for phase in phases_present:
         phase_df = df[df["Phase"] == phase]
         if not phase_df.empty:
             y = y_map[phase]
@@ -445,16 +452,21 @@ def render_stair_chart_outline(title, data):
             )
     
     # Draw vertical + 90° connectors between phases
-    for i in range(len(phase_order)-1):
-        upper_phase = phase_order[i]
-        lower_phase = phase_order[i+1]
+    for i in range(len(phases_present)-1):
+        upper_phase = phases_present[i]
+        lower_phase = phases_present[i+1]
+    
+        upper_df = df[df["Phase"] == upper_phase]
+        lower_df = df[df["Phase"] == lower_phase]
+    
+        if upper_df.empty or lower_df.empty:
+            continue
+    
         upper_y = y_map[upper_phase]
         lower_y = y_map[lower_phase]
-
-        # Center x of last task in upper phase
-        x_center_upper = df[df["Phase"]==upper_phase]["Step"].max() + bar_width/2
-        # Center x of first task in lower phase
-        x_center_lower = df[df["Phase"]==lower_phase]["Step"].min() + bar_width/2
+    
+        x_center_upper = upper_df["Step"].max() + bar_width/2
+        x_center_lower = lower_df["Step"].min() + bar_width/2
 
         # Draw vertical + horizontal as L-shaped line
         # Vertical from upper phase center down to lower y
