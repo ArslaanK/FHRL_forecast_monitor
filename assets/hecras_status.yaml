@@ -3,8 +3,21 @@ forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   forecast_cycle_start: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  prep_simulation: {end: null, log: null, start: null, status: waiting}
-  run_nowcast: {end: null, log: null, start: null, status: waiting}
+  prep_simulation:
+    end: '2026-03-26 08:23:17'
+    log:
+    - {msg: Preparing Model files, time: '08:19:20'}
+    - {msg: Prepared Model files, time: '08:23:17'}
+    start: '2026-03-26 08:19:20'
+    status: completed
+  run_nowcast:
+    end: null
+    log:
+    - {msg: copying previous restart file, time: '08:23:17'}
+    - {msg: Nowcast simulation started, time: '08:23:17'}
+    - {msg: model run finished, time: '08:24:20'}
+    start: '2026-03-26 08:23:17'
+    status: running
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast: {end: null, log: null, start: null, status: waiting}
@@ -17,8 +30,10 @@ pre:
     start: '2026-03-26 08:00:08'
     status: completed
   metforecast_processor:
-    end: null
+    end: '2026-03-26 08:19:20'
     log:
     - {msg: downloading HRRR forecasts, time: '08:00:08'}
+    - {msg: downloading HRRR forecasts, time: '08:19:20'}
+    - {msg: processed HRRR forecasts, time: '08:19:20'}
     start: '2026-03-26 08:00:08'
-    status: running
+    status: completed
