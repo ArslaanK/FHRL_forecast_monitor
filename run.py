@@ -66,16 +66,48 @@ st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 # Helpers
 # -------------------------
-def phase_progress(phase_data):
+
+def phase_progress(data, phase_name):
     """
-    Returns 0-1 fraction based on completed tasks in this phase.
-    If all tasks completed, returns 1.0.
+    Calculate the average progress for a given phase as a float between 0 and 1.
+
+    Args:
+        data (dict): Pipeline data containing tasks for all phases.
+        phase_name (str): Name of the phase ("pre", "nowcast", "forecast", "post").
+
+    Returns:
+        float: Average progress of the phase (0.0 to 1.0)
     """
-    if not phase_data:
-        return 0
-    total_tasks = len(phase_data)
-    done_tasks = sum(1 for t in phase_data.values() if t.get("status") == "completed")
-    return done_tasks / total_tasks if total_tasks else 0
+    tasks = data.get(phase_name, {})
+    if not tasks:
+        return 0.0
+
+    total_tasks = 0
+    completed_tasks = 0
+    running_progress = 0.0
+
+    for task in tasks.values():
+        total_tasks += 1
+        status = task.get("status", "waiting")
+
+        if status == "completed":
+            completed_tasks += 1
+        elif status == "running" and isinstance(task.get("log"), list):
+            # Find the latest progress percentage in logs
+            for entry in reversed(task["log"]):
+                msg = entry.get("msg") if isinstance(entry, dict) else str(entry)
+                match = re.search(r"([\d\.]+)%", msg)
+                if match:
+                    running_progress += float(match.group(1)) / 100
+                    break
+
+    if total_tasks == 0:
+        return 0.0
+
+    # Each completed task counts as 1.0, running tasks contribute partial progress
+    average_progress = (completed_tasks + running_progress) / total_tasks
+    return min(average_progress, 1.0)  # Ensure progress never exceeds 1.0
+    
 
 def get_progress_color(status):
     if status.lower() == "completed":
