@@ -117,55 +117,55 @@ def get_latest_progress(data, phase_name):
                         return task_name, 0
     return None, 0
 
+PHASE_WIDTHS = {
+    "pre": 3.2,
+    "nowcast": 14.7,
+    "forecast": 68.5,
+    "post": 13.6,
+}
 
-def phase_progress(data, phase_name):
+PHASE_COLORS = {
+    "pre": "#2ca02c",      # green completed
+    "nowcast": "#ff7f0e",  # orange running
+    "forecast": "#1f77b4", # blue active
+    "post": "#9467bd",     # purple
+}
+
+def render_pipeline_overview_single_bar(data):
     """
-    Returns the average progress for a given phase (0–1 float)
+    Render a single horizontal progress bar split into 4 phases
     """
-    tasks = data.get(phase_name, {})
-    if not tasks:
-        return 0.0
+    # Determine current phase
+    current_phase = "pre"
+    for phase in ["pre", "nowcast", "forecast", "post"]:
+        tasks = data.get(phase, {})
+        if any(t.get("status") == "running" for t in tasks.values()):
+            current_phase = phase
+            break
+        elif any(t.get("status") != "completed" for t in tasks.values()):
+            current_phase = phase
+            break
+        else:
+            current_phase = phase  # last completed phase
 
-    total_tasks = 0
-    completed_tasks = 0
-    running_progress = 0.0
+    html = "<div style='width:100%; background-color:#e0e0e0; border-radius:6px; height:20px; display:flex; overflow:hidden;'>"
 
-    for task in tasks.values():
-        total_tasks += 1
-        status = task.get("status", "waiting")
-        if status == "completed":
-            completed_tasks += 1
-        elif status == "running" and isinstance(task.get("log"), list):
-            # find last % in logs
-            for entry in reversed(task["log"]):
-                msg = entry.get("msg") if isinstance(entry, dict) else str(entry)
-                match = re.search(r"([\d\.]+)%", msg)
-                if match:
-                    running_progress += float(match.group(1)) / 100
-                    break
-
-    if total_tasks == 0:
-        return 0.0
-
-    # Completed tasks count as 1.0
-    return (completed_tasks + running_progress) / total_tasks
-
-def render_pipeline_overview(data):
-    st.subheader("🖥 Pipeline Overview")
-    
-    cols = st.columns(4)
-    for idx, phase in enumerate(["pre", "nowcast", "forecast", "post"]):
+    for phase, width in PHASE_WIDTHS.items():
+        tasks = data.get(phase, {})
+        # Compute phase completion
         progress = phase_progress(data, phase)
-        color = get_progress_color("completed" if progress >= 1 else "running" if progress > 0 else "waiting")
-        cols[idx].markdown(f"**{phase.upper()}**", unsafe_allow_html=True)
-        # Simple horizontal bar
-        bar_html = f"""
-        <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
-            <div style='width:{progress*100}%; background-color:{color}; height:16px; border-radius:4px;'></div>
-        </div>
-        <div style='font-size:12px; text-align:center;'>{int(progress*100)}%</div>
-        """
-        cols[idx].markdown(bar_html, unsafe_allow_html=True)
+        # Determine color
+        if progress >= 1:
+            color = "#2ca02c"  # green completed
+        elif phase == current_phase:
+            color = "#1f77b4"  # blue active
+        else:
+            color = "#9e9e9e"  # gray waiting
+        html += f"<div style='width:{width}%; background-color:{color};'></div>"
+
+    html += "</div>"
+
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def load_yaml(path_or_url):
@@ -370,25 +370,6 @@ PHASE_COLORS = {
     "post": "#d62728",      # red
 }
 
-def render_split_progress_bar(data):
-    """
-    Render a single progress bar split into phases
-    """
-    bar_html = "<div style='display:flex; height:20px; width:100%; border-radius:4px; overflow:hidden; background-color:#e0e0e0;'>"
-
-    for phase in ["pre", "nowcast", "forecast", "post"]:
-        phase_data = data.get(phase, {})
-        phase_progress = get_phase_progress(phase_data)  # 0-1
-        width_percent = PHASE_WIDTHS[phase] * phase_progress
-        color = PHASE_COLORS[phase]
-
-        bar_html += f"""
-        <div style='width:{width_percent}%; background-color:{color};'></div>
-        """
-
-    bar_html += "</div>"
-    st.markdown(bar_html, unsafe_allow_html=True)
-
 
 
 # -------------------------
@@ -464,10 +445,11 @@ with col1:
 with col2:
     st.subheader("📊 Pipeline Progress")
     st.markdown("**iFLOOD**")
-    render_split_progress_bar(iflood)
+    render_pipeline_overview_single_bar(iflood)
+    
 
     st.markdown("**Compound DC**")
-    render_split_progress_bar(hecras)
+    render_pipeline_overview_single_bar(hecras)
         
 # Column 3: Forecast Cycle
 with col3:
