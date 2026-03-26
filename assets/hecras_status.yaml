@@ -1,4 +1,4 @@
-cycle_start: '2026-03-26 04:45:06'
+cycle_start: '2026-03-26 08:00:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   forecast_cycle_start: {end: null, log: null, start: null, status: waiting}
@@ -10,5 +10,15 @@ post:
   process_forecast: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  get_flow_stage: {end: null, log: null, start: null, status: waiting}
-  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  get_flow_stage:
+    end: '2026-03-26 08:00:08'
+    log:
+    - {msg: downloading stage and flow observations, time: '08:00:08'}
+    start: '2026-03-26 08:00:08'
+    status: completed
+  metforecast_processor:
+    end: null
+    log:
+    - {msg: downloading HRRR forecasts, time: '08:00:08'}
+    start: '2026-03-26 08:00:08'
+    status: running
