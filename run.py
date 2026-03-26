@@ -177,11 +177,14 @@ def pipeline_progress(data):
 
     for phase_name in ["pre", "nowcast", "forecast", "post"]:
         phase = data.get(phase_name, {})
+        if not phase:
+            continue  # skip missing phases
 
         for task in phase.values():
-            total += 1
-            if task.get("status") == "completed":
-                done += 1
+            if isinstance(task, dict):
+                total += 1
+                if task.get("status") == "completed":
+                    done += 1
 
     return done / total if total else 0
 
