@@ -80,24 +80,24 @@ def get_progress_color(status):
         return "#FFC107"  # amber for other statuses
 
         
-PIPELINE_ORDER = [
-    ("pre", "metforecast_processor"),
-    ("pre", "prep_simulation"),
+# PIPELINE_ORDER = [
+#     ("pre", "metforecast_processor"),
+#     ("pre", "prep_simulation"),
 
-    ("nowcast", "run_nowcast"),
+#     ("nowcast", "run_nowcast"),
 
-    ("forecast", "run_forecast"),
-    ("forecast", "copy_forecast_results"),
+#     ("forecast", "run_forecast"),
+#     ("forecast", "copy_forecast_results"),
   
-    ("post", "gen_nws_forecast"),
-    ("post", "gen_spatial_maps"),  
-    ("post", "create_timeseries"),
-    ("post", "fetch_competing_model"),
-    ("post", "gen_flood_alerts"),
-    ("post", "push_to_s3"),
-    ("post", "pipeline_completion"),
+#     ("post", "gen_nws_forecast"),
+#     ("post", "gen_spatial_maps"),  
+#     ("post", "create_timeseries"),
+#     ("post", "fetch_competing_model"),
+#     ("post", "gen_flood_alerts"),
+#     ("post", "push_to_s3"),
+#     ("post", "pipeline_completion"),
 
-]
+# ]
 
 def get_latest_progress(data, phase_name):
     """
@@ -177,11 +177,14 @@ def pipeline_progress(data):
 
     for phase_name in ["pre", "nowcast", "forecast", "post"]:
         phase = data.get(phase_name, {})
+        if not phase:
+            continue  # skip missing phases
 
         for task in phase.values():
-            total += 1
-            if task.get("status") == "completed":
-                done += 1
+            if isinstance(task, dict):
+                total += 1
+                if task.get("status") == "completed":
+                    done += 1
 
     return done / total if total else 0
 
@@ -213,7 +216,79 @@ def duration(start_str, end_str=None):
     else:
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
+def render_pipeline(title, pipeline_data):
+    st.subheader(title)
 
+    for phase in ["pre", "nowcast", "forecast", "post"]:
+        tasks = pipeline_data.get(phase, {})   # get phase tasks
+
+        if not tasks:
+            continue
+
+        # --- Sort tasks by start time ---
+        def parse_start(meta):
+            start_str = meta.get("start")
+            if start_str:
+                try:
+                    return datetime.strptime(start_str, "%Y-%m-%d %H:%M:%S")
+                except:
+                    return datetime.max  # put invalid/missing start at the end
+            else:
+                return datetime.max
+
+        sorted_tasks = sorted(tasks.items(), key=lambda x: parse_start(x[1]))
+
+        # --- Render sorted tasks ---
+        for task_name, meta in sorted_tasks:
+            status = meta.get("status", "waiting")
+            start = meta.get("start")
+            end = meta.get("end")
+            log = meta.get("log")
+
+            cols = st.columns([0.1, 0.5, 0.3, 0.3])
+            cols[0].markdown(status_badge(status), unsafe_allow_html=True)
+
+            base_label = f"{phase.upper()} / {task_name}"
+
+            progress_val = 0
+            progress_text = ""
+
+            if status == "running" and isinstance(log, list):
+                for item in reversed(log):
+                    msg = item.get("msg") if isinstance(item, dict) else str(item)
+                    match = re.search(r"([\d\.]+)%", msg)
+                    if match:
+                        progress_val = float(match.group(1)) / 100
+                        progress_text = f" — {match.group(1)}%"
+                        break
+                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}", unsafe_allow_html=True)
+            elif status == "completed":
+                progress_val = 1.0
+                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label} — 100%**", unsafe_allow_html=True)
+            else:
+                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**", unsafe_allow_html=True)
+
+            # Timing
+            if start:
+                cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
+
+            # Progress bar
+            color = get_progress_color(status)
+            progress_html = f"""
+            <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
+                <div style='width:{progress_val*100}%; background-color:{color}; height:16px; border-radius:4px;'></div>
+            </div>
+            """
+            cols[3].markdown(progress_html, unsafe_allow_html=True)
+
+            # Logs
+            if isinstance(log, list):
+                with st.expander("More info", expanded=False):
+                    for item in log:
+                        if isinstance(item, dict):
+                            st.write(f"[{item['time']}] {item['msg']}")
+                        else:
+                            st.write(f"- {item}")
 # -------------------------
 # Load data
 # -------------------------
@@ -307,82 +382,6 @@ def get_current_task(data):
     return None, None, None
 
 
-
-phase, task, meta = get_current_task(iflood)
-for phase in ["pre", "nowcast", "forecast", "post"]:
-    tasks = data.get(phase, {})
-
-    # 🔥 skip empty phases entirely
-    if not tasks:
-        continue
-
-    for task_name, meta in tasks.items():
-
-        status = meta.get("status", "waiting")
-        start = meta.get("start")
-        end = meta.get("end")
-        log = meta.get("log")
-
-        cols = st.columns([0.1, 0.5, 0.3, 0.3])
-
-        # Status badge
-        cols[0].markdown(status_badge(status), unsafe_allow_html=True)
-
-        base_label = f"{phase.upper()} / {task_name}"
-
-        progress_val = 0
-        progress_text = ""
-
-        if status == "running" and isinstance(log, list):
-            for item in reversed(log):
-                msg = item.get("msg") if isinstance(item, dict) else str(item)
-                match = re.search(r"([\d\.]+)%", msg)
-                if match:
-                    progress_val = float(match.group(1)) / 100
-                    progress_text = f" — {match.group(1)}%"
-                    break
-
-            cols[1].markdown(
-                f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}",
-                unsafe_allow_html=True
-            )
-
-        elif status == "completed":
-            progress_val = 1.0
-            cols[1].markdown(
-                f"&nbsp;&nbsp;&nbsp;**{base_label} — 100%**",
-                unsafe_allow_html=True
-            )
-
-        else:
-            cols[1].markdown(
-                f"&nbsp;&nbsp;&nbsp;**{base_label}**",
-                unsafe_allow_html=True
-            )
-
-        # Timing
-        if start:
-            cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
-
-        # Progress bar
-        color = get_progress_color(status)
-        progress_html = f"""
-        <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
-            <div style='width:{progress_val*100}%; background-color:{color}; height:16px; border-radius:4px;'></div>
-        </div>
-        """
-        cols[3].markdown(progress_html, unsafe_allow_html=True)
-
-        # Logs
-        if isinstance(log, list):
-            with st.expander("More info", expanded=False):
-                for item in log:
-                    if isinstance(item, dict):
-                        st.write(f"[{item['time']}] {item['msg']}")
-                    else:
-                        st.write(f"- {item}")
-
-
 with st.expander("Status Legend", expanded=True):
 
     c1, c2, c3, c4 = st.columns(4)
@@ -392,7 +391,6 @@ with st.expander("Status Legend", expanded=True):
     c3.markdown(status_badge("completed") + " Finished successfully", unsafe_allow_html=True)
     c4.markdown(status_badge("failed") + " Failed – needs attention", unsafe_allow_html=True)
 
-
 def yaml_to_stair_outline(data):
     rows = []
     step = 0
@@ -400,7 +398,23 @@ def yaml_to_stair_outline(data):
     for phase in ["pre", "nowcast", "forecast", "post"]:
         tasks = data.get(phase, {})
 
-        for task_name, meta in tasks.items():
+        if not tasks:
+            continue
+
+        # --- Sort tasks by start time ---
+        def parse_start(meta):
+            start_str = meta.get("start")
+            if start_str:
+                try:
+                    return datetime.strptime(start_str, "%Y-%m-%d %H:%M:%S")
+                except:
+                    return datetime.max  # put invalid/missing start at the end
+            else:
+                return datetime.max
+
+        sorted_tasks = sorted(tasks.items(), key=lambda x: parse_start(x[1]))
+
+        for task_name, meta in sorted_tasks:
             rows.append({
                 "Phase": phase.upper(),
                 "Task": task_name,
