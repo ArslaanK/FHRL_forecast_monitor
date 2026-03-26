@@ -172,10 +172,11 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
+
 def render_pipeline_overview_single_bar(data):
     """
     Render a single horizontal progress bar split into 4 phases
-    with partition lines and phase labels.
+    with visible partition lines and phase labels on top.
     """
     PHASE_WIDTHS = {
         "pre": 3.2,
@@ -198,23 +199,23 @@ def render_pipeline_overview_single_bar(data):
             current_phase = phase  # last completed phase
 
     # Start HTML
-    html = "<div style='position:relative; width:100%; height:30px;'>"
+    html = "<div style='position:relative; width:100%; height:40px;'>"
 
-    # Phase labels on top
+    # Phase labels
     cumulative_width = 0
     for phase, width in PHASE_WIDTHS.items():
         label_pos = cumulative_width + width / 2
         html += f"""
-        <div style='position:absolute; top:0; left:{label_pos}%; transform:translateX(-50%); 
-                    font-size:10px; font-weight:bold;'>{phase.upper()}</div>
+        <div style='position:absolute; top:0; left:{label_pos}%; transform:translateX(-50%);
+                    font-size:10px; font-weight:bold; text-align:center;'>{phase.upper()}</div>
         """
         cumulative_width += width
 
     # Progress bar container
-    html += "<div style='width:100%; height:20px; background-color:#e0e0e0; border-radius:6px; display:flex; overflow:hidden; margin-top:10px;'>"
+    html += "<div style='position:relative; width:100%; height:20px; background-color:#e0e0e0; border-radius:6px; margin-top:18px; display:flex; overflow:hidden;'>"
 
     # Draw each phase segment
-    for phase, width in PHASE_WIDTHS.items():
+    for idx, (phase, width) in enumerate(PHASE_WIDTHS.items()):
         progress = phase_progress(data, phase)
         # Determine color
         if progress >= 1:
@@ -225,10 +226,10 @@ def render_pipeline_overview_single_bar(data):
             color = "#9e9e9e"  # gray waiting
 
         html += f"""
-        <div style='position:relative; width:{width}%; background-color:#e0e0e0;'>
-            <div style='width:{progress*100}%; background-color:{color}; height:100%;'></div>
-            <!-- Partition line -->
-            <div style='position:absolute; right:0; top:0; width:1px; height:100%; background-color:white; opacity:0.7;'></div>
+        <div style='position:relative; width:{width}%; height:100%;'>
+            <div style='width:{progress*100}%; background-color:{color}; height:100%; border-radius:3px 0 0 3px;'></div>
+            <!-- Partition line except last -->
+            {'<div style="position:absolute; right:0; top:0; width:1px; height:100%; background-color:white; opacity:0.7;"></div>' if idx < len(PHASE_WIDTHS)-1 else ''}
         </div>
         """
 
