@@ -9,13 +9,6 @@ forecast:
     status: completed
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  prep_simulation:
-    end: '2026-03-26 08:23:17'
-    log:
-    - {msg: Preparing Model files, time: '08:19:20'}
-    - {msg: Prepared Model files, time: '08:23:17'}
-    start: '2026-03-26 08:19:20'
-    status: completed
   run_nowcast:
     end: '2026-03-26 08:43:39'
     log:
@@ -61,4 +54,11 @@ pre:
     - {msg: downloading HRRR forecasts, time: '08:19:20'}
     - {msg: processed HRRR forecasts, time: '08:19:20'}
     start: '2026-03-26 08:00:08'
+    status: completed
+  prep_simulation:
+    end: '2026-03-26 08:23:17'
+    log:
+    - {msg: Preparing Model files, time: '08:19:20'}
+    - {msg: Prepared Model files, time: '08:23:17'}
+    start: '2026-03-26 08:19:20'
     status: completed
