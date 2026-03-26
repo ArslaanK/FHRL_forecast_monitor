@@ -66,7 +66,7 @@ st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 # Helpers
 # -------------------------
-def get_phase_progress(phase_data):
+def phase_progress(phase_data):
     """
     Returns 0-1 fraction based on completed tasks in this phase.
     If all tasks completed, returns 1.0.
