@@ -172,11 +172,18 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
-
 def render_pipeline_overview_single_bar(data):
     """
     Render a single horizontal progress bar split into 4 phases
+    with partition lines and phase labels.
     """
+    PHASE_WIDTHS = {
+        "pre": 3.2,
+        "nowcast": 14.7,
+        "forecast": 68.5,
+        "post": 13.6
+    }
+
     # Determine current phase
     current_phase = "pre"
     for phase in ["pre", "nowcast", "forecast", "post"]:
@@ -190,11 +197,24 @@ def render_pipeline_overview_single_bar(data):
         else:
             current_phase = phase  # last completed phase
 
-    html = "<div style='width:100%; background-color:#e0e0e0; border-radius:6px; height:20px; display:flex; overflow:hidden;'>"
+    # Start HTML
+    html = "<div style='position:relative; width:100%; height:30px;'>"
 
+    # Phase labels on top
+    cumulative_width = 0
     for phase, width in PHASE_WIDTHS.items():
-        tasks = data.get(phase, {})
-        # Compute phase completion
+        label_pos = cumulative_width + width / 2
+        html += f"""
+        <div style='position:absolute; top:0; left:{label_pos}%; transform:translateX(-50%); 
+                    font-size:10px; font-weight:bold;'>{phase.upper()}</div>
+        """
+        cumulative_width += width
+
+    # Progress bar container
+    html += "<div style='width:100%; height:20px; background-color:#e0e0e0; border-radius:6px; display:flex; overflow:hidden; margin-top:10px;'>"
+
+    # Draw each phase segment
+    for phase, width in PHASE_WIDTHS.items():
         progress = phase_progress(data, phase)
         # Determine color
         if progress >= 1:
@@ -203,9 +223,16 @@ def render_pipeline_overview_single_bar(data):
             color = "#1f77b4"  # blue active
         else:
             color = "#9e9e9e"  # gray waiting
-        html += f"<div style='width:{width}%; background-color:{color};'></div>"
 
-    html += "</div>"
+        html += f"""
+        <div style='position:relative; width:{width}%; background-color:#e0e0e0;'>
+            <div style='width:{progress*100}%; background-color:{color}; height:100%;'></div>
+            <!-- Partition line -->
+            <div style='position:absolute; right:0; top:0; width:1px; height:100%; background-color:white; opacity:0.7;'></div>
+        </div>
+        """
+
+    html += "</div></div>"
 
     st.markdown(html, unsafe_allow_html=True)
 
