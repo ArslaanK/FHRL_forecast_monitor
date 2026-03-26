@@ -172,12 +172,15 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
-
 def render_pipeline_overview_single_bar(data):
-    """
-    Render a single horizontal progress bar split into 4 phases
-    """
-    # Determine current phase
+    PHASE_WIDTHS = {
+        "pre": 3.2,
+        "nowcast": 14.7,
+        "forecast": 68.5,
+        "post": 13.6
+    }
+
+    # Detect current phase
     current_phase = "pre"
     for phase in ["pre", "nowcast", "forecast", "post"]:
         tasks = data.get(phase, {})
@@ -187,28 +190,40 @@ def render_pipeline_overview_single_bar(data):
         elif any(t.get("status") != "completed" for t in tasks.values()):
             current_phase = phase
             break
-        else:
-            current_phase = phase  # last completed phase
 
-    html = "<div style='width:100%; background-color:#e0e0e0; border-radius:6px; height:20px; display:flex; overflow:hidden;'>"
+    # -------- LABEL ROW (aligned with widths) --------
+    labels_html = "<div style='display:flex; width:100%; font-size:11px; font-weight:600; margin-bottom:4px;'>"
+    for phase, width in PHASE_WIDTHS.items():
+        labels_html += f"<div style='width:{width}%; text-align:center;'>{phase.upper()}</div>"
+    labels_html += "</div>"
+
+    # -------- BAR --------
+    bar_html = "<div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden;'>"
 
     for phase, width in PHASE_WIDTHS.items():
-        tasks = data.get(phase, {})
-        # Compute phase completion
         progress = phase_progress(data, phase)
-        # Determine color
+
+        # Color logic
         if progress >= 1:
-            color = "#2ca02c"  # green completed
+            color = "#2ca02c"  # completed
         elif phase == current_phase:
-            color = "#1f77b4"  # blue active
+            color = "#1f77b4"  # active
         else:
-            color = "#9e9e9e"  # gray waiting
-        html += f"<div style='width:{width}%; background-color:{color};'></div>"
+            color = "#9e9e9e"  # waiting
 
-    html += "</div>"
+        bar_html += f"""
+        <div style='width:{width}%; position:relative; background-color:#d0d0d0;'>
+            <!-- filled portion -->
+            <div style='width:{progress*100}%; height:100%; background-color:{color};'></div>
 
-    st.markdown(html, unsafe_allow_html=True)
+            <!-- partition line -->
+            <div style='position:absolute; right:0; top:0; width:2px; height:100%; background-color:#ffffff;'></div>
+        </div>
+        """
 
+    bar_html += "</div>"
+
+    st.markdown(labels_html + bar_html, unsafe_allow_html=True)
 
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
