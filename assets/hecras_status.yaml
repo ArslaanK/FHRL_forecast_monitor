@@ -7,7 +7,7 @@ forecast:
     - {msg: copied results, time: '11:00:18'}
     start: '2026-03-26 11:00:16'
     status: completed
-  forecast_cycle_start: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
   prep_simulation:
     end: '2026-03-26 08:23:17'
