@@ -1,52 +1,53 @@
-pre:
-  get_flow_stage:
-    status: waiting
+forecast:
+  copy_forecast_results:
+    end: null
     log: null
     start: null
-    end: null
-  metforecast_processor:
     status: waiting
-    log: null
-    start: null
+  forecast_cycle_start:
     end: null
-
+    log:
+    - msg: 0% completed
+      time: 04:34:13
+    start: null
+    status: waiting
 nowcast:
   prep_simulation:
-    status: waiting
+    end: null
     log: null
     start: null
-    end: null
+    status: waiting
   run_nowcast:
-    status: waiting
-    log: null
-    start: null
     end: null
-
-forecast:
-  forecast_cycle_start:
-    status: waiting
-    log: null
+    log:
+    - msg: 48% completed
+      time: 04:40:56
     start: null
-    end: null
-  copy_forecast_results:
-    status: waiting
-    log: null
-    start: null
-    end: null
-
+    status: running
 post:
-  process_forecast:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  push_to_s3:
-    status: waiting
-    log: null
-    start: null
-    end: null
   pipeline_completion:
-    status: waiting
+    end: null
     log: null
     start: null
+    status: waiting
+  process_forecast:
     end: null
+    log: null
+    start: null
+    status: running
+  push_to_s3:
+    end: null
+    log: null
+    start: null
+    status: waiting
+pre:
+  get_flow_stage:
+    end: null
+    log: null
+    start: null
+    status: waiting
+  metforecast_processor:
+    end: null
+    log: null
+    start: null
+    status: waiting
