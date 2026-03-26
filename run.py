@@ -66,6 +66,16 @@ st_autorefresh(interval=300000, key="refresh")
 # -------------------------
 # Helpers
 # -------------------------
+def get_phase_progress(phase_data):
+    """
+    Returns 0-1 fraction based on completed tasks in this phase.
+    If all tasks completed, returns 1.0.
+    """
+    if not phase_data:
+        return 0
+    total_tasks = len(phase_data)
+    done_tasks = sum(1 for t in phase_data.values() if t.get("status") == "completed")
+    return done_tasks / total_tasks if total_tasks else 0
 
 def get_progress_color(status):
     if status.lower() == "completed":
