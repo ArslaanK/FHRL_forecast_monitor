@@ -116,7 +116,58 @@ def get_latest_progress(data, phase_name):
                     except:
                         return task_name, 0
     return None, 0
-  
+
+
+def phase_progress(data, phase_name):
+    """
+    Returns the average progress for a given phase (0–1 float)
+    """
+    tasks = data.get(phase_name, {})
+    if not tasks:
+        return 0.0
+
+    total_tasks = 0
+    completed_tasks = 0
+    running_progress = 0.0
+
+    for task in tasks.values():
+        total_tasks += 1
+        status = task.get("status", "waiting")
+        if status == "completed":
+            completed_tasks += 1
+        elif status == "running" and isinstance(task.get("log"), list):
+            # find last % in logs
+            for entry in reversed(task["log"]):
+                msg = entry.get("msg") if isinstance(entry, dict) else str(entry)
+                match = re.search(r"([\d\.]+)%", msg)
+                if match:
+                    running_progress += float(match.group(1)) / 100
+                    break
+
+    if total_tasks == 0:
+        return 0.0
+
+    # Completed tasks count as 1.0
+    return (completed_tasks + running_progress) / total_tasks
+
+def render_pipeline_overview(data):
+    st.subheader("🖥 Pipeline Overview")
+    
+    cols = st.columns(4)
+    for idx, phase in enumerate(["pre", "nowcast", "forecast", "post"]):
+        progress = phase_progress(data, phase)
+        color = get_progress_color("completed" if progress >= 1 else "running" if progress > 0 else "waiting")
+        cols[idx].markdown(f"**{phase.upper()}**", unsafe_allow_html=True)
+        # Simple horizontal bar
+        bar_html = f"""
+        <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
+            <div style='width:{progress*100}%; background-color:{color}; height:16px; border-radius:4px;'></div>
+        </div>
+        <div style='font-size:12px; text-align:center;'>{int(progress*100)}%</div>
+        """
+        cols[idx].markdown(bar_html, unsafe_allow_html=True)
+
+
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
         # fetch from URL
@@ -352,13 +403,38 @@ with col1:
     st.metric("System Usage", f"{usage:.1f}%", delta=status,delta_color='inverse')
 
 # Column 2: Pipeline Progress
+# with col2:
+#     st.subheader("📊 Pipeline Progress")
+#     st.markdown("**iFLOOD**")
+#     st.progress(pipeline_progress(iflood))
+#     st.markdown("**Compound DC**")
+#     st.progress(pipeline_progress(hecras))
+
+# Column 2: Pipeline Progress
 with col2:
     st.subheader("📊 Pipeline Progress")
-    st.markdown("**iFLOOD**")
-    st.progress(pipeline_progress(iflood))
-    st.markdown("**Compound DC**")
-    st.progress(pipeline_progress(hecras))
 
+    # ---- iFLOOD overview ----
+    st.markdown("**iFLOOD**")
+    phases = ["pre", "nowcast", "forecast", "post"]
+    for phase in phases:
+        phase_data = iflood.get(phase, {})
+        done = sum(1 for t in phase_data.values() if t.get("status")=="completed")
+        total = len(phase_data)
+        progress = done / total if total else 0
+        st.markdown(f"{phase.capitalize()}:")
+        st.progress(progress)
+
+    # ---- Compound DC overview ----
+    st.markdown("**Compound DC**")
+    for phase in phases:
+        phase_data = hecras.get(phase, {})
+        done = sum(1 for t in phase_data.values() if t.get("status")=="completed")
+        total = len(phase_data)
+        progress = done / total if total else 0
+        st.markdown(f"{phase.capitalize()}:")
+        st.progress(progress)
+        
 # Column 3: Forecast Cycle
 with col3:
     st.subheader("⏱ Forecast Cycle")
@@ -382,7 +458,7 @@ def get_current_task(data):
     return None, None, None
 
 
-with st.expander("Status Legend", expanded=True):
+with st.expander("Status Legend", expanded=False):
 
     c1, c2, c3, c4 = st.columns(4)
 
