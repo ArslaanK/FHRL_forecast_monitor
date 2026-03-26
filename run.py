@@ -409,31 +409,63 @@ with col1:
 #     st.progress(pipeline_progress(iflood))
 #     st.markdown("**Compound DC**")
 #     st.progress(pipeline_progress(hecras))
-
 # Column 2: Pipeline Progress
 with col2:
     st.subheader("📊 Pipeline Progress")
 
-    # ---- iFLOOD overview ----
-    st.markdown("**iFLOOD**")
-    phases = ["pre", "nowcast", "forecast", "post"]
-    for phase in phases:
-        phase_data = iflood.get(phase, {})
-        done = sum(1 for t in phase_data.values() if t.get("status")=="completed")
-        total = len(phase_data)
-        progress = done / total if total else 0
-        st.markdown(f"{phase.capitalize()}:")
-        st.progress(progress)
+    def render_phase_bar(pipeline_data, phases=["pre","nowcast","forecast","post"]):
+        # compute progress per phase
+        total_tasks = sum(len(pipeline_data.get(p, {})) for p in phases)
+        done_tasks = sum(
+            1 for p in phases for t in pipeline_data.get(p, {}).values() if t.get("status")=="completed"
+        )
 
-    # ---- Compound DC overview ----
+        # compute cumulative percentage per phase
+        phase_widths = []
+        cumulative = 0
+        for p in phases:
+            tasks = pipeline_data.get(p, {})
+            if not tasks:
+                phase_widths.append(0)
+                continue
+            n = len(tasks)
+            completed = sum(1 for t in tasks.values() if t.get("status")=="completed")
+            # width as fraction of total tasks
+            width = n / total_tasks if total_tasks else 0
+            phase_widths.append(width)
+
+        # assign color based on phase status: green if all completed, blue if running, gray if waiting
+        phase_colors = []
+        for p in phases:
+            tasks = pipeline_data.get(p, {})
+            if not tasks:
+                phase_colors.append("#9e9e9e")
+                continue
+            statuses = [t.get("status","waiting") for t in tasks.values()]
+            if all(s=="completed" for s in statuses):
+                phase_colors.append("#2ca02c")  # green
+            elif any(s=="running" for s in statuses):
+                phase_colors.append("#1f77b4")  # blue
+            else:
+                phase_colors.append("#9e9e9e")  # gray
+
+        # render HTML stacked bar
+        html = "<div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden;'>"
+        for w, c in zip(phase_widths, phase_colors):
+            html += f"<div style='width:{w*100}%; background-color:{c};'></div>"
+        html += "</div>"
+
+        st.markdown(html, unsafe_allow_html=True)
+        # show numeric progress
+        st.markdown(f"Progress: {done_tasks}/{total_tasks} tasks completed ({(done_tasks/total_tasks*100 if total_tasks else 0):.1f}%)")
+
+    # iFLOOD
+    st.markdown("**iFLOOD**")
+    render_phase_bar(iflood)
+
+    # Compound DC
     st.markdown("**Compound DC**")
-    for phase in phases:
-        phase_data = hecras.get(phase, {})
-        done = sum(1 for t in phase_data.values() if t.get("status")=="completed")
-        total = len(phase_data)
-        progress = done / total if total else 0
-        st.markdown(f"{phase.capitalize()}:")
-        st.progress(progress)
+    render_phase_bar(hecras)
         
 # Column 3: Forecast Cycle
 with col3:
