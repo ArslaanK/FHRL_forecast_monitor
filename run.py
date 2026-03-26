@@ -340,6 +340,57 @@ def render_pipeline(title, pipeline_data):
                             st.write(f"[{item['time']}] {item['msg']}")
                         else:
                             st.write(f"- {item}")
+
+
+# Helper: get fraction of a phase completed
+def get_phase_progress(phase_data):
+    """
+    Returns 0-1 fraction based on completed tasks in this phase.
+    If all tasks completed, returns 1.0.
+    """
+    if not phase_data:
+        return 0
+    total_tasks = len(phase_data)
+    done_tasks = sum(1 for t in phase_data.values() if t.get("status") == "completed")
+    return done_tasks / total_tasks if total_tasks else 0
+
+# Fixed phase widths (percent of total bar)
+PHASE_WIDTHS = {
+    "pre": 5,
+    "nowcast": 15,
+    "forecast": 70,
+    "post": 15,
+}
+
+# Colors for each phase
+PHASE_COLORS = {
+    "pre": "#1f77b4",       # blue
+    "nowcast": "#ff7f0e",   # orange
+    "forecast": "#2ca02c",  # green
+    "post": "#d62728",      # red
+}
+
+def render_split_progress_bar(data):
+    """
+    Render a single progress bar split into phases
+    """
+    bar_html = "<div style='display:flex; height:20px; width:100%; border-radius:4px; overflow:hidden; background-color:#e0e0e0;'>"
+
+    for phase in ["pre", "nowcast", "forecast", "post"]:
+        phase_data = data.get(phase, {})
+        phase_progress = get_phase_progress(phase_data)  # 0-1
+        width_percent = PHASE_WIDTHS[phase] * phase_progress
+        color = PHASE_COLORS[phase]
+
+        bar_html += f"""
+        <div style='width:{width_percent}%; background-color:{color};'></div>
+        """
+
+    bar_html += "</div>"
+    st.markdown(bar_html, unsafe_allow_html=True)
+
+
+
 # -------------------------
 # Load data
 # -------------------------
@@ -412,60 +463,11 @@ with col1:
 # Column 2: Pipeline Progress
 with col2:
     st.subheader("📊 Pipeline Progress")
-
-    def render_phase_bar(pipeline_data, phases=["pre","nowcast","forecast","post"]):
-        # compute progress per phase
-        total_tasks = sum(len(pipeline_data.get(p, {})) for p in phases)
-        done_tasks = sum(
-            1 for p in phases for t in pipeline_data.get(p, {}).values() if t.get("status")=="completed"
-        )
-
-        # compute cumulative percentage per phase
-        phase_widths = []
-        cumulative = 0
-        for p in phases:
-            tasks = pipeline_data.get(p, {})
-            if not tasks:
-                phase_widths.append(0)
-                continue
-            n = len(tasks)
-            completed = sum(1 for t in tasks.values() if t.get("status")=="completed")
-            # width as fraction of total tasks
-            width = n / total_tasks if total_tasks else 0
-            phase_widths.append(width)
-
-        # assign color based on phase status: green if all completed, blue if running, gray if waiting
-        phase_colors = []
-        for p in phases:
-            tasks = pipeline_data.get(p, {})
-            if not tasks:
-                phase_colors.append("#9e9e9e")
-                continue
-            statuses = [t.get("status","waiting") for t in tasks.values()]
-            if all(s=="completed" for s in statuses):
-                phase_colors.append("#2ca02c")  # green
-            elif any(s=="running" for s in statuses):
-                phase_colors.append("#1f77b4")  # blue
-            else:
-                phase_colors.append("#9e9e9e")  # gray
-
-        # render HTML stacked bar
-        html = "<div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden;'>"
-        for w, c in zip(phase_widths, phase_colors):
-            html += f"<div style='width:{w*100}%; background-color:{c};'></div>"
-        html += "</div>"
-
-        st.markdown(html, unsafe_allow_html=True)
-        # show numeric progress
-        st.markdown(f"Progress: {done_tasks}/{total_tasks} tasks completed ({(done_tasks/total_tasks*100 if total_tasks else 0):.1f}%)")
-
-    # iFLOOD
     st.markdown("**iFLOOD**")
-    render_phase_bar(iflood)
+    render_split_progress_bar(iflood)
 
-    # Compound DC
     st.markdown("**Compound DC**")
-    render_phase_bar(hecras)
+    render_split_progress_bar(hecras)
         
 # Column 3: Forecast Cycle
 with col3:
