@@ -1,7 +1,7 @@
 pre:
-  tide_construct:
+  get_flow_stage:
     status: waiting
-    log: 'Waiting for IFLOOD to complete'
+    log: null
     start: null
     end: null
   metforecast_processor:
@@ -11,12 +11,12 @@ pre:
     end: null
 
 nowcast:
-  hotstart_sim:
+  prep_simulation:
     status: waiting
     log: null
     start: null
     end: null
-  attach_hotstart:
+  run_nowcast:
     status: waiting
     log: null
     start: null
@@ -35,27 +35,7 @@ forecast:
     end: null
 
 post:
-  gen_nws_forecast:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  create_timeseries:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  fetch_competing_model:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  gen_spatial_maps:
-    status: waiting
-    log: null
-    start: null
-    end: null
-  gen_flood_alerts:
+  process_forecast:
     status: waiting
     log: null
     start: null
