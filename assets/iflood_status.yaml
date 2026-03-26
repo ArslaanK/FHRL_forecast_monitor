@@ -1,55 +1,91 @@
 cycle_start: '2026-03-26 02:45:01'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  copy_forecast_results:
+    end: null
+    log: null
+    start: null
+    status: waiting
   run_forecast:
     end: null
     log:
-    - {msg: starting forecast, time: '03:25:07'}
+    - msg: starting forecast
+      time: 03:25:07
+    - msg: 46% completed
+      time: 04:46:20
     start: '2026-03-26 03:25:07'
     status: running
 nowcast:
   run_nowcast:
     end: '2026-03-26 03:25:06'
     log:
-    - {msg: copying previous restart file, time: '02:53:31'}
-    - {msg: Nowcast simulation started, time: '02:53:51'}
-    - {msg: model run finished, time: '03:24:15'}
-    - {msg: hotstart ready for next forecast, time: '03:25:05'}
-    - {msg: 100% completed, time: '03:25:06'}
+    - msg: copying previous restart file
+      time: 02:53:31
+    - msg: Nowcast simulation started
+      time: 02:53:51
+    - msg: model run finished
+      time: 03:24:15
+    - msg: hotstart ready for next forecast
+      time: 03:25:05
+    - msg: 100% completed
+      time: 03:25:06
     start: '2026-03-26 02:53:31'
     status: completed
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
-  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
-  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
-  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
-  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
-  push_to_s3: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: null
+    log: null
+    start: null
+    status: waiting
+  fetch_competing_model:
+    end: null
+    log: null
+    start: null
+    status: waiting
+  gen_flood_alerts:
+    end: null
+    log: null
+    start: null
+    status: waiting
+  gen_nws_forecast:
+    end: null
+    log: null
+    start: null
+    status: waiting
+  gen_spatial_maps:
+    end: null
+    log: null
+    start: null
+    status: waiting
+  pipeline_completion:
+    end: null
+    log: null
+    start: null
+    status: waiting
+  push_to_s3:
+    end: null
+    log: null
+    start: null
+    status: waiting
 pre:
   metforecast_processor:
     end: '2026-03-26 02:53:26'
     log:
-    - {msg: downloading met, time: '02:45:01'}
-    - {msg: processed met, time: '02:53:26'}
+    - msg: downloading met
+      time: 02:45:01
+    - msg: processed met
+      time: 02:53:26
     start: '2026-03-26 02:45:01'
     status: completed
   prep_simulation:
     end: '2026-03-26 02:53:31'
     log:
-    - {msg: Preparing Model files, time: '02:53:27'}
-    - {msg: Model files prepared for simulations, time: '02:53:31'}
+    - msg: Preparing Model files
+      time: 02:53:27
+    - msg: Model files prepared for simulations
+      time: 02:53:31
     start: '2026-03-26 02:53:27'
     status: completed
-
-
-
-
-
-
-
-
 system:
   cpu: 98.26
   ram: 22.44
-  timestamp: "2026-03-26 04:40:02"
+  timestamp: '2026-03-26 04:40:02'
