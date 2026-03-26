@@ -173,10 +173,6 @@ PHASE_COLORS = {
     "post": "#9467bd",     # purple
 }
 def render_pipeline_overview_single_bar(data):
-    """
-    Render a single horizontal progress bar split into 4 phases
-    with visible partition lines and phase labels on top.
-    """
     PHASE_WIDTHS = {
         "pre": 3.2,
         "nowcast": 14.7,
@@ -184,7 +180,7 @@ def render_pipeline_overview_single_bar(data):
         "post": 13.6
     }
 
-    # Determine current phase
+    # Detect current phase
     current_phase = "pre"
     for phase in ["pre", "nowcast", "forecast", "post"]:
         tasks = data.get(phase, {})
@@ -194,39 +190,40 @@ def render_pipeline_overview_single_bar(data):
         elif any(t.get("status") != "completed" for t in tasks.values()):
             current_phase = phase
             break
-        else:
-            current_phase = phase  # last completed phase
 
-    # Labels HTML
-    labels_html = "<div style='display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:2px;'>"
-    for phase in ["pre", "nowcast", "forecast", "post"]:
-        labels_html += f"<div>{phase.upper()}</div>"
+    # -------- LABEL ROW (aligned with widths) --------
+    labels_html = "<div style='display:flex; width:100%; font-size:11px; font-weight:600; margin-bottom:4px;'>"
+    for phase, width in PHASE_WIDTHS.items():
+        labels_html += f"<div style='width:{width}%; text-align:center;'>{phase.upper()}</div>"
     labels_html += "</div>"
 
-    # Bar HTML
-    bar_html = "<div style='display:flex; width:100%; height:20px; background-color:#e0e0e0; border-radius:6px; overflow:hidden;'>"
-    for phase in ["pre", "nowcast", "forecast", "post"]:
-        width = PHASE_WIDTHS[phase]
-        progress = phase_progress(data, phase)
-        if progress >= 1:
-            color = "#2ca02c"  # green completed
-        elif phase == current_phase:
-            color = "#1f77b4"  # blue active
-        else:
-            color = "#9e9e9e"  # gray waiting
+    # -------- BAR --------
+    bar_html = "<div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden;'>"
 
-        # Segment with partition line
+    for phase, width in PHASE_WIDTHS.items():
+        progress = phase_progress(data, phase)
+
+        # Color logic
+        if progress >= 1:
+            color = "#2ca02c"  # completed
+        elif phase == current_phase:
+            color = "#1f77b4"  # active
+        else:
+            color = "#9e9e9e"  # waiting
+
         bar_html += f"""
-        <div style='position:relative; width:{width}%; height:100%;'>
+        <div style='width:{width}%; position:relative; background-color:#d0d0d0;'>
+            <!-- filled portion -->
             <div style='width:{progress*100}%; height:100%; background-color:{color};'></div>
-            <div style='position:absolute; right:0; top:0; width:1px; height:100%; background-color:white; opacity:0.7;'></div>
+
+            <!-- partition line -->
+            <div style='position:absolute; right:0; top:0; width:2px; height:100%; background-color:#ffffff;'></div>
         </div>
         """
+
     bar_html += "</div>"
 
-    # Combine labels + bar
     st.markdown(labels_html + bar_html, unsafe_allow_html=True)
-
 
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
