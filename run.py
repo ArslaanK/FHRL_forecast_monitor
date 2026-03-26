@@ -216,17 +216,30 @@ def duration(start_str, end_str=None):
     else:
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-
 def render_pipeline(title, pipeline_data):
     st.subheader(title)
 
     for phase in ["pre", "nowcast", "forecast", "post"]:
-        tasks = pipeline_data.get(phase, {})   # <-- use the passed data here
+        tasks = pipeline_data.get(phase, {})   # get phase tasks
 
         if not tasks:
             continue
 
-        for task_name, meta in tasks.items():
+        # --- Sort tasks by start time ---
+        def parse_start(meta):
+            start_str = meta.get("start")
+            if start_str:
+                try:
+                    return datetime.strptime(start_str, "%Y-%m-%d %H:%M:%S")
+                except:
+                    return datetime.max  # put invalid/missing start at the end
+            else:
+                return datetime.max
+
+        sorted_tasks = sorted(tasks.items(), key=lambda x: parse_start(x[1]))
+
+        # --- Render sorted tasks ---
+        for task_name, meta in sorted_tasks:
             status = meta.get("status", "waiting")
             start = meta.get("start")
             end = meta.get("end")
