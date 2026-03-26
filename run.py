@@ -213,26 +213,23 @@ def duration(start_str, end_str=None):
     else:
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-def render_pipeline(title, data):
+
+def render_pipeline(title, pipeline_data):
     st.subheader(title)
 
     for phase in ["pre", "nowcast", "forecast", "post"]:
-        tasks = data.get(phase, {})
+        tasks = pipeline_data.get(phase, {})   # <-- use the passed data here
 
-        # ✅ skip phases not in YAML
         if not tasks:
             continue
 
         for task_name, meta in tasks.items():
-
             status = meta.get("status", "waiting")
             start = meta.get("start")
             end = meta.get("end")
             log = meta.get("log")
 
             cols = st.columns([0.1, 0.5, 0.3, 0.3])
-
-            # Status badge
             cols[0].markdown(status_badge(status), unsafe_allow_html=True)
 
             base_label = f"{phase.upper()} / {task_name}"
@@ -248,24 +245,12 @@ def render_pipeline(title, data):
                         progress_val = float(match.group(1)) / 100
                         progress_text = f" — {match.group(1)}%"
                         break
-
-                cols[1].markdown(
-                    f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}",
-                    unsafe_allow_html=True
-                )
-
+                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}", unsafe_allow_html=True)
             elif status == "completed":
                 progress_val = 1.0
-                cols[1].markdown(
-                    f"&nbsp;&nbsp;&nbsp;**{base_label} — 100%**",
-                    unsafe_allow_html=True
-                )
-
+                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label} — 100%**", unsafe_allow_html=True)
             else:
-                cols[1].markdown(
-                    f"&nbsp;&nbsp;&nbsp;**{base_label}**",
-                    unsafe_allow_html=True
-                )
+                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**", unsafe_allow_html=True)
 
             # Timing
             if start:
@@ -288,8 +273,6 @@ def render_pipeline(title, data):
                             st.write(f"[{item['time']}] {item['msg']}")
                         else:
                             st.write(f"- {item}")
-
-
 # -------------------------
 # Load data
 # -------------------------
