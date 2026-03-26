@@ -309,12 +309,14 @@ def get_current_task(data):
 
 
 phase, task, meta = get_current_task(iflood)
+for phase in ["pre", "nowcast", "forecast", "post"]:
+    tasks = data.get(phase, {})
 
-def render_pipeline(title, data):
-    st.subheader(title)
+    # 🔥 skip empty phases entirely
+    if not tasks:
+        continue
 
-    for phase, task_name in PIPELINE_ORDER:
-        meta = data.get(phase, {}).get(task_name, {})
+    for task_name, meta in tasks.items():
 
         status = meta.get("status", "waiting")
         start = meta.get("start")
@@ -326,10 +328,8 @@ def render_pipeline(title, data):
         # Status badge
         cols[0].markdown(status_badge(status), unsafe_allow_html=True)
 
-        # Default task label with spacing
         base_label = f"{phase.upper()} / {task_name}"
 
-        # Progress tracking
         progress_val = 0
         progress_text = ""
 
@@ -342,7 +342,6 @@ def render_pipeline(title, data):
                     progress_text = f" — {match.group(1)}%"
                     break
 
-            # Use &nbsp; for indentation
             cols[1].markdown(
                 f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}",
                 unsafe_allow_html=True
@@ -356,17 +355,16 @@ def render_pipeline(title, data):
             )
 
         else:
-            # Waiting or other statuses
-            cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**", unsafe_allow_html=True)
+            cols[1].markdown(
+                f"&nbsp;&nbsp;&nbsp;**{base_label}**",
+                unsafe_allow_html=True
+            )
 
-        # Timing column
+        # Timing
         if start:
             cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
 
-        # Progress bar column
-        #cols[3].progress(progress_val)
-
-        # Progress bar column with matching color
+        # Progress bar
         color = get_progress_color(status)
         progress_html = f"""
         <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
@@ -375,7 +373,7 @@ def render_pipeline(title, data):
         """
         cols[3].markdown(progress_html, unsafe_allow_html=True)
 
-        # Logs in expander
+        # Logs
         if isinstance(log, list):
             with st.expander("More info", expanded=False):
                 for item in log:
