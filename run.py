@@ -369,8 +369,10 @@ def get_current_task(data):
     return None, None, None
 
 
+data = iflood  # or hecras if you want Compound DC
 
 phase, task, meta = get_current_task(iflood)
+
 for phase in ["pre", "nowcast", "forecast", "post"]:
     tasks = data.get(phase, {})
 
