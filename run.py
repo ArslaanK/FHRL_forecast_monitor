@@ -391,7 +391,6 @@ with st.expander("Status Legend", expanded=True):
     c3.markdown(status_badge("completed") + " Finished successfully", unsafe_allow_html=True)
     c4.markdown(status_badge("failed") + " Failed – needs attention", unsafe_allow_html=True)
 
-
 def yaml_to_stair_outline(data):
     rows = []
     step = 0
@@ -399,7 +398,23 @@ def yaml_to_stair_outline(data):
     for phase in ["pre", "nowcast", "forecast", "post"]:
         tasks = data.get(phase, {})
 
-        for task_name, meta in tasks.items():
+        if not tasks:
+            continue
+
+        # --- Sort tasks by start time ---
+        def parse_start(meta):
+            start_str = meta.get("start")
+            if start_str:
+                try:
+                    return datetime.strptime(start_str, "%Y-%m-%d %H:%M:%S")
+                except:
+                    return datetime.max  # put invalid/missing start at the end
+            else:
+                return datetime.max
+
+        sorted_tasks = sorted(tasks.items(), key=lambda x: parse_start(x[1]))
+
+        for task_name, meta in sorted_tasks:
             rows.append({
                 "Phase": phase.upper(),
                 "Task": task_name,
