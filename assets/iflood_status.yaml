@@ -70,11 +70,12 @@ post:
     status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3:
-    end: '2026-03-26 21:23:58'
+    end: '2026-03-26 21:26:10'
     log:
     - {msg: data upload to S3 started, time: '21:21:04'}
     - {msg: flood alerts issues via MSG and Emails, time: '21:23:56'}
     - {msg: data upload to S3 completed, time: '21:23:58'}
+    - {msg: new forecast files are uploaded to S3, time: '21:26:10'}
     start: '2026-03-26 21:21:04'
     status: completed
 pre:
