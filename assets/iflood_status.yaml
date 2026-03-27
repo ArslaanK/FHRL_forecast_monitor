@@ -66,13 +66,19 @@ post:
     - {msg: max and timeseries spatial maps generated, time: '06:45:15'}
     start: '2026-03-27 06:31:55'
     status: completed
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-03-27 07:35:56'
+    log:
+    - {msg: forecast cycle completed, time: '07:35:56'}
+    start: '2026-03-27 07:35:56'
+    status: completed
   push_to_s3:
-    end: '2026-03-27 07:33:45'
+    end: '2026-03-27 07:35:56'
     log:
     - {msg: data upload to S3 started, time: '07:26:32'}
     - {msg: flood alerts issues via MSG and Emails, time: '07:33:11'}
     - {msg: data upload to S3 completed, time: '07:33:45'}
+    - {msg: new forecast files are uploaded to S3, time: '07:35:56'}
     start: '2026-03-27 07:26:32'
     status: completed
 pre:
