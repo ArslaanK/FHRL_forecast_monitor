@@ -3,7 +3,13 @@ forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast: {end: null, log: null, start: null, status: waiting}
+  run_nowcast:
+    end: null
+    log:
+    - {msg: copying previous restart file, time: '09:24:20'}
+    - {msg: Nowcast simulation started, time: '09:24:20'}
+    start: '2026-03-28 09:24:20'
+    status: running
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast: {end: null, log: null, start: null, status: waiting}
@@ -24,8 +30,9 @@ pre:
     start: '2026-03-28 08:45:08'
     status: completed
   prep_simulation:
-    end: null
+    end: '2026-03-28 09:24:19'
     log:
     - {msg: Preparing Model files, time: '09:19:16'}
+    - {msg: Prepared Model files, time: '09:24:19'}
     start: '2026-03-28 09:19:16'
-    status: running
+    status: completed
