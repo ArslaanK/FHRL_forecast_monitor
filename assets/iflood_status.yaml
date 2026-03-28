@@ -1,0 +1,47 @@
+cycle_start: '2026-03-28 02:45:01'
+forecast:
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
+nowcast:
+  run_nowcast:
+    end: null
+    log:
+    - {msg: copying previous restart file, time: '02:53:42'}
+    - {msg: Nowcast simulation started, time: '02:54:08'}
+    - {msg: 8% completed, time: '02:58:01'}
+    - {msg: 12% completed, time: '03:00:01'}
+    - {msg: 18% completed, time: '03:02:01'}
+    - {msg: 25% completed, time: '03:04:02'}
+    - {msg: 29% completed, time: '03:06:02'}
+    - {msg: 37% completed, time: '03:08:01'}
+    - {msg: 39% completed, time: '03:10:01'}
+    - {msg: 49% completed, time: '03:12:01'}
+    - {msg: 50% completed, time: '03:14:01'}
+    - {msg: 59% completed, time: '03:16:01'}
+    - {msg: 62% completed, time: '03:18:02'}
+    start: '2026-03-28 02:53:42'
+    status: running
+post:
+  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
+pre:
+  metforecast_processor:
+    end: '2026-03-28 02:53:38'
+    log:
+    - {msg: downloading met, time: '02:45:02'}
+    - {msg: processed met, time: '02:53:38'}
+    start: '2026-03-28 02:45:02'
+    status: completed
+  prep_simulation:
+    end: '2026-03-28 02:53:42'
+    log:
+    - {msg: Preparing Model files, time: '02:53:38'}
+    - {msg: Model files prepared for simulations, time: '02:53:42'}
+    start: '2026-03-28 02:53:38'
+    status: completed
+system: {cpu: 98.54, ram: 22.22, timestamp: '2026-03-28 03:10:02'}
