@@ -486,6 +486,8 @@ with col3:
 
 st.divider()
 
+st.subheader("📊 Pipeline Progress test")
+render_pipeline_overview_single_bar(iflood)
 
 def get_status(meta):
     return meta.get("status", "waiting")
