@@ -1,8 +1,13 @@
 cycle_start: '2026-03-28 02:45:01'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast:
+  copy_forecast_results:
     end: null
+    log:
+    - {msg: copying results, time: '07:01:01'}
+    start: '2026-03-28 07:01:01'
+    status: running
+  run_forecast:
+    end: '2026-03-28 07:01:01'
     log:
     - {msg: starting forecast, time: '03:31:56'}
     - {msg: 0% completed, time: '03:34:02'}
@@ -84,8 +89,9 @@ forecast:
     - {msg: 96% completed, time: '06:54:03'}
     - {msg: 98% completed, time: '06:56:01'}
     - {msg: 100% completed, time: '07:00:01'}
+    - {msg: 100% completed, time: '07:01:01'}
     start: '2026-03-28 03:31:56'
-    status: running
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-03-28 03:31:54'
@@ -137,4 +143,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:53:42'}
     start: '2026-03-28 02:53:38'
     status: completed
-system: {cpu: 98.52, ram: 22.51, timestamp: '2026-03-28 06:50:02'}
+system: {cpu: 98.7, ram: 22.5, timestamp: '2026-03-28 07:00:02'}
