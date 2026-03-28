@@ -225,7 +225,8 @@ pre:
 
 
 
+
 system:
-  cpu: 89.99
-  ram: 21.30
-  timestamp: "2026-03-28 13:50:02"
+  cpu: 1.16
+  ram: 0.90
+  timestamp: "2026-03-28 14:00:02"
