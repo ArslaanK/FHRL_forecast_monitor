@@ -9,6 +9,7 @@ nowcast:
     - {msg: copying previous restart file, time: '02:53:42'}
     - {msg: Nowcast simulation started, time: '02:54:08'}
     - {msg: 8% completed, time: '02:58:01'}
+    - {msg: 12% completed, time: '03:00:01'}
     start: '2026-03-28 02:53:42'
     status: running
 post:
