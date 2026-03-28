@@ -485,7 +485,7 @@ with col3:
     st.metric("Next Cycle ETA", f"{next_cycle_dt.strftime('%Y-%m-%d %HZ')}")
 
 st.divider()
-
+st.write("DEBUG: function called")
 st.subheader("📊 Pipeline Progress test")
 render_pipeline_overview_single_bar(iflood)
 
