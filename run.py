@@ -153,47 +153,84 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
-import streamlit as st
-
 def render_pipeline_overview_single_bar(data):
-    PHASES = ["pre", "nowcast", "forecast", "post"]
+    # Adjusted widths to ensure labels like "PRE" actually fit (3.2% was too small for text)
+    PHASE_WIDTHS = {
+        "pre": 10.0,
+        "nowcast": 15.0,
+        "forecast": 60.0,
+        "post": 15.0
+    }
 
     # Detect current phase
     current_phase = "pre"
-    for phase in PHASES:
+    for phase in ["pre", "nowcast", "forecast", "post"]:
         tasks = data.get(phase, {})
         if any(t.get("status") == "running" for t in tasks.values()):
             current_phase = phase
             break
-        elif any(t.get("status") != "completed" for t in tasks.values()):
+        elif any(t.get("status") == "waiting" for t in tasks.values()):
             current_phase = phase
             break
 
-    # Create columns (acts like your horizontal layout)
-    cols = st.columns([1, 1.5, 4, 1.5])
+    # CSS for the pulse animation and layout
+    st.markdown("""
+    <style>
+    @keyframes pulse-glow {
+        0% { opacity: 0.6; text-shadow: 0 0 2px #1f77b4; }
+        50% { opacity: 1; text-shadow: 0 0 8px #1f77b4; }
+        100% { opacity: 0.6; text-shadow: 0 0 2px #1f77b4; }
+    }
+    .active-label {
+        animation: pulse-glow 2s infinite;
+        color: #1f77b4 !important;
+        font-weight: 800 !important;
+    }
+    .pipeline-container {
+        margin-bottom: 25px;
+        width: 100%;
+        font-family: sans-serif;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    for i, phase in enumerate(PHASES):
-        with cols[i]:
-            progress = phase_progress(data, phase)
+    # Building the combined HTML
+    html = "<div class='pipeline-container'>"
+    
+    # 1. Labels Row
+    html += "<div style='display:flex; width:100%; align-items:flex-end; height:20px;'>"
+    for phase, width in PHASE_WIDTHS.items():
+        is_active = (phase == current_phase)
+        active_class = "class='active-label'" if is_active else ""
+        
+        html += f"""
+        <div {active_class} style='width:{width}%; text-align:center; font-size:11px; color:#666; text-transform:uppercase;'>
+            {phase}
+        </div>"""
+    html.strip()
+    html += "</div>"
 
-            is_active = (phase == current_phase)
+    # 2. Bar Row
+    html += "<div style='display:flex; width:100%; height:16px; border-radius:10px; overflow:hidden; background-color:#f0f0f0; border:1px solid #ddd;'>"
+    for phase, width in PHASE_WIDTHS.items():
+        progress = phase_progress(data, phase)
+        
+        # Color logic
+        if progress >= 1.0:
+            fill_color = "#2ca02c" # Green
+        elif phase == current_phase:
+            fill_color = "#1f77b4" # Blue
+        else:
+            fill_color = "#ccc"    # Gray
+            
+        html += f"""
+        <div style='width:{width}%; background-color:#eee; border-right:1px solid white; position:relative;'>
+            <div style='width:{progress*100}%; height:100%; background-color:{fill_color}; transition: width 0.8s ease-in-out;'></div>
+        </div>
+        """
+    html += "</div></div>"
 
-            # Label
-            if is_active:
-                st.markdown(
-                    f"**🔵 {phase.upper()}**",
-                )
-            else:
-                st.markdown(
-                    f"<span style='color:#666'>{phase.upper()}</span>",
-                    unsafe_allow_html=True
-                )
-
-            # Progress bar
-            st.progress(min(progress, 1.0))
-
-            # Optional % text
-            st.caption(f"{int(progress * 100)}%")
+    st.markdown(html, unsafe_allow_html=True)
     
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
