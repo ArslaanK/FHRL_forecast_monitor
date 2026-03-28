@@ -153,110 +153,101 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
+import streamlit as st
+from datetime import datetime
 
 def render_pipeline_overview_single_bar(data):
 
     PHASE_WIDTHS = {
-
         "pre": 3.2,
-
         "nowcast": 14.7,
-
         "forecast": 68.5,
-
         "post": 13.6
-
     }
 
-
-
+    # -------------------------
     # Detect current phase
-
+    # -------------------------
     current_phase = "pre"
-
     for phase in ["pre", "nowcast", "forecast", "post"]:
-
         tasks = data.get(phase, {})
-
         if any(t.get("status") == "running" for t in tasks.values()):
-
             current_phase = phase
-
             break
-
         elif any(t.get("status") != "completed" for t in tasks.values()):
-
             current_phase = phase
-
             break
 
-
-
-    # -------- LABEL ROW (aligned with widths) --------
-
-    labels_html = "<div style='display:flex; width:100%; font-size:11px; font-weight:600; margin-bottom:4px;'>"
-
+    # -------------------------
+    # LABEL ROW
+    # -------------------------
+    labels_html = """
+    <div style='display:flex; width:100%; font-size:11px; font-weight:600; margin-bottom:4px;'>
+    """
     for phase, width in PHASE_WIDTHS.items():
-
-        labels_html += f"<div style='width:{width}%; text-align:center;'>{phase.upper()}</div>"
-
+        labels_html += f"""
+        <div style='width:{width}%; text-align:center;'>
+            {phase.upper()}
+        </div>
+        """
     labels_html += "</div>"
 
-
-
-    # -------- BAR --------
-
-    bar_html = "<div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden;'>"
-
-
+    # -------------------------
+    # BAR ROW
+    # -------------------------
+    bar_html = """
+    <div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden; background-color:#eee;'>
+    """
 
     for phase, width in PHASE_WIDTHS.items():
-
         progress = phase_progress(data, phase)
 
+        # Prevent disappearing bars
+        visible_progress = max(progress, 0.02)
 
-
-        # Color logic
-
+        # -------------------------
+        # COLOR / STYLE LOGIC
+        # -------------------------
         if progress >= 1:
-
-            color = "#2ca02c"  # completed
-
+            # Completed → solid green
+            fill_style = "background-color:#2ca02c;"
         elif phase == current_phase:
-
-            color = "#1f77b4"  # active
-
+            # ACTIVE → green striped (hatched effect)
+            fill_style = """
+            background: repeating-linear-gradient(
+                45deg,
+                #2ca02c,
+                #2ca02c 6px,
+                #1f7a1f 6px,
+                #1f7a1f 12px
+            );
+            """
         else:
-
-            color = "#9e9e9e"  # waiting
-
-
+            # Future → gray
+            fill_style = "background-color:#9e9e9e;"
 
         bar_html += f"""
-
         <div style='width:{width}%; position:relative; background-color:#d0d0d0;'>
 
             <!-- filled portion -->
+            <div style='width:{visible_progress*100}%; height:100%; {fill_style}'></div>
 
-            <div style='width:{progress*100}%; height:100%; background-color:{color};'></div>
-
-
-
-            <!-- partition line -->
-
+            <!-- divider -->
             <div style='position:absolute; right:0; top:0; width:2px; height:100%; background-color:#ffffff;'></div>
 
         </div>
-
         """
-
-
 
     bar_html += "</div>"
 
-
-
-    st.markdown(labels_html + bar_html, unsafe_allow_html=True)
+    # -------------------------
+    # RENDER (force refresh-safe)
+    # -------------------------
+    st.markdown(
+        f"<!-- {datetime.now()} -->" + labels_html + bar_html,
+        unsafe_allow_html=True
+    )
+    
     
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
