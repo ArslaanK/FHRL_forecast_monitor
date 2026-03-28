@@ -153,65 +153,110 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
+
 def render_pipeline_overview_single_bar(data):
-    # Standardized widths to ensure enough room for labels
-    # Total must equal 100
+
     PHASE_WIDTHS = {
-        "pre": 10.0,
-        "nowcast": 20.0,
-        "forecast": 50.0,
-        "post": 20.0
+
+        "pre": 3.2,
+
+        "nowcast": 14.7,
+
+        "forecast": 68.5,
+
+        "post": 13.6
+
     }
 
+
+
     # Detect current phase
+
     current_phase = "pre"
+
     for phase in ["pre", "nowcast", "forecast", "post"]:
+
         tasks = data.get(phase, {})
+
         if any(t.get("status") == "running" for t in tasks.values()):
+
             current_phase = phase
+
             break
-        elif any(t.get("status") == "waiting" for t in tasks.values()):
+
+        elif any(t.get("status") != "completed" for t in tasks.values()):
+
             current_phase = phase
+
             break
-    
-    # --- BUILD THE LABELS ---
-    labels_html = "<div style='display:flex; width:100%;'>"
+
+
+
+    # -------- LABEL ROW (aligned with widths) --------
+
+    labels_html = "<div style='display:flex; width:100%; font-size:11px; font-weight:600; margin-bottom:4px;'>"
+
     for phase, width in PHASE_WIDTHS.items():
-        is_active = (phase == current_phase)
-        color = "#1f77b4" if is_active else "#666"
-        weight = "700" if is_active else "400"
-        
-        labels_html += f"""
-            <div style='width:{width}%; text-align:center; font-size:10px; 
-                        font-weight:{weight}; color:{color}; overflow:hidden; 
-                        text-overflow:ellipsis; white-space:nowrap; padding-bottom:2px;'>
-                {phase.upper()}
-            </div>"""
+
+        labels_html += f"<div style='width:{width}%; text-align:center;'>{phase.upper()}</div>"
+
     labels_html += "</div>"
 
-    # --- BUILD THE BAR ---
-    bar_html = "<div style='display:flex; width:100%; height:18px; border-radius:4px; overflow:hidden; background-color:#e0e0e0; border:1px solid #ccc;'>"
+
+
+    # -------- BAR --------
+
+    bar_html = "<div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden;'>"
+
+
+
     for phase, width in PHASE_WIDTHS.items():
+
         progress = phase_progress(data, phase)
-        
-        # Color logic based on your existing scheme
-        if progress >= 1.0:
-            fill_color = "#2ca02c" # Green
+
+
+
+        # Color logic
+
+        if progress >= 1:
+
+            color = "#2ca02c"  # completed
+
         elif phase == current_phase:
-            fill_color = "#1f77b4" # Blue
+
+            color = "#1f77b4"  # active
+
         else:
-            fill_color = "#9e9e9e" # Gray
-            
+
+            color = "#9e9e9e"  # waiting
+
+
+
         bar_html += f"""
-        <div style='width:{width}%; position:relative; background-color:#eeeeee; border-right:1px solid white;'>
-            <div style='width:{progress*100}%; height:100%; background-color:{fill_color}; transition: width 0.3s ease;'></div>
+
+        <div style='width:{width}%; position:relative; background-color:#d0d0d0;'>
+
+            <!-- filled portion -->
+
+            <div style='width:{progress*100}%; height:100%; background-color:{color};'></div>
+
+
+
+            <!-- partition line -->
+
+            <div style='position:absolute; right:0; top:0; width:2px; height:100%; background-color:#ffffff;'></div>
+
         </div>
+
         """
+
+
+
     bar_html += "</div>"
 
-    # CRITICAL: Combine and wrap in a single container div
-    full_component = f"<div style='margin-bottom: 20px;'>{labels_html}{bar_html}</div>"
-    st.markdown(full_component, unsafe_allow_html=True)
+
+
+    st.markdown(labels_html + bar_html, unsafe_allow_html=True)
     
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
