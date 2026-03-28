@@ -433,25 +433,30 @@ hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_mon
 # -------------------------
 # Forecast Cycle
 # -------------------------
-# Read current cycle from YAML
-cycle_str = iflood.get("forecast", {}).get("current_cycle", None)
+# Read current cycle from YAML (top-level key)
+cycle_str = iflood.get("cycle_start", None)
 if cycle_str:
     cycle_dt = datetime.fromisoformat(cycle_str)
 else:
-    cycle_dt = datetime.utcnow()
+    #st.warning("cycle_start not found in YAML!")
+    cycle_dt = datetime.utcnow()  # fallback
 
+# -------------------------
 # Round to nearest 00Z or 12Z
+# -------------------------
 hour = cycle_dt.hour
-
 if hour < 8:
-    # 00Z same day
+    # Round to 00Z same day
     cycle_dt = cycle_dt.replace(hour=0, minute=0, second=0, microsecond=0)
 elif hour < 23:
-    # 12Z same day
+    # Round to 12Z same day
     cycle_dt = cycle_dt.replace(hour=12, minute=0, second=0, microsecond=0)
 
-# Next cycle is 12 hours later
+# Next cycle is always 12 hours later
 next_cycle_dt = cycle_dt + timedelta(hours=12)
+
+# st.write(f"Current forecast cycle (rounded): {cycle_dt} UTC")
+# st.write(f"Next forecast cycle: {next_cycle_dt} UTC")
 
 # -------------------------
 # Display Header
