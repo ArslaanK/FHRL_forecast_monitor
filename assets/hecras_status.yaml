@@ -1,16 +1,23 @@
 cycle_start: '2026-03-28 08:45:02'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '11:42:18'}
+    start: '2026-03-28 11:42:18'
+    status: running
 nowcast:
   run_nowcast:
-    end: null
+    end: '2026-03-28 11:42:16'
     log:
     - {msg: copying previous restart file, time: '09:24:20'}
     - {msg: Nowcast simulation started, time: '09:24:20'}
     - {msg: model run finished, time: '09:25:15'}
+    - {msg: hotstart ready for next forecast, time: '11:42:16'}
+    - {msg: 100% completed, time: '11:42:16'}
     start: '2026-03-28 09:24:20'
-    status: running
+    status: completed
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast: {end: null, log: null, start: null, status: waiting}
