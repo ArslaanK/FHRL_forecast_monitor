@@ -121,25 +121,6 @@ def get_progress_color(status):
     else:
         return "#FFC107"  # amber for other statuses
 
-        
-# PIPELINE_ORDER = [
-#     ("pre", "metforecast_processor"),
-#     ("pre", "prep_simulation"),
-
-#     ("nowcast", "run_nowcast"),
-
-#     ("forecast", "run_forecast"),
-#     ("forecast", "copy_forecast_results"),
-  
-#     ("post", "gen_nws_forecast"),
-#     ("post", "gen_spatial_maps"),  
-#     ("post", "create_timeseries"),
-#     ("post", "fetch_competing_model"),
-#     ("post", "gen_flood_alerts"),
-#     ("post", "push_to_s3"),
-#     ("post", "pipeline_completion"),
-
-# ]
 
 def get_latest_progress(data, phase_name):
     """
@@ -172,55 +153,61 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
+
 def render_pipeline_overview_single_bar(data):
     PHASE_WIDTHS = {
-        "pre": 3.2,
-        "nowcast": 14.7,
-        "forecast": 68.5,
-        "post": 13.6
+        "pre": 5.0,      # Adjusted slightly for better label visibility
+        "nowcast": 15.0,
+        "forecast": 65.0,
+        "post": 15.0
     }
 
-    # Detect current phase
+    # 1. Determine the current active phase
     current_phase = "pre"
     for phase in ["pre", "nowcast", "forecast", "post"]:
         tasks = data.get(phase, {})
         if any(t.get("status") == "running" for t in tasks.values()):
             current_phase = phase
             break
-        elif any(t.get("status") != "completed" for t in tasks.values()):
+        elif any(t.get("status") == "waiting" for t in tasks.values()):
             current_phase = phase
             break
+        else:
+            current_phase = "post"
 
-    # -------- LABEL ROW (aligned with widths) --------
-    labels_html = "<div style='display:flex; width:100%; font-size:11px; font-weight:600; margin-bottom:4px;'>"
+    # 2. Build the Labels Row
+    # We use display: flex and the same widths as the bar segments
+    labels_html = "<div style='display:flex; width:100%; margin-bottom:4px;'>"
     for phase, width in PHASE_WIDTHS.items():
-        labels_html += f"<div style='width:{width}%; text-align:center;'>{phase.upper()}</div>"
+        # Highlight the text of the current phase
+        color = "#1f77b4" if phase == current_phase else "#555"
+        weight = "700" if phase == current_phase else "400"
+        labels_html += f"""
+            <div style='width:{width}%; text-align:center; font-size:10px; 
+                        font-weight:{weight}; color:{color}; text-transform:uppercase;'>
+                {phase}
+            </div>"""
     labels_html += "</div>"
 
-    # -------- BAR --------
-    bar_html = "<div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden;'>"
-
+    # 3. Build the Progress Bar Row
+    bar_html = "<div style='display:flex; width:100%; height:24px; border-radius:4px; overflow:hidden; border:1px solid #ddd;'>"
+    
     for phase, width in PHASE_WIDTHS.items():
         progress = phase_progress(data, phase)
-
-        # Color logic
-        if progress >= 1:
-            color = "#2ca02c"  # completed
+        
+        # Color Logic
+        if progress >= 1.0:
+            fill_color = "#2ca02c"  # Success Green
         elif phase == current_phase:
-            color = "#1f77b4"  # active
+            fill_color = "#1f77b4"  # Active Blue
         else:
-            color = "#9e9e9e"  # waiting
-
+            fill_color = "#e0e0e0"  # Gray waiting
+            
         bar_html += f"""
-        <div style='width:{width}%; position:relative; background-color:#d0d0d0;'>
-            <!-- filled portion -->
-            <div style='width:{progress*100}%; height:100%; background-color:{color};'></div>
-
-            <!-- partition line -->
-            <div style='position:absolute; right:0; top:0; width:2px; height:100%; background-color:#ffffff;'></div>
+        <div style='width:{width}%; background-color:#f0f0f0; position:relative; border-right:1px solid white;'>
+            <div style='width:{progress*100}%; height:100%; background-color:{fill_color}; transition: width 0.5s;'></div>
         </div>
         """
-
     bar_html += "</div>"
 
     st.markdown(labels_html + bar_html, unsafe_allow_html=True)
