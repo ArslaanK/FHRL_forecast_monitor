@@ -153,14 +153,14 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
+
 def render_pipeline_overview_single_bar(data):
-    # Standardized widths to ensure enough room for labels
-    # Total must equal 100
+    # Adjusted widths to ensure labels like "PRE" actually fit (3.2% was too small for text)
     PHASE_WIDTHS = {
         "pre": 10.0,
-        "nowcast": 20.0,
-        "forecast": 50.0,
-        "post": 20.0
+        "nowcast": 15.0,
+        "forecast": 60.0,
+        "post": 15.0
     }
 
     # Detect current phase
@@ -173,47 +173,66 @@ def render_pipeline_overview_single_bar(data):
         elif any(t.get("status") == "waiting" for t in tasks.values()):
             current_phase = phase
             break
+
+    # CSS for the pulse animation and layout
+    st.markdown("""
+    <style>
+    @keyframes pulse-glow {
+        0% { opacity: 0.6; text-shadow: 0 0 2px #1f77b4; }
+        50% { opacity: 1; text-shadow: 0 0 8px #1f77b4; }
+        100% { opacity: 0.6; text-shadow: 0 0 2px #1f77b4; }
+    }
+    .active-label {
+        animation: pulse-glow 2s infinite;
+        color: #1f77b4 !important;
+        font-weight: 800 !important;
+    }
+    .pipeline-container {
+        margin-bottom: 25px;
+        width: 100%;
+        font-family: sans-serif;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Building the combined HTML
+    html = "<div class='pipeline-container'>"
     
-    # --- BUILD THE LABELS ---
-    labels_html = "<div style='display:flex; width:100%;'>"
+    # 1. Labels Row
+    html += "<div style='display:flex; width:100%; align-items:flex-end; height:20px;'>"
     for phase, width in PHASE_WIDTHS.items():
         is_active = (phase == current_phase)
-        color = "#1f77b4" if is_active else "#666"
-        weight = "700" if is_active else "400"
+        active_class = "class='active-label'" if is_active else ""
         
-        labels_html += f"""
-            <div style='width:{width}%; text-align:center; font-size:10px; 
-                        font-weight:{weight}; color:{color}; overflow:hidden; 
-                        text-overflow:ellipsis; white-space:nowrap; padding-bottom:2px;'>
-                {phase.upper()}
-            </div>"""
-    labels_html += "</div>"
+        html += f"""
+        <div {active_class} style='width:{width}%; text-align:center; font-size:11px; color:#666; text-transform:uppercase;'>
+            {phase}
+        </div>"""
+    html.strip()
+    html += "</div>"
 
-    # --- BUILD THE BAR ---
-    bar_html = "<div style='display:flex; width:100%; height:18px; border-radius:4px; overflow:hidden; background-color:#e0e0e0; border:1px solid #ccc;'>"
+    # 2. Bar Row
+    html += "<div style='display:flex; width:100%; height:16px; border-radius:10px; overflow:hidden; background-color:#f0f0f0; border:1px solid #ddd;'>"
     for phase, width in PHASE_WIDTHS.items():
         progress = phase_progress(data, phase)
         
-        # Color logic based on your existing scheme
+        # Color logic
         if progress >= 1.0:
             fill_color = "#2ca02c" # Green
         elif phase == current_phase:
             fill_color = "#1f77b4" # Blue
         else:
-            fill_color = "#9e9e9e" # Gray
+            fill_color = "#ccc"    # Gray
             
-        bar_html += f"""
-        <div style='width:{width}%; position:relative; background-color:#eeeeee; border-right:1px solid white;'>
-            <div style='width:{progress*100}%; height:100%; background-color:{fill_color}; transition: width 0.3s ease;'></div>
+        html += f"""
+        <div style='width:{width}%; background-color:#eee; border-right:1px solid white; position:relative;'>
+            <div style='width:{progress*100}%; height:100%; background-color:{fill_color}; transition: width 0.8s ease-in-out;'></div>
         </div>
         """
-    bar_html += "</div>"
+    html += "</div></div>"
 
-    # CRITICAL: Combine and wrap in a single container div
-    full_component = f"<div style='margin-bottom: 20px;'>{labels_html}{bar_html}</div>"
-    st.markdown(full_component, unsafe_allow_html=True)
+    st.markdown(html, unsafe_allow_html=True)
     
-
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
         # fetch from URL
