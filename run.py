@@ -190,15 +190,23 @@ def render_pipeline_overview_single_bar(data):
     <table style="width:100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 20px;">
         <tr>
     """
-    
+        
     for phase, width in PHASE_WIDTHS.items():
         is_active = (phase == current_phase)
-        style_class = "class='active-phase-text'" if is_active else ""
-        label_color = "#1f77b4" if is_active else "#888"
-        
+        label_color = "#1f77b4" if is_active else "#444"
+    
+        style_attr = "animation: blink 1.5s linear infinite; font-weight:bold;" if is_active else ""
+    
         table_html += f"""
-            <td style="width:{width}%; text-align:center; padding-bottom:5px;">
-                <span {style_class} style="font-size:10px; color:{label_color}; font-family:sans-serif; text-transform:uppercase;">
+            <td style="width:{width}%; text-align:center; padding-bottom:6px;">
+                <span style="
+                    font-size:12px;
+                    color:{label_color};
+                    font-family:sans-serif;
+                    text-transform:uppercase;
+                    white-space:nowrap;
+                    {style_attr}
+                ">
                     {phase} {'●' if is_active else ''}
                 </span>
             </td>
