@@ -113,7 +113,7 @@ def get_progress_color(status):
     if status.lower() == "completed":
         return "#2ca02c"  # green
     elif status.lower() == "running":
-        return "#1f77b4"  # blue
+        return "#2ca02c"  # blue
     elif status.lower() == "waiting":
         return "#9e9e9e"  # gray
     # elif status.lower() == "failed":
@@ -147,116 +147,90 @@ PHASE_WIDTHS = {
     "post": 13.6,
 }
 
-PHASE_COLORS = {
-    "pre": "#2ca02c",      # green completed
-    "nowcast": "#ff7f0e",  # orange running
-    "forecast": "#1f77b4", # blue active
-    "post": "#9467bd",     # purple
-}
+    
 
 def render_pipeline_overview_single_bar(data):
-
     PHASE_WIDTHS = {
-        "pre": 3.2,
-        "nowcast": 14.7,
-        "forecast": 68.5,
-        "post": 13.6
+        "pre": 5.0,
+        "nowcast": 15.0,
+        "forecast": 65.0,
+        "post": 15.0
     }
 
     # -------------------------
-    # Detect current phase robustly
+    # Determine if any progress exists
+    # -------------------------
+    total_progress = sum(phase_progress(data, phase) for phase in PHASE_WIDTHS)
+    has_progress = total_progress > 0
+    
+    # -------------------------
+    # Debug: print phase progress
+    # -------------------------
+    # for phase in PHASE_WIDTHS.keys():
+    #     progress = phase_progress(data, phase)
+    #     st.write(f"DEBUG: phase='{phase}', progress={progress}")
+
+
+    # -------------------------
+    # Determine current active phase
     # -------------------------
     current_phase = None
-
-    for phase in ["pre", "nowcast", "forecast", "post"]:
-        tasks = data.get(phase, {})
-        if any(t.get("status") == "running" for t in tasks.values()):
-            current_phase = phase
-            break
-
-    if current_phase is None:
+    if has_progress:
         for phase in ["pre", "nowcast", "forecast", "post"]:
             tasks = data.get(phase, {})
-            if any(t.get("status") != "completed" for t in tasks.values()):
+            if any(t.get("status") == "running" for t in tasks.values()):
+                current_phase = phase
+                break
+            elif any(t.get("status") == "waiting" for t in tasks.values()):
                 current_phase = phase
                 break
 
-    if current_phase is None:
-        current_phase = "pre"
-
     # -------------------------
-    # LABEL ROW
+    # Labels row
     # -------------------------
-    labels_html = """
-    <div style='display:flex; width:100%; font-size:11px; font-weight:600; margin-bottom:4px;'>
-    """
+    labels_html = "<div style='display:flex; width:100%; margin-bottom:4px;'>"
     for phase, width in PHASE_WIDTHS.items():
-        labels_html += f"""
-        <div style='width:{width}%; text-align:center;'>{phase.upper()}</div>
-        """
+        if current_phase == phase:
+            color = "#000000"  # Black for current
+            weight = "700"     # Bold
+        else:
+            color = "#555"
+            weight = "400"
+        labels_html += f"<div style='width:{width}%; text-align:center; font-size:10px; font-weight:{weight}; color:{color}; text-transform:uppercase;'>{phase}</div>"
     labels_html += "</div>"
 
     # -------------------------
-    # BAR ROW
+    # Progress bar row
     # -------------------------
-    bar_html = """
-    <div style='display:flex; width:100%; height:20px; border-radius:6px; overflow:hidden; background-color:#eee;'>
-    """
-
+    bar_html = "<div style='display:flex; width:100%; height:24px; border-radius:4px; overflow:hidden; border:1px solid #ddd;'>"
     for phase, width in PHASE_WIDTHS.items():
         progress = phase_progress(data, phase)
 
-        if progress is None:
-            progress = 0
-
-        # Ensure some minimal visible width so bar doesn't disappear
-        visible_progress = max(progress, 0.02)
-
-        # -------------------------
-        # COLOR / STYLE LOGIC
-        # -------------------------
-        if progress >= 1:
-            # Completed → solid green
-            fill_style = "background-color:#2ca02c;"
-        elif phase == current_phase:
-            # ACTIVE → green striped (hatched effect)
-            fill_style = """
-            background: repeating-linear-gradient(
-                45deg,
-                #2ca02c,
-                #2ca02c 6px,
-                #1f7a1f 6px,
-                #1f7a1f 12px
-            );
-            """
+        # If the phase is running but progress is zero, set a minimum visible percentage for hatching
+        if phase == current_phase and progress == 0:
+            visible_progress = 0.03  # 3%
         else:
-            # Future → gray
-            fill_style = "background-color:#9e9e9e;"
+            visible_progress = max(progress, 0.02) if progress > 0 else 0
 
-        bar_html += f"""
-        <div style='width:{width}%; position:relative; background-color:#d0d0d0;'>
+        # Determine fill style
+        if progress >= 1.0:
+            fill_style = "background-color:#2ca02c;"  # Completed green
+        elif phase == current_phase:
+            fill_style = "background: repeating-linear-gradient(45deg, #2ca02c, #2ca02c 6px, #1f7a1f 6px, #1f7a1f 12px);"  # Running hashed
+        else:
+            fill_style = "background-color:#e0e0e0;"  # Waiting gray
 
-            <!-- filled portion -->
-            <div style='width:{visible_progress*100}%; height:100%; {fill_style}'></div>
-
-            <!-- divider -->
-            <div style='position:absolute; right:0; top:0; width:2px; height:100%; background-color:#ffffff;'></div>
-
-        </div>
-        """
+        bar_html += f"<div style='width:{width}%; background-color:#f0f0f0; position:relative; border-right:1px solid white;'>"
+        bar_html += f"<div style='width:{visible_progress*100}%; height:100%; {fill_style} transition: width 0.5s;'></div>"
+        bar_html += "</div>"
 
     bar_html += "</div>"
 
     # -------------------------
-    # RENDER (force refresh-safe)
+    # Render in Streamlit
     # -------------------------
-    st.markdown(
-        f"<!-- {datetime.now()} -->" + labels_html + bar_html,
-        unsafe_allow_html=True
-    )
+    st.markdown(f"<!-- {datetime.now()} -->" + labels_html + bar_html, unsafe_allow_html=True)
 
-    
-    
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
         # fetch from URL
@@ -269,29 +243,27 @@ def load_yaml(path_or_url):
             data = yaml.safe_load(f)
     return data
 
-def icon(status):
-    return {
-        "waiting": "⚪",
-        "running": "🔵",
-        "completed": "🟢",
-        "failed": "🔴",
-    }.get(status, "⚪")
-
 def status_badge(status):
-
-    colors = {
-        "waiting": "#9e9e9e",
-        "running": "#1f77b4",
-        "completed": "#2ca02c",
-        "failed": "#d62728",
-    }
+    """Return an HTML badge for the given status with inline styles."""
+    
+    if status == "running":
+        # striped green running badge (inline)
+        background_style = "background: repeating-linear-gradient(45deg, #2ca02c, #2ca02c 6px, #1f7a1f 6px, #1f7a1f 12px);"
+    elif status == "completed":
+        background_style = "background-color: #2ca02c;"
+    elif status == "waiting":
+        background_style = "background-color: #9e9e9e;"
+    elif status == "failed":
+        background_style = "background-color: #d62728;"
+    else:
+        background_style = "background-color: #9e9e9e;"
 
     return f"""
     <span style="
         display:inline-flex;
         align-items:center;
         justify-content:center;
-        background-color:{colors.get(status, "#9e9e9e")};
+        {background_style}
         color:white;
         padding:2px 8px;
         border-radius:6px;
@@ -302,31 +274,6 @@ def status_badge(status):
         {status.upper()}
     </span>
     """
-
-
-# def duration(start, end):
-#     if not start:
-#         return ""
-#     start = datetime.fromisoformat(start)
-#     end = datetime.fromisoformat(end) if end else datetime.now()
-#     return str(end - start).split(".")[0]
-
-def pipeline_progress(data):
-    total = 0
-    done = 0
-
-    for phase_name in ["pre", "nowcast", "forecast", "post"]:
-        phase = data.get(phase_name, {})
-        if not phase:
-            continue  # skip missing phases
-
-        for task in phase.values():
-            if isinstance(task, dict):
-                total += 1
-                if task.get("status") == "completed":
-                    done += 1
-
-    return done / total if total else 0
 
 
 def duration(start_str, end_str=None):
@@ -393,6 +340,7 @@ def render_pipeline(title, pipeline_data):
             progress_val = 0
             progress_text = ""
 
+            # --- Extract progress from logs ---
             if status == "running" and isinstance(log, list):
                 for item in reversed(log):
                     msg = item.get("msg") if isinstance(item, dict) else str(item)
@@ -401,27 +349,50 @@ def render_pipeline(title, pipeline_data):
                         progress_val = float(match.group(1)) / 100
                         progress_text = f" — {match.group(1)}%"
                         break
+
+                # Ensure at least a small visible progress for hatching
+                if progress_val < 0.02:
+                    progress_val = 0.02
+
                 cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}", unsafe_allow_html=True)
+
             elif status == "completed":
                 progress_val = 1.0
                 cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label} — 100%**", unsafe_allow_html=True)
             else:
                 cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**", unsafe_allow_html=True)
 
-            # Timing
+            # --- Timing ---
             if start:
                 cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
 
-            # Progress bar
-            color = get_progress_color(status)
+            # --- Progress bar with hatching for running ---
+            if status == "running":
+                # green hatching
+                fill_style = """
+                    background: repeating-linear-gradient(
+                        45deg,
+                        #2ca02c,
+                        #2ca02c 8px,
+                        #1f7a1f 8px,
+                        #1f7a1f 16px
+                    );
+                """
+            elif status == "completed":
+                fill_style = "background-color:#2ca02c;"
+            elif status == "failed":
+                fill_style = "background-color:#d62728;"
+            else:
+                fill_style = "background-color:#e0e0e0;"
+
             progress_html = f"""
             <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
-                <div style='width:{progress_val*100}%; background-color:{color}; height:16px; border-radius:4px;'></div>
+                <div style='width:{progress_val*100}%; height:16px; border-radius:4px; {fill_style} transition: width 0.5s;'></div>
             </div>
             """
             cols[3].markdown(progress_html, unsafe_allow_html=True)
 
-            # Logs
+            # --- Logs ---
             if isinstance(log, list):
                 with st.expander("More info", expanded=False):
                     for item in log:
@@ -429,7 +400,6 @@ def render_pipeline(title, pipeline_data):
                             st.write(f"[{item['time']}] {item['msg']}")
                         else:
                             st.write(f"- {item}")
-
 
 # Helper: get fraction of a phase completed
 def get_phase_progress(phase_data):
@@ -449,14 +419,6 @@ PHASE_WIDTHS = {
     "nowcast": 15,
     "forecast": 70,
     "post": 15,
-}
-
-# Colors for each phase
-PHASE_COLORS = {
-    "pre": "#1f77b4",       # blue
-    "nowcast": "#ff7f0e",   # orange
-    "forecast": "#2ca02c",  # green
-    "post": "#d62728",      # red
 }
 
 
@@ -523,13 +485,7 @@ with col1:
     st.metric("System Health", "RUNNING")
     st.metric("System Usage", f"{usage:.1f}%", delta=status,delta_color='inverse')
 
-# Column 2: Pipeline Progress
-# with col2:
-#     st.subheader("📊 Pipeline Progress")
-#     st.markdown("**iFLOOD**")
-#     st.progress(pipeline_progress(iflood))
-#     st.markdown("**Compound DC**")
-#     st.progress(pipeline_progress(hecras))
+
 # Column 2: Pipeline Progress
 with col2:
     st.subheader("📊 Pipeline Progress")
@@ -547,7 +503,6 @@ with col3:
     st.metric("Next Cycle ETA", f"{next_cycle_dt.strftime('%Y-%m-%d %HZ')}")
 
 st.divider()
-
 
 def get_status(meta):
     return meta.get("status", "waiting")
@@ -572,6 +527,10 @@ with st.expander("Status Legend", expanded=False):
     c3.markdown(status_badge("completed") + " Finished successfully", unsafe_allow_html=True)
     c4.markdown(status_badge("failed") + " Failed – needs attention", unsafe_allow_html=True)
 
+
+# -------------------------
+# 1️⃣ Convert YAML-style task data to a structured DataFrame
+# -------------------------
 def yaml_to_stair_outline(data):
     rows = []
     step = 0
@@ -589,7 +548,7 @@ def yaml_to_stair_outline(data):
                 try:
                     return datetime.strptime(start_str, "%Y-%m-%d %H:%M:%S")
                 except:
-                    return datetime.max  # put invalid/missing start at the end
+                    return datetime.max
             else:
                 return datetime.max
 
@@ -606,36 +565,42 @@ def yaml_to_stair_outline(data):
 
     return pd.DataFrame(rows)
 
+
+# -------------------------
+# 2️⃣ Render stair-step chart with hatching for running
+# -------------------------
 def render_stair_chart_outline(title, data):
     df = yaml_to_stair_outline(data)
-    
+
     color_map = {
         "waiting": "lightgrey",
-        "running": "#1f77b4",
+        "running": "#2ca02c",
         "completed": "#2ca02c",
         "failed": "#d62728"
     }
 
-    fig = go.Figure()
-    
-    # Map y positions to numeric for line calculations
-    phase_order = ["PRE", "NOWCAST", "FORECAST", "POST"]
-    
-    # Only keep phases that actually have tasks
-    phases_present = [p for p in phase_order if not df[df["Phase"] == p].empty]
-    
-    y_map = {phase: i for i, phase in enumerate(reversed(phases_present))}
+    pattern_map = {
+        "running": "/",  # diagonal hatch
+        "waiting": "",   # solid
+        "completed": "", # solid
+        "failed": ""     # solid
+    }
 
+    fig = go.Figure()
+
+    # Map y positions to numeric
+    phase_order = ["PRE", "NOWCAST", "FORECAST", "POST"]
+    phases_present = [p for p in phase_order if not df[df["Phase"] == p].empty]
+    y_map = {phase: i for i, phase in enumerate(reversed(phases_present))}
     bar_width = 0.8
 
-    # --- Draw stair-step connectors (behind bars) ---
+    # --- Draw stair-step connectors ---
     for phase in phases_present:
         phase_df = df[df["Phase"] == phase]
         if not phase_df.empty:
             y = y_map[phase]
             x_min = phase_df["Step"].min()
             x_max = phase_df["Step"].max() + bar_width
-            # Horizontal line for phase
             fig.add_shape(
                 type="line",
                 x0=x_min, x1=x_max,
@@ -643,26 +608,25 @@ def render_stair_chart_outline(title, data):
                 line=dict(color="black", width=1),
                 layer="below"
             )
-    
-    # Draw vertical + 90° connectors between phases
+
+    # Draw vertical + horizontal L-shaped connectors
     for i in range(len(phases_present)-1):
         upper_phase = phases_present[i]
         lower_phase = phases_present[i+1]
-    
+
         upper_df = df[df["Phase"] == upper_phase]
         lower_df = df[df["Phase"] == lower_phase]
-    
+
         if upper_df.empty or lower_df.empty:
             continue
-    
+
         upper_y = y_map[upper_phase]
         lower_y = y_map[lower_phase]
-    
+
         x_center_upper = upper_df["Step"].max() + bar_width/2
         x_center_lower = lower_df["Step"].min() + bar_width/2
 
-        # Draw vertical + horizontal as L-shaped line
-        # Vertical from upper phase center down to lower y
+        # vertical
         fig.add_shape(
             type="line",
             x0=x_center_upper, x1=x_center_upper,
@@ -670,7 +634,7 @@ def render_stair_chart_outline(title, data):
             line=dict(color="black", width=1),
             layer="below"
         )
-        # Horizontal to start of lower phase
+        # horizontal
         if x_center_lower != x_center_upper:
             fig.add_shape(
                 type="line",
@@ -680,8 +644,11 @@ def render_stair_chart_outline(title, data):
                 layer="below"
             )
 
-    # --- Draw bars ---
+    # --- Draw bars with hatching for running ---
     for _, row in df.iterrows():
+        pattern_shape = pattern_map.get(row["Status"], "")
+        pattern_size = 5 if row["Status"] == "running" else 6  # wider for running
+        
         fig.add_trace(go.Bar(
             x=[bar_width],
             y=[y_map[row["Phase"]]],
@@ -690,6 +657,8 @@ def render_stair_chart_outline(title, data):
             marker_color=color_map.get(row["Status"], "lightgrey"),
             marker_line_color="black",
             marker_line_width=1,
+            marker_pattern_shape=pattern_shape,
+            marker_pattern_size=pattern_size,
             hovertext=row["Task"],
             hoverinfo="text"
         ))
@@ -707,7 +676,6 @@ def render_stair_chart_outline(title, data):
         showlegend=False
     )
     return fig
-
 # -------------------------
 # Tabs for Forecast Groups
 # -------------------------
@@ -741,4 +709,3 @@ with tab2:
     with col2:
         fig2 = render_stair_chart_outline("Compound DC Pipeline", hecras)
         st.plotly_chart(fig2, use_container_width=True)
-
