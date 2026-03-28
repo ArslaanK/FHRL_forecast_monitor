@@ -123,12 +123,14 @@ nowcast:
     status: completed
 post:
   create_timeseries:
-    end: null
+    end: '2026-03-28 07:53:10'
     log:
     - {msg: timeseries extraction started, time: '07:39:25'}
     - {msg: vector json files extracted, time: '07:52:47'}
+    - {msg: wse and wave validation timeseries generated, time: '07:53:09'}
+    - {msg: timeseries completed, time: '07:53:10'}
     start: '2026-03-28 07:39:25'
-    status: running
+    status: completed
   fetch_competing_model:
     end: '2026-03-28 07:41:15'
     log:
