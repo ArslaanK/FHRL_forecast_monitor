@@ -155,13 +155,9 @@ PHASE_COLORS = {
 }
 
 def render_pipeline_overview_single_bar(data):
-    # Adjusted widths to ensure labels like "PRE" actually fit (3.2% was too small for text)
-    PHASE_WIDTHS = {
-        "pre": 10.0,
-        "nowcast": 15.0,
-        "forecast": 60.0,
-        "post": 15.0
-    }
+    # Widths must be integers or floats adding to 100
+    # We give 'pre' more room (10%) so the text 'PRE' doesn't overflow and vanish
+    PHASE_WIDTHS = {"pre": 10, "nowcast": 15, "forecast": 60, "post": 15}
 
     # Detect current phase
     current_phase = "pre"
@@ -170,68 +166,68 @@ def render_pipeline_overview_single_bar(data):
         if any(t.get("status") == "running" for t in tasks.values()):
             current_phase = phase
             break
-        elif any(t.get("status") == "waiting" for t in tasks.values()):
+        elif any(t.get("status") != "completed" for t in tasks.values()):
             current_phase = phase
             break
 
-    # CSS for the pulse animation and layout
+    # CSS for the blinking pulse effect
     st.markdown("""
     <style>
-    @keyframes pulse-glow {
-        0% { opacity: 0.6; text-shadow: 0 0 2px #1f77b4; }
-        50% { opacity: 1; text-shadow: 0 0 8px #1f77b4; }
-        100% { opacity: 0.6; text-shadow: 0 0 2px #1f77b4; }
+    @keyframes blink {
+        0% { opacity: 1; color: #1f77b4; }
+        50% { opacity: 0.3; color: #004a7c; }
+        100% { opacity: 1; color: #1f77b4; }
     }
-    .active-label {
-        animation: pulse-glow 2s infinite;
-        color: #1f77b4 !important;
-        font-weight: 800 !important;
-    }
-    .pipeline-container {
-        margin-bottom: 25px;
-        width: 100%;
-        font-family: sans-serif;
+    .active-phase-text {
+        animation: blink 1.5s linear infinite;
+        font-weight: bold !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Building the combined HTML
-    html = "<div class='pipeline-container'>"
+    # Building a rigid HTML Table
+    table_html = f"""
+    <table style="width:100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 20px;">
+        <tr>
+    """
     
-    # 1. Labels Row
-    html += "<div style='display:flex; width:100%; align-items:flex-end; height:20px;'>"
     for phase, width in PHASE_WIDTHS.items():
         is_active = (phase == current_phase)
-        active_class = "class='active-label'" if is_active else ""
+        style_class = "class='active-phase-text'" if is_active else ""
+        label_color = "#1f77b4" if is_active else "#888"
         
-        html += f"""
-        <div {active_class} style='width:{width}%; text-align:center; font-size:11px; color:#666; text-transform:uppercase;'>
-            {phase}
-        </div>"""
-    html.strip()
-    html += "</div>"
+        table_html += f"""
+            <td style="width:{width}%; text-align:center; padding-bottom:5px;">
+                <span {style_class} style="font-size:10px; color:{label_color}; font-family:sans-serif; text-transform:uppercase;">
+                    {phase} {'●' if is_active else ''}
+                </span>
+            </td>
+        """
+    
+    table_html += "</tr><tr>"
 
-    # 2. Bar Row
-    html += "<div style='display:flex; width:100%; height:16px; border-radius:10px; overflow:hidden; background-color:#f0f0f0; border:1px solid #ddd;'>"
     for phase, width in PHASE_WIDTHS.items():
         progress = phase_progress(data, phase)
         
-        # Color logic
+        # Color Logic
         if progress >= 1.0:
-            fill_color = "#2ca02c" # Green
+            fill_color = "#2ca02c"  # Green (Done)
         elif phase == current_phase:
-            fill_color = "#1f77b4" # Blue
+            fill_color = "#1f77b4"  # Blue (Active)
         else:
-            fill_color = "#ccc"    # Gray
-            
-        html += f"""
-        <div style='width:{width}%; background-color:#eee; border-right:1px solid white; position:relative;'>
-            <div style='width:{progress*100}%; height:100%; background-color:{fill_color}; transition: width 0.8s ease-in-out;'></div>
-        </div>
-        """
-    html += "</div></div>"
+            fill_color = "#d0d0d0"  # Gray (Waiting)
 
-    st.markdown(html, unsafe_allow_html=True)
+        table_html += f"""
+            <td style="width:{width}%; padding:0;">
+                <div style="width:100%; height:14px; background-color:#eee; border:1px solid #ddd; border-right:none; position:relative;">
+                    <div style="width:{progress*100}%; height:100%; background-color:{fill_color};"></div>
+                </div>
+            </td>
+        """
+
+    table_html += "</tr></table>"
+
+    st.markdown(table_html, unsafe_allow_html=True)
     
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
