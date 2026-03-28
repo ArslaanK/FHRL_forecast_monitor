@@ -153,8 +153,6 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
-import streamlit as st
-from datetime import datetime
 
 def render_pipeline_overview_single_bar(data):
 
@@ -166,17 +164,25 @@ def render_pipeline_overview_single_bar(data):
     }
 
     # -------------------------
-    # Detect current phase
+    # Detect current phase robustly
     # -------------------------
-    current_phase = "pre"
+    current_phase = None
+
     for phase in ["pre", "nowcast", "forecast", "post"]:
         tasks = data.get(phase, {})
         if any(t.get("status") == "running" for t in tasks.values()):
             current_phase = phase
             break
-        elif any(t.get("status") != "completed" for t in tasks.values()):
-            current_phase = phase
-            break
+
+    if current_phase is None:
+        for phase in ["pre", "nowcast", "forecast", "post"]:
+            tasks = data.get(phase, {})
+            if any(t.get("status") != "completed" for t in tasks.values()):
+                current_phase = phase
+                break
+
+    if current_phase is None:
+        current_phase = "pre"
 
     # -------------------------
     # LABEL ROW
@@ -186,9 +192,7 @@ def render_pipeline_overview_single_bar(data):
     """
     for phase, width in PHASE_WIDTHS.items():
         labels_html += f"""
-        <div style='width:{width}%; text-align:center;'>
-            {phase.upper()}
-        </div>
+        <div style='width:{width}%; text-align:center;'>{phase.upper()}</div>
         """
     labels_html += "</div>"
 
@@ -202,7 +206,10 @@ def render_pipeline_overview_single_bar(data):
     for phase, width in PHASE_WIDTHS.items():
         progress = phase_progress(data, phase)
 
-        # Prevent disappearing bars
+        if progress is None:
+            progress = 0
+
+        # Ensure some minimal visible width so bar doesn't disappear
         visible_progress = max(progress, 0.02)
 
         # -------------------------
@@ -247,6 +254,7 @@ def render_pipeline_overview_single_bar(data):
         f"<!-- {datetime.now()} -->" + labels_html + bar_html,
         unsafe_allow_html=True
     )
+
     
     
 def load_yaml(path_or_url):
