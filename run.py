@@ -153,15 +153,14 @@ PHASE_COLORS = {
     "forecast": "#1f77b4", # blue active
     "post": "#9467bd",     # purple
 }
+import streamlit as st
 
 def render_pipeline_overview_single_bar(data):
-    # Widths must be integers or floats adding to 100
-    # We give 'pre' more room (10%) so the text 'PRE' doesn't overflow and vanish
-    PHASE_WIDTHS = {"pre": 10, "nowcast": 15, "forecast": 60, "post": 15}
+    PHASES = ["pre", "nowcast", "forecast", "post"]
 
     # Detect current phase
     current_phase = "pre"
-    for phase in ["pre", "nowcast", "forecast", "post"]:
+    for phase in PHASES:
         tasks = data.get(phase, {})
         if any(t.get("status") == "running" for t in tasks.values()):
             current_phase = phase
@@ -170,72 +169,31 @@ def render_pipeline_overview_single_bar(data):
             current_phase = phase
             break
 
-    # CSS for the blinking pulse effect
-    st.markdown("""
-    <style>
-    @keyframes blink {
-        0% { opacity: 1; color: #1f77b4; }
-        50% { opacity: 0.3; color: #004a7c; }
-        100% { opacity: 1; color: #1f77b4; }
-    }
-    .active-phase-text {
-        animation: blink 1.5s linear infinite;
-        font-weight: bold !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # Create columns (acts like your horizontal layout)
+    cols = st.columns([1, 1.5, 4, 1.5])
 
-    # Building a rigid HTML Table
-    table_html = f"""
-    <table style="width:100%; border-collapse: collapse; table-layout: fixed; margin-bottom: 20px;">
-        <tr>
-    """
-        
-    for phase, width in PHASE_WIDTHS.items():
-        is_active = (phase == current_phase)
-        label_color = "#1f77b4" if is_active else "#444"
-    
-        style_attr = "animation: blink 1.5s linear infinite; font-weight:bold;" if is_active else ""
-    
-        table_html += f"""
-            <td style="width:{width}%; text-align:center; padding-bottom:6px;">
-                <span style="
-                    font-size:12px;
-                    color:{label_color};
-                    font-family:sans-serif;
-                    text-transform:uppercase;
-                    white-space:nowrap;
-                    {style_attr}
-                ">
-                    {phase} {'●' if is_active else ''}
-                </span>
-            </td>
-        """
-    
-    table_html += "</tr><tr>"
+    for i, phase in enumerate(PHASES):
+        with cols[i]:
+            progress = phase_progress(data, phase)
 
-    for phase, width in PHASE_WIDTHS.items():
-        progress = phase_progress(data, phase)
-        
-        # Color Logic
-        if progress >= 1.0:
-            fill_color = "#2ca02c"  # Green (Done)
-        elif phase == current_phase:
-            fill_color = "#1f77b4"  # Blue (Active)
-        else:
-            fill_color = "#d0d0d0"  # Gray (Waiting)
+            is_active = (phase == current_phase)
 
-        table_html += f"""
-            <td style="width:{width}%; padding:0;">
-                <div style="width:100%; height:14px; background-color:#eee; border:1px solid #ddd; border-right:none; position:relative;">
-                    <div style="width:{progress*100}%; height:100%; background-color:{fill_color};"></div>
-                </div>
-            </td>
-        """
+            # Label
+            if is_active:
+                st.markdown(
+                    f"**🔵 {phase.upper()}**",
+                )
+            else:
+                st.markdown(
+                    f"<span style='color:#666'>{phase.upper()}</span>",
+                    unsafe_allow_html=True
+                )
 
-    table_html += "</tr></table>"
+            # Progress bar
+            st.progress(min(progress, 1.0))
 
-    st.markdown(table_html, unsafe_allow_html=True)
+            # Optional % text
+            st.caption(f"{int(progress * 100)}%")
     
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
