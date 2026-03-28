@@ -13,6 +13,11 @@ post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  metforecast_processor:
+    end: null
+    log:
+    - {msg: downloading met, time: '02:45:02'}
+    start: '2026-03-28 02:45:02'
+    status: running
   prep_simulation: {end: null, log: null, start: null, status: waiting}
 system: {cpu: 77.22, ram: 21.44, timestamp: '2026-03-28 02:40:03'}
