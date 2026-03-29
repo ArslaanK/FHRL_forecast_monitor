@@ -1,0 +1,117 @@
+cycle_start: '2026-03-29 02:45:01'
+forecast:
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '03:21:07'}
+    - {msg: 1% completed, time: '03:24:01'}
+    - {msg: 2% completed, time: '03:26:01'}
+    - {msg: 3% completed, time: '03:28:01'}
+    - {msg: 5% completed, time: '03:30:01'}
+    - {msg: 7% completed, time: '03:34:01'}
+    - {msg: 8% completed, time: '03:36:01'}
+    - {msg: 9% completed, time: '03:38:01'}
+    - {msg: 10% completed, time: '03:40:03'}
+    - {msg: 12% completed, time: '03:42:01'}
+    - {msg: 13% completed, time: '03:44:01'}
+    - {msg: 14% completed, time: '03:46:02'}
+    - {msg: 16% completed, time: '03:48:01'}
+    - {msg: 17% completed, time: '03:52:01'}
+    - {msg: 19% completed, time: '03:54:02'}
+    - {msg: 20% completed, time: '03:56:01'}
+    - {msg: 21% completed, time: '03:58:01'}
+    - {msg: 23% completed, time: '04:00:01'}
+    - {msg: 24% completed, time: '04:02:01'}
+    - {msg: 25% completed, time: '04:04:02'}
+    - {msg: 26% completed, time: '04:06:01'}
+    - {msg: 27% completed, time: '04:08:01'}
+    - {msg: 28% completed, time: '04:10:01'}
+    - {msg: 30% completed, time: '04:12:02'}
+    - {msg: 31% completed, time: '04:14:01'}
+    - {msg: 32% completed, time: '04:16:01'}
+    - {msg: 33% completed, time: '04:18:01'}
+    - {msg: 35% completed, time: '04:20:01'}
+    - {msg: 36% completed, time: '04:22:02'}
+    - {msg: 37% completed, time: '04:24:01'}
+    - {msg: 38% completed, time: '04:26:02'}
+    - {msg: 39% completed, time: '04:28:01'}
+    - {msg: 41% completed, time: '04:30:02'}
+    - {msg: 42% completed, time: '04:32:01'}
+    - {msg: 43% completed, time: '04:34:01'}
+    - {msg: 44% completed, time: '04:36:02'}
+    - {msg: 46% completed, time: '04:38:01'}
+    - {msg: 47% completed, time: '04:40:02'}
+    - {msg: 48% completed, time: '04:42:01'}
+    - {msg: 49% completed, time: '04:44:01'}
+    - {msg: 50% completed, time: '04:46:01'}
+    - {msg: 51% completed, time: '04:48:03'}
+    - {msg: 53% completed, time: '04:50:01'}
+    - {msg: 54% completed, time: '04:52:02'}
+    - {msg: 55% completed, time: '04:54:02'}
+    - {msg: 57% completed, time: '04:56:01'}
+    - {msg: 58% completed, time: '04:58:01'}
+    - {msg: 60% completed, time: '05:02:01'}
+    - {msg: 61% completed, time: '05:04:01'}
+    - {msg: 62% completed, time: '05:06:01'}
+    - {msg: 64% completed, time: '05:08:01'}
+    - {msg: 65% completed, time: '05:10:01'}
+    - {msg: 66% completed, time: '05:12:01'}
+    - {msg: 67% completed, time: '05:14:02'}
+    - {msg: 69% completed, time: '05:16:02'}
+    - {msg: 70% completed, time: '05:18:02'}
+    - {msg: 71% completed, time: '05:20:02'}
+    start: '2026-03-29 03:21:07'
+    status: running
+nowcast:
+  run_nowcast:
+    end: '2026-03-29 03:21:05'
+    log:
+    - {msg: copying previous restart file, time: '02:53:24'}
+    - {msg: Nowcast simulation started, time: '02:53:39'}
+    - {msg: 4% completed, time: '02:56:01'}
+    - {msg: 12% completed, time: '02:58:02'}
+    - {msg: 22% completed, time: '03:00:01'}
+    - {msg: 27% completed, time: '03:02:01'}
+    - {msg: 37% completed, time: '03:04:01'}
+    - {msg: 46% completed, time: '03:06:01'}
+    - {msg: 51% completed, time: '03:08:01'}
+    - {msg: 62% completed, time: '03:10:01'}
+    - {msg: 70% completed, time: '03:12:01'}
+    - {msg: 76% completed, time: '03:14:01'}
+    - {msg: 87% completed, time: '03:16:02'}
+    - {msg: 95% completed, time: '03:18:02'}
+    - {msg: 100% completed, time: '03:20:01'}
+    - {msg: model run finished, time: '03:20:06'}
+    - {msg: hotstart ready for next forecast, time: '03:21:05'}
+    - {msg: 100% completed, time: '03:21:05'}
+    start: '2026-03-29 02:53:24'
+    status: completed
+post:
+  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
+pre:
+  metforecast_processor:
+    end: '2026-03-29 02:53:18'
+    log:
+    - {msg: downloading met, time: '02:45:02'}
+    - {msg: processed met, time: '02:53:18'}
+    start: '2026-03-29 02:45:02'
+    status: completed
+  prep_simulation:
+    end: '2026-03-29 02:53:24'
+    log:
+    - {msg: Preparing Model files, time: '02:53:18'}
+    - {msg: Model files prepared for simulations, time: '02:53:24'}
+    start: '2026-03-29 02:53:18'
+    status: completed
+
+system:
+  cpu: 98.39
+  ram: 22.33
+  timestamp: "2026-03-29 05:20:02"
