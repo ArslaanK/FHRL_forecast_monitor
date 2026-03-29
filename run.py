@@ -364,7 +364,10 @@ def render_pipeline(title, pipeline_data):
 
             # --- Timing ---
             if start:
-                cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
+                if status == "completed" and end:
+                    cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
+                else:
+                    cols[2].write(f"Start: {start.split()[1]} | ⏱ waiting")
 
             # --- Progress bar with hatching for running ---
             if status == "running":
