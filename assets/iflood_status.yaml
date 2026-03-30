@@ -143,6 +143,7 @@ post:
     end: null
     log:
     - {msg: max water spatial maps generated, time: '07:42:22'}
+    - {msg: max pressure maps generated, time: '07:47:45'}
     start: '2026-03-30 07:42:22'
     status: running
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
