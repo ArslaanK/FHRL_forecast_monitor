@@ -16,9 +16,16 @@ pre:
     start: '2026-03-29 20:45:08'
     status: completed
   metforecast_processor:
-    end: null
+    end: '2026-03-29 21:22:02'
     log:
     - {msg: downloading HRRR forecasts, time: '20:45:08'}
+    - {msg: downloading HRRR forecasts, time: '21:22:02'}
+    - {msg: processed HRRR forecasts, time: '21:22:02'}
     start: '2026-03-29 20:45:08'
+    status: completed
+  prep_simulation:
+    end: null
+    log:
+    - {msg: Preparing Model files, time: '21:22:02'}
+    start: '2026-03-29 21:22:02'
     status: running
-  prep_simulation: {end: null, log: null, start: null, status: waiting}
