@@ -1,108 +1,23 @@
-cycle_start: '2026-03-29 15:45:02'
+cycle_start: '2026-03-30 02:45:02'
 forecast:
-  copy_forecast_results:
-    end: '2026-03-29 19:07:57'
-    log:
-    - {msg: copying results, time: '19:07:54'}
-    - {msg: copied results, time: '19:07:57'}
-    start: '2026-03-29 19:07:54'
-    status: completed
-  run_forecast:
-    end: '2026-03-29 19:07:54'
-    log:
-    - {msg: starting forecast, time: '16:20:50'}
-    - {msg: 86% completed, time: '18:45:20'}
-    - {msg: 87% completed, time: '18:46:09'}
-    - {msg: 92% completed, time: '18:54:56'}
-    - {msg: 93% completed, time: '18:56:34'}
-    - {msg: 98% completed, time: '19:04:01'}
-    - {msg: 99% completed, time: '19:06:01'}
-    - {msg: 100% completed, time: '19:07:54'}
-    start: '2026-03-29 16:20:50'
-    status: completed
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast:
-    end: '2026-03-29 16:20:48'
-    log:
-    - {msg: copying previous restart file, time: '15:53:53'}
-    - {msg: Nowcast simulation started, time: '15:54:18'}
-    - {msg: model run finished, time: '16:19:54'}
-    - {msg: hotstart ready for next forecast, time: '16:20:48'}
-    - {msg: 100% completed, time: '16:20:48'}
-    start: '2026-03-29 15:53:53'
-    status: completed
+  run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
-  create_timeseries:
-    end: '2026-03-29 19:55:55'
-    log:
-    - {msg: timeseries extraction started, time: '19:42:29'}
-    - {msg: vector json files extracted, time: '19:55:33'}
-    - {msg: wse and wave validation timeseries generated, time: '19:55:55'}
-    - {msg: timeseries completed, time: '19:55:55'}
-    start: '2026-03-29 19:42:29'
-    status: completed
-  fetch_competing_model:
-    end: '2026-03-29 19:44:18'
-    log:
-    - {msg: pulling timeseries forecast for other models, time: '19:44:18'}
-    start: '2026-03-29 19:44:18'
-    status: completed
-  gen_flood_alerts:
-    end: '2026-03-29 19:55:45'
-    log:
-    - {msg: Flood alerts generated, time: '19:55:45'}
-    start: '2026-03-29 19:55:45'
-    status: completed
-  gen_nws_forecast:
-    end: '2026-03-29 19:09:32'
-    log:
-    - {msg: started NWS forecast processing, time: '19:07:58'}
-    - {msg: iFLOOD forecasts uploaded for NWS, time: '19:09:32'}
-    start: '2026-03-29 19:07:58'
-    status: completed
-  gen_spatial_maps:
-    end: '2026-03-29 19:42:10'
-    log:
-    - {msg: max water spatial maps generated, time: '19:31:16'}
-    - {msg: max pressure maps generated, time: '19:35:51'}
-    - {msg: max wind maps generated, time: '19:42:07'}
-    - {msg: max inundations maps generated, time: '19:42:08'}
-    - {msg: max wave height maps generated, time: '19:42:08'}
-    - {msg: max wave period maps generated, time: '19:42:08'}
-    - {msg: max and timeseries spatial maps generated, time: '19:42:10'}
-    start: '2026-03-29 19:31:16'
-    status: completed
-  pipeline_completion:
-    end: '2026-03-29 20:26:17'
-    log:
-    - {msg: forecast cycle completed, time: '20:26:17'}
-    start: '2026-03-29 20:26:17'
-    status: completed
-  push_to_s3:
-    end: '2026-03-29 20:26:17'
-    log:
-    - {msg: data upload to S3 started, time: '20:19:37'}
-    - {msg: flood alerts issues via MSG and Emails, time: '20:23:31'}
-    - {msg: data upload to S3 completed, time: '20:24:05'}
-    - {msg: new forecast files are uploaded to S3, time: '20:26:17'}
-    start: '2026-03-29 20:19:37'
-    status: completed
+  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   metforecast_processor:
-    end: '2026-03-29 15:53:48'
+    end: null
     log:
-    - {msg: downloading met, time: '15:45:02'}
-    - {msg: processed met, time: '15:53:48'}
-    start: '2026-03-29 15:45:02'
-    status: completed
-  prep_simulation:
-    end: '2026-03-29 15:53:53'
-    log:
-    - {msg: Preparing Model files, time: '15:53:48'}
-    - {msg: Model files prepared for simulations, time: '15:53:53'}
-    start: '2026-03-29 15:53:48'
-    status: completed
-system:
-  cpu: 0.66
-  ram: 0.93
-  timestamp: "2026-03-30 02:40:02"
+    - {msg: downloading met, time: '02:45:02'}
+    start: '2026-03-30 02:45:02'
+    status: running
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
+system: {cpu: 0.66, ram: 0.93, timestamp: '2026-03-30 02:40:02'}
