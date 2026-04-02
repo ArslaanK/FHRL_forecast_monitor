@@ -19,6 +19,7 @@ pre:
     end: null
     log:
     - {msg: downloading HRRR forecasts, time: '20:45:09'}
+    - {msg: downloading HRRR forecasts, time: '21:23:02'}
     start: '2026-04-01 20:45:09'
     status: running
   prep_simulation: {end: null, log: null, start: null, status: waiting}
