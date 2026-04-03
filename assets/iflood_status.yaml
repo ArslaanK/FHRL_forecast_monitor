@@ -60,6 +60,7 @@ forecast:
     - {msg: 70% completed, time: '17:34:02'}
     - {msg: 71% completed, time: '17:36:02'}
     - {msg: 73% completed, time: '17:38:01'}
+    - {msg: 75% completed, time: '17:42:01'}
     start: '2026-04-03 15:24:07'
     status: running
 nowcast:
@@ -110,7 +111,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '14:54:06'}
     start: '2026-04-03 14:53:59'
     status: completed
-system:
-  cpu: 98.75
-  ram: 27.18
-  timestamp: "2026-04-03 17:40:02"
+system: {cpu: 98.75, ram: 27.18, timestamp: '2026-04-03 17:40:02'}
