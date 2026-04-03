@@ -20,4 +20,7 @@ pre:
     start: '2026-04-03 14:45:02'
     status: running
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system: {cpu: 0.8, ram: 5.82, timestamp: '2026-04-03 14:40:02'}
+system:
+  cpu: 2.34
+  ram: 6.07
+  timestamp: "2026-04-03 14:50:02"
