@@ -1,4 +1,2 @@
-system:
-  cpu: 79.39
-  ram: 26.13
-  timestamp: "2026-04-06 02:40:02"
+cycle_start: '2026-04-06 02:45:02'
+system: {cpu: 79.39, ram: 26.13, timestamp: '2026-04-06 02:40:02'}
