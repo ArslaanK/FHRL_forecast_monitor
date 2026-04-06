@@ -1,110 +1,14 @@
-cycle_start: '2026-04-06 08:45:02'
+cycle_start: '2026-04-06 14:45:01'
 forecast:
-  copy_forecast_results:
-    end: '2026-04-06 11:40:14'
-    log:
-    - {msg: copying results, time: '11:40:12'}
-    - {msg: copied results, time: '11:40:14'}
-    start: '2026-04-06 11:40:12'
-    status: completed
-  run_forecast:
-    end: '2026-04-06 11:40:12'
-    log:
-    - {msg: starting forecast, time: '10:20:11'}
-    - {msg: 1% completed, time: '10:22:01'}
-    - {msg: 4% completed, time: '10:24:02'}
-    - {msg: 7% completed, time: '10:26:01'}
-    - {msg: 9% completed, time: '10:28:02'}
-    - {msg: 12% completed, time: '10:30:01'}
-    - {msg: 15% completed, time: '10:32:01'}
-    - {msg: 18% completed, time: '10:34:01'}
-    - {msg: 20% completed, time: '10:36:01'}
-    - {msg: 23% completed, time: '10:38:02'}
-    - {msg: 25% completed, time: '10:40:01'}
-    - {msg: 28% completed, time: '10:42:01'}
-    - {msg: 31% completed, time: '10:44:01'}
-    - {msg: 33% completed, time: '10:46:01'}
-    - {msg: 36% completed, time: '10:48:01'}
-    - {msg: 39% completed, time: '10:50:01'}
-    - {msg: 41% completed, time: '10:52:01'}
-    - {msg: 44% completed, time: '10:54:01'}
-    - {msg: 46% completed, time: '10:56:01'}
-    - {msg: 49% completed, time: '10:58:01'}
-    - {msg: 51% completed, time: '11:00:01'}
-    - {msg: 54% completed, time: '11:02:01'}
-    - {msg: 56% completed, time: '11:04:01'}
-    - {msg: 59% completed, time: '11:06:01'}
-    - {msg: 61% completed, time: '11:08:01'}
-    - {msg: 63% completed, time: '11:10:01'}
-    - {msg: 66% completed, time: '11:12:01'}
-    - {msg: 68% completed, time: '11:14:02'}
-    - {msg: 71% completed, time: '11:16:01'}
-    - {msg: 73% completed, time: '11:18:01'}
-    - {msg: 75% completed, time: '11:20:01'}
-    - {msg: 78% completed, time: '11:22:01'}
-    - {msg: 80% completed, time: '11:24:01'}
-    - {msg: 83% completed, time: '11:26:02'}
-    - {msg: 85% completed, time: '11:28:02'}
-    - {msg: 87% completed, time: '11:30:01'}
-    - {msg: 90% completed, time: '11:32:01'}
-    - {msg: 92% completed, time: '11:34:01'}
-    - {msg: 94% completed, time: '11:36:01'}
-    - {msg: 97% completed, time: '11:38:01'}
-    - {msg: 99% completed, time: '11:40:01'}
-    - {msg: 100% completed, time: '11:40:12'}
-    start: '2026-04-06 10:20:11'
-    status: completed
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast:
-    end: '2026-04-06 10:20:08'
-    log:
-    - {msg: copying previous restart file, time: '09:39:33'}
-    - {msg: Nowcast simulation started, time: '09:39:33'}
-    - {msg: model run finished, time: '09:41:07'}
-    - {msg: hotstart ready for next forecast, time: '10:20:08'}
-    - {msg: 100% completed, time: '10:20:08'}
-    start: '2026-04-06 09:39:33'
-    status: completed
+  run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
-  pipeline_completion:
-    end: '2026-04-06 11:42:10'
-    log:
-    - {msg: forecast cycle completed, time: '11:42:10'}
-    start: '2026-04-06 11:42:10'
-    status: completed
-  process_forecast:
-    end: '2026-04-06 11:41:30'
-    log:
-    - {msg: running post processing workflow, time: '11:40:14'}
-    - {msg: post processing workflow completed, time: '11:41:30'}
-    start: '2026-04-06 11:40:14'
-    status: completed
-  push_to_s3:
-    end: '2026-04-06 11:42:08'
-    log:
-    - {msg: new forecast files are ready to be uploaded, time: '11:41:30'}
-    - {msg: new forecast files uploaded to s3, time: '11:42:08'}
-    start: '2026-04-06 11:41:30'
-    status: completed
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  process_forecast: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  get_flow_stage:
-    end: '2026-04-06 08:45:08'
-    log:
-    - {msg: downloading stage and flow observations, time: '08:45:08'}
-    start: '2026-04-06 08:45:08'
-    status: completed
-  metforecast_processor:
-    end: '2026-04-06 09:33:42'
-    log:
-    - {msg: downloading HRRR forecasts, time: '08:45:08'}
-    - {msg: downloading HRRR forecasts, time: '09:33:42'}
-    - {msg: processed HRRR forecasts, time: '09:33:42'}
-    start: '2026-04-06 08:45:08'
-    status: completed
-  prep_simulation:
-    end: '2026-04-06 09:39:32'
-    log:
-    - {msg: Preparing Model files, time: '09:33:42'}
-    - {msg: Prepared Model files, time: '09:39:32'}
-    start: '2026-04-06 09:33:42'
-    status: completed
+  get_flow_stage: {end: null, log: null, start: null, status: waiting}
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
