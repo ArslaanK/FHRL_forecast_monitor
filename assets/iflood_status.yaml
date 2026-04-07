@@ -1,4 +1,4 @@
-cycle_start: '2026-04-07 13:13:32'
+cycle_start: '2026-04-07 13:35:55'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
@@ -10,17 +10,9 @@ post:
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
-  pipeline_completion:
-    end: '2026-04-07 13:14:25'
-    log:
-    - {msg: forecast cycle completed, time: '13:14:25'}
-    start: '2026-04-07 13:14:25'
-    status: completed
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 0.95
-  ram: 5.73
-  timestamp: "2026-04-07 13:30:02"
+system: {cpu: 0.0, ram: 0.0, timestamp: null}
