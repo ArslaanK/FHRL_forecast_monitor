@@ -1,15 +1,10 @@
-cycle_start: '2026-04-07 13:20:57'
+cycle_start: '2026-04-07 13:24:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
   run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
-  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
-  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
-  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
-  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
@@ -17,4 +12,3 @@ pre:
   get_flow_stage: {end: null, log: null, start: null, status: waiting}
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system: {cpu: 0.0, ram: 0.0, timestamp: null}
