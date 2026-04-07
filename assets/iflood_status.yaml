@@ -1,26 +1,49 @@
 cycle_start: null
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  copy_forecast_results:
+    end: '2026-04-07 13:40:48'
+    log:
+    - {msg: copied results, time: '13:40:48'}
+    start: '2026-04-07 13:40:48'
+    status: completed
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast: {end: null, log: null, start: null, status: waiting}
+  run_nowcast:
+    end: '2026-04-07 13:40:43'
+    log:
+    - {msg: 100% completed, time: '13:40:43'}
+    start: '2026-04-07 13:40:43'
+    status: completed
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-04-07 13:40:54'
+    log:
+    - {msg: forecast cycle completed, time: '13:40:54'}
+    start: '2026-04-07 13:40:54'
+    status: completed
   push_to_s3:
-    end: '2026-04-07 13:39:04'
+    end: '2026-04-07 13:40:53'
     log:
     - {msg: new forecast files are uploaded to S3, time: '13:39:04'}
+    - {msg: new forecast files are uploaded to S3, time: '13:40:53'}
     start: '2026-04-07 13:39:04'
     status: completed
 pre:
-  metforecast_processor: {end: null, log: null, start: null, status: waiting}
-  prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 0.00
-  ram: 5.73
-  timestamp: "2026-04-07 13:39:40"
+  metforecast_processor:
+    end: '2026-04-07 13:40:31'
+    log:
+    - {msg: processed met, time: '13:40:31'}
+    start: '2026-04-07 13:40:31'
+    status: completed
+  prep_simulation:
+    end: '2026-04-07 13:40:37'
+    log:
+    - {msg: Model files prepared for simulations, time: '13:40:37'}
+    start: '2026-04-07 13:40:37'
+    status: completed
+system: {cpu: 0.62, ram: 5.73, timestamp: '2026-04-07 13:40:02'}
