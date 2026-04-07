@@ -21,6 +21,6 @@ pre:
     status: running
   prep_simulation: {end: null, log: null, start: null, status: waiting}
 system:
-  cpu: 0.00
+  cpu: 0.50
   ram: 5.73
-  timestamp: "2026-04-07 13:09:47"
+  timestamp: "2026-04-07 13:10:03"
