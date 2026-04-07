@@ -1,71 +1,14 @@
-cycle_start: '2026-04-06 20:45:02'
+cycle_start: '2026-04-07 02:45:02'
 forecast:
-  copy_forecast_results:
-    end: '2026-04-07 00:07:31'
-    log:
-    - {msg: copying results, time: '00:07:29'}
-    - {msg: copied results, time: '00:07:31'}
-    start: '2026-04-07 00:07:29'
-    status: completed
-  run_forecast:
-    end: '2026-04-07 00:07:29'
-    log:
-    - {msg: starting forecast, time: '22:57:42'}
-    - {msg: 0% completed, time: '22:58:02'}
-    - {msg: 100% completed, time: '00:07:29'}
-    start: '2026-04-06 22:57:42'
-    status: completed
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast:
-    end: '2026-04-06 22:57:40'
-    log:
-    - {msg: copying previous restart file, time: '21:32:32'}
-    - {msg: Nowcast simulation started, time: '21:32:32'}
-    - {msg: model run finished, time: '21:33:36'}
-    - {msg: hotstart ready for next forecast, time: '22:57:40'}
-    - {msg: 100% completed, time: '22:57:40'}
-    start: '2026-04-06 21:32:32'
-    status: completed
+  run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
-  pipeline_completion:
-    end: '2026-04-07 00:09:29'
-    log:
-    - {msg: forecast cycle completed, time: '00:09:29'}
-    start: '2026-04-07 00:09:29'
-    status: completed
-  process_forecast:
-    end: '2026-04-07 00:08:49'
-    log:
-    - {msg: running post processing workflow, time: '00:07:31'}
-    - {msg: post processing workflow completed, time: '00:08:49'}
-    start: '2026-04-07 00:07:31'
-    status: completed
-  push_to_s3:
-    end: '2026-04-07 00:09:26'
-    log:
-    - {msg: new forecast files are ready to be uploaded, time: '00:08:49'}
-    - {msg: new forecast files uploaded to s3, time: '00:09:26'}
-    start: '2026-04-07 00:08:49'
-    status: completed
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  process_forecast: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  get_flow_stage:
-    end: '2026-04-06 20:45:10'
-    log:
-    - {msg: downloading stage and flow observations, time: '20:45:10'}
-    start: '2026-04-06 20:45:10'
-    status: completed
-  metforecast_processor:
-    end: '2026-04-06 21:26:55'
-    log:
-    - {msg: downloading HRRR forecasts, time: '20:45:10'}
-    - {msg: downloading HRRR forecasts, time: '21:26:55'}
-    - {msg: processed HRRR forecasts, time: '21:26:55'}
-    start: '2026-04-06 20:45:10'
-    status: completed
-  prep_simulation:
-    end: '2026-04-06 21:32:31'
-    log:
-    - {msg: Preparing Model files, time: '21:26:55'}
-    - {msg: Prepared Model files, time: '21:32:31'}
-    start: '2026-04-06 21:26:55'
-    status: completed
+  get_flow_stage: {end: null, log: null, start: null, status: waiting}
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
