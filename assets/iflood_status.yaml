@@ -6,7 +6,12 @@ forecast:
     - {msg: copied results, time: '13:40:48'}
     start: '2026-04-07 13:40:48'
     status: completed
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: '2026-04-07 13:49:39'
+    log:
+    - {msg: 100% completed, time: '13:49:39'}
+    start: '2026-04-07 13:49:39'
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-04-07 13:40:43'
