@@ -1,4 +1,4 @@
-cycle_start: '2026-04-07 02:45:02'
+cycle_start: '2026-04-07 13:11:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
@@ -13,14 +13,9 @@ post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  metforecast_processor:
-    end: null
-    log:
-    - {msg: downloading met, time: '13:08:22'}
-    start: '2026-04-07 13:08:22'
-    status: running
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
 system:
-  cpu: 0.50
+  cpu: 0.00
   ram: 5.73
-  timestamp: "2026-04-07 13:10:03"
+  timestamp: "2026-04-07 13:11:16"
