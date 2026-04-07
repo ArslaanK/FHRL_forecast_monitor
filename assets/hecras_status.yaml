@@ -8,19 +8,3 @@ post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
-pre:
-  get_flow_stage:
-    end: '2026-04-07 13:27:18'
-    log:
-    - {msg: downloading stage and flow observations, time: '13:27:18'}
-    start: '2026-04-07 13:27:18'
-    status: completed
-  metforecast_processor:
-    end: '2026-04-07 13:27:50'
-    log:
-    - {msg: downloading HRRR forecasts, time: '13:27:18'}
-    - {msg: downloading HRRR forecasts, time: '13:27:49'}
-    - {msg: processed HRRR forecasts, time: '13:27:50'}
-    start: '2026-04-07 13:27:18'
-    status: completed
-  prep_simulation: {end: null, log: null, start: null, status: waiting}
