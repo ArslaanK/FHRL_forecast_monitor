@@ -1,4 +1,4 @@
-cycle_start: '2026-04-07 13:11:01'
+cycle_start: '2026-04-07 13:12:45'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
@@ -15,7 +15,4 @@ post:
 pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 0.00
-  ram: 5.73
-  timestamp: "2026-04-07 13:11:16"
+system: {cpu: 0.0, ram: 5.73, timestamp: '2026-04-07 13:11:16'}
