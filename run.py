@@ -167,25 +167,35 @@ PHASE_WIDTHS = {
 # -------------------------
 # Compute NWS ETA from first PRE log
 # -------------------------
+from datetime import datetime, timedelta, timezone
+import pytz
 
-def get_nws_eta(iflood,estimated_runtime):
+et = pytz.timezone("US/Eastern")
+
+def get_nws_eta(iflood, estimated_runtime=4):
     try:
         cycle_start = datetime.fromisoformat(iflood["cycle_start"])
 
-        # Get first log entry from pre.metforecast_processor
+        # Get first log entry (ET time)
         pre_logs = iflood["pre"]["metforecast_processor"]["log"]
-        first_time_str = pre_logs[0]["time"]  # e.g. "02:45:02"
+        first_time_str = pre_logs[0]["time"]
 
-        # Combine date from cycle_start with time from log
+        # Combine date + time (still naive)
         first_dt = datetime.combine(
             cycle_start.date(),
             datetime.strptime(first_time_str, "%H:%M:%S").time()
         )
 
-        # Observed offset (from your analysis)
-        NWS_OFFSET = timedelta(hours=estimated_runtime)
+        # LOCALIZE to ET (IMPORTANT FIX)
+        first_dt_et = et.localize(first_dt)
 
-        return first_dt + NWS_OFFSET
+        # Add runtime hours
+        nws_publish_et = first_dt_et + timedelta(hours=estimated_runtime)
+
+        # Convert to UTC
+        nws_publish_utc = nws_publish_et.astimezone(timezone.utc)
+
+        return nws_publish_utc
 
     except Exception:
         return None
@@ -554,13 +564,12 @@ with col3:
     st.subheader("⏱ Forecast Cycle")
     
     st.metric("Current Cycle", format_dual_time(cycle_dt))
-    st.metric("Next Cycle ETA", format_dual_time(next_cycle_dt))
+    st.metric("Next Cycle", format_dual_time(next_cycle_dt))
 
     if nws_eta:
-        nws_utc = nws_eta.astimezone(timezone.utc)
         st.metric(
-            "NWS Forecast ETA",
-            nws_utc.strftime('%Y-%m-%d %H:%MZ')
+            "NWS Forecast",
+            nws_publish_utc.strftime('%Y-%m-%d %H:%MZ')
         )
     else:
         st.metric("NWS Forecast ETA", "Unavailable")
