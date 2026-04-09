@@ -568,11 +568,11 @@ with col3:
 
     if nws_eta:
         st.metric(
-            "NWS Forecast",
-            nws_publish_utc.strftime('%Y-%m-%d %H:%MZ')
+            "NWS Forecast Available",
+            nws_eta.strftime('%Y-%m-%d %H:%MZ')
         )
     else:
-        st.metric("NWS Forecast ETA", "Unavailable")
+        st.metric("NWS Forecast Available", "Unavailable")
 
 st.divider()
 
