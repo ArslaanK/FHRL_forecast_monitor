@@ -147,7 +147,35 @@ PHASE_WIDTHS = {
     "post": 13.6,
 }
 
-    
+# -------------------------
+# Compute NWS ETA from first PRE log
+# -------------------------
+from datetime import datetime, timedelta
+
+def get_nws_eta(iflood):
+    try:
+        cycle_start = datetime.fromisoformat(iflood["cycle_start"])
+
+        # Get first log entry from pre.metforecast_processor
+        pre_logs = iflood["pre"]["metforecast_processor"]["log"]
+        first_time_str = pre_logs[0]["time"]  # e.g. "02:45:02"
+
+        # Combine date from cycle_start with time from log
+        first_dt = datetime.combine(
+            cycle_start.date(),
+            datetime.strptime(first_time_str, "%H:%M:%S").time()
+        )
+
+        # Observed offset (from your analysis)
+        NWS_OFFSET = timedelta(hours=3, minutes=42)
+
+        return first_dt + NWS_OFFSET
+
+    except Exception:
+        return None
+
+
+ 
 
 def render_pipeline_overview_single_bar(data):
     PHASE_WIDTHS = {
@@ -432,7 +460,8 @@ PHASE_WIDTHS = {
 iflood = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/iflood_status.yaml")
 hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/hecras_status.yaml")
 
-
+nws_eta = get_nws_eta(iflood) 
+st.write(f"nws_eta: {nws_eta} ")
 # -------------------------
 # Forecast Cycle
 # -------------------------
