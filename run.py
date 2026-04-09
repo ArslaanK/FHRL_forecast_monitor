@@ -7,13 +7,14 @@ Created on Sun Feb 15 23:59:18 2026
 #test
 import streamlit as st
 import yaml
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from streamlit_autorefresh import st_autorefresh
 import plotly.graph_objects as go
 import pandas as pd
 import requests
 import re
 from zoneinfo import ZoneInfo
+import pytz
 
 # -------------------------
 # Last Refresh from GitHub commit
@@ -67,6 +68,19 @@ st_autorefresh(interval=300000, key="refresh")
 # Helpers
 # -------------------------
 
+
+# Define timezones
+utc = pytz.utc
+est = pytz.timezone("US/Eastern")
+
+def format_dual_time(dt):
+    if dt is None:
+        return "Unavailable"
+    
+    dt_utc = dt.astimezone(utc)
+    dt_est = dt.astimezone(est)
+    
+    return f"{dt_utc.strftime('%Y-%m-%d %HZ')} / {dt_est.strftime('%Y-%m-%d %I:%M %p ET')}"
 def phase_progress(data, phase_name):
     """
     Calculate the average progress for a given phase as a float between 0 and 1.
@@ -536,11 +550,12 @@ with col2:
 nws_eta = get_nws_eta(iflood)
 with col3:
     st.subheader("⏱ Forecast Cycle")
-    st.metric("Current Cycle", f"{cycle_dt.strftime('%Y-%m-%d %HZ')}")
-    st.metric("Next Cycle ETA", f"{next_cycle_dt.strftime('%Y-%m-%d %HZ')}")
+    
+    st.metric("Current Cycle", format_dual_time(cycle_dt))
+    st.metric("Next Cycle ETA", format_dual_time(next_cycle_dt))
 
     if nws_eta:
-        st.metric("NWS Forecast ETA", nws_eta.strftime('%Y-%m-%d %H:%M:%S'))
+        st.metric("NWS Forecast ETA", format_dual_time(nws_eta))
     else:
         st.metric("NWS Forecast ETA", "Unavailable")
 
