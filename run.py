@@ -590,11 +590,11 @@ with col3:
     if nws_eta:
     
         if is_nws_published(iflood):
-            st.metric("NWS Forecast", "PUBLISHED ✅")
-            st.caption("👉 ")
-            st.markdown(
-                "[View Published Forecast](https://data.iflood.vse.gmu.edu/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/iflood_Advisories_for_NWS)"
-            )
+            st.metric("NWS Forecast", "PUBLISHED")
+            st.link_button(
+            "View Published Forecast",
+            "https://data.iflood.vse.gmu.edu/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/iflood_Advisories_for_NWS"
+        )
     
         else:
             st.metric(
