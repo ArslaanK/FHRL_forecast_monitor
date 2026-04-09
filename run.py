@@ -64,7 +64,7 @@ st.markdown("""
 #st_autorefresh(interval=10000, key="refresh")
 # ?? auto refresh every 5 minutes
 #st_autorefresh(interval=300000, key="refresh")
-st.autorefresh(interval=60000, key="nws_refresh")
+st_autorefresh(interval=60000, key="nws_refresh")
 
 # -------------------------
 # Helpers
