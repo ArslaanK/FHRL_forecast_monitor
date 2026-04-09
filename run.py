@@ -460,8 +460,7 @@ PHASE_WIDTHS = {
 iflood = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/iflood_status.yaml")
 hecras = load_yaml("https://raw.githubusercontent.com/ArslaanK/FHRL_forecast_monitor/refs/heads/main/assets/hecras_status.yaml")
 
-nws_eta = get_nws_eta(iflood) 
-st.write(f"nws_eta: {nws_eta} ")
+
 # -------------------------
 # Forecast Cycle
 # -------------------------
@@ -534,10 +533,16 @@ with col2:
     render_pipeline_overview_single_bar(hecras)
         
 # Column 3: Forecast Cycle
+nws_eta = get_nws_eta(iflood)
 with col3:
     st.subheader("⏱ Forecast Cycle")
     st.metric("Current Cycle", f"{cycle_dt.strftime('%Y-%m-%d %HZ')}")
     st.metric("Next Cycle ETA", f"{next_cycle_dt.strftime('%Y-%m-%d %HZ')}")
+
+    if nws_eta:
+        st.metric("NWS Forecast ETA", nws_eta.strftime('%Y-%m-%d %H:%M:%S'))
+    else:
+        st.metric("NWS Forecast ETA", "Unavailable")
 
 st.divider()
 
