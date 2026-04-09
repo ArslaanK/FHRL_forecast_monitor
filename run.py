@@ -80,7 +80,10 @@ def format_dual_time(dt):
     dt_utc = dt.astimezone(utc)
     dt_est = dt.astimezone(est)
     
-    return f"{dt_utc.strftime('%Y-%m-%d %HZ')} / {dt_est.strftime('%Y-%m-%d %I:%M %p ET')}"
+    #return f"{dt_utc.strftime('%Y-%m-%d %HZ')} / {dt_est.strftime('%Y-%m-%d %I:%M %p ET')}"
+    return f"{dt_utc.strftime('%Y-%m-%d %HZ')}"
+
+
 def phase_progress(data, phase_name):
     """
     Calculate the average progress for a given phase as a float between 0 and 1.
