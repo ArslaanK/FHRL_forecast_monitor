@@ -580,7 +580,7 @@ with col2:
     render_pipeline_overview_single_bar(hecras)
         
 # Column 3: Forecast Cycle
-nws_eta = get_nws_eta(iflood,estimated_runtime=3.75)
+nws_eta = get_nws_eta(iflood,estimated_runtime=4)
 with col3:
     st.subheader("⏱ Forecast Cycle")
     
