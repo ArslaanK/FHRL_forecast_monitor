@@ -68,6 +68,25 @@ st_autorefresh(interval=300000, key="refresh")
 # Helpers
 # -------------------------
 
+def is_nws_published(iflood):
+    try:
+        logs = iflood["post"]["gen_nws_forecast"]["log"]
+        return any("iFLOOD forecasts uploaded for NWS" in l["msg"] for l in logs)
+    except:
+        return False
+        
+def format_countdown(target_dt):
+    now = datetime.now(timezone.utc)
+    remaining = target_dt - now
+
+    if remaining.total_seconds() <= 0:
+        return "Publishing..."
+
+    hours, remainder = divmod(int(remaining.total_seconds()), 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    return f"{hours}h {minutes}m {seconds}s"    
+
 
 # Define timezones
 utc = pytz.utc
@@ -566,13 +585,29 @@ with col3:
     st.metric("Current Cycle", format_dual_time(cycle_dt))
     st.metric("Next Cycle", format_dual_time(next_cycle_dt))
 
+    # if nws_eta:
+    #     st.metric(
+    #         "NWS Forecast Available",
+    #         nws_eta.strftime('%Y-%m-%d %H:%MZ')
+    #     )
+    # else:
+    #     st.metric("NWS Forecast Available", "Unavailable")
+    
     if nws_eta:
-        st.metric(
-            "NWS Forecast Available",
-            nws_eta.strftime('%Y-%m-%d %H:%MZ')
-        )
+    
+        if is_nws_published(iflood):
+            st.metric("NWS Forecast", "PUBLISHED ✅")
+    
+        else:
+            st.metric(
+                "NWS Forecast ETA",
+                nws_eta.strftime('%Y-%m-%d %H:%MZ'),
+                delta=f"⏳ {format_countdown(nws_eta)} remaining"
+            )
+    
     else:
-        st.metric("NWS Forecast Available", "Unavailable")
+        st.metric("NWS Forecast ETA", "Unavailable")
+
 
 st.divider()
 
