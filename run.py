@@ -39,6 +39,8 @@ last_refresh_est = last_refresh_utc.astimezone(eastern)
 # -------------------------
 # Helpers
 # -------------------------
+st_autorefresh = st.autorefresh(interval=60000, key="nws_refresh")
+
 st.set_page_config(layout="wide")
 
 st.markdown("""
@@ -62,7 +64,7 @@ st.markdown("""
 # ?? auto refresh, 10 sec
 #st_autorefresh(interval=10000, key="refresh")
 # ?? auto refresh every 5 minutes
-st_autorefresh(interval=300000, key="refresh")
+#st_autorefresh(interval=300000, key="refresh")
 
 # -------------------------
 # Helpers
