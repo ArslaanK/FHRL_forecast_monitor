@@ -591,6 +591,10 @@ with col3:
     
         if is_nws_published(iflood):
             st.metric("NWS Forecast", "PUBLISHED ✅")
+            st.caption("👉 ")
+            st.markdown(
+                "[View Published Forecast](https://data.iflood.vse.gmu.edu/?prefix=Forecast/ChesapeakeBay_ADCIRCSWAN/iflood_Advisories_for_NWS)"
+            )
     
         else:
             st.metric(
