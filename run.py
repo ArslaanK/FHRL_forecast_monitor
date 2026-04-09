@@ -557,7 +557,11 @@ with col3:
     st.metric("Next Cycle ETA", format_dual_time(next_cycle_dt))
 
     if nws_eta:
-        st.metric("NWS Forecast ETA", format_dual_time(nws_eta))
+        nws_utc = nws_eta.astimezone(timezone.utc)
+        st.metric(
+            "NWS Forecast ETA",
+            nws_utc.strftime('%Y-%m-%d %H:%MZ')
+        )
     else:
         st.metric("NWS Forecast ETA", "Unavailable")
 
