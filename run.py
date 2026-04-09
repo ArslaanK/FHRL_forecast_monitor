@@ -102,7 +102,7 @@ def format_dual_time(dt):
     dt_est = dt.astimezone(est)
     
     #return f"{dt_utc.strftime('%Y-%m-%d %HZ')} / {dt_est.strftime('%Y-%m-%d %I:%M %p ET')}"
-    return f"{dt_utc.strftime('%Y-%m-%d %HZ')}"
+    return f"{dt_utc.strftime('%Y-%m-%d %H:%MZ')}"
 
 
 def phase_progress(data, phase_name):
@@ -587,14 +587,6 @@ with col3:
     st.metric("Current Cycle", format_dual_time(cycle_dt))
     st.metric("Next Cycle", format_dual_time(next_cycle_dt))
 
-    # if nws_eta:
-    #     st.metric(
-    #         "NWS Forecast Available",
-    #         nws_eta.strftime('%Y-%m-%d %H:%MZ')
-    #     )
-    # else:
-    #     st.metric("NWS Forecast Available", "Unavailable")
-    
     if nws_eta:
     
         if is_nws_published(iflood):
