@@ -167,9 +167,8 @@ PHASE_WIDTHS = {
 # -------------------------
 # Compute NWS ETA from first PRE log
 # -------------------------
-from datetime import datetime, timedelta
 
-def get_nws_eta(iflood):
+def get_nws_eta(iflood,estimated_runtime):
     try:
         cycle_start = datetime.fromisoformat(iflood["cycle_start"])
 
@@ -184,7 +183,7 @@ def get_nws_eta(iflood):
         )
 
         # Observed offset (from your analysis)
-        NWS_OFFSET = timedelta(hours=3, minutes=42)
+        NWS_OFFSET = timedelta(hours=estimated_runtime)
 
         return first_dt + NWS_OFFSET
 
@@ -550,7 +549,7 @@ with col2:
     render_pipeline_overview_single_bar(hecras)
         
 # Column 3: Forecast Cycle
-nws_eta = get_nws_eta(iflood)
+nws_eta = get_nws_eta(iflood,estimated_runtime=3.75)
 with col3:
     st.subheader("⏱ Forecast Cycle")
     
