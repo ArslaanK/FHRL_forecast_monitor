@@ -4,3 +4,4 @@ streamlit-autorefresh>=0.0.5
 plotly>=5.20.0
 requests>=2.31.0
 pandas>=2.0.0
+pytz
