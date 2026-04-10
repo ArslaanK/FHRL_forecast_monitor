@@ -77,8 +77,8 @@ def send_slack_instability_alert(task_name):
     payload = {
         "text": f"⚠️ *MODEL INSTABILITY DETECTED*\n"
                 f"*Task:* {task_name}\n"
-                f"The model has stopped due to an elevation/velocity blow-up. "
-                f"Check the dashboard for details."
+                f"The ADCIRC model has crashed due to an elevation/velocity blow-up. "
+                f"Check the dashboard for details: https://fhrlforecastmonitor.streamlit.app/"
     }
     
     try:
