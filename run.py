@@ -217,8 +217,6 @@ PHASE_WIDTHS = {
 # -------------------------
 # Compute NWS ETA from first PRE log
 # -------------------------
-from datetime import datetime, timedelta, timezone
-import pytz
 
 et = pytz.timezone("US/Eastern")
 
@@ -251,7 +249,7 @@ def get_nws_eta(iflood, estimated_runtime=4):
         return None
 
 
- def render_pipeline_overview_single_bar(data):
+def render_pipeline_overview_single_bar(data):
     PHASE_WIDTHS = {
         "pre": 5.0,
         "nowcast": 15.0,
