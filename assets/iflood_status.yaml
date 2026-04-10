@@ -26,9 +26,8 @@ forecast:
     - {msg: 15% completed, time: '03:50:01'}
     - {msg: 17% completed - CRASHED, time: '03:52:02'}
     - {msg: model run finished, time: '03:53:26'}
-    - {msg: 17% completed - CRASHED, time: '12:23:48'}
     start: '2026-04-10 03:22:57'
-    status: running
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-04-10 03:22:55'
@@ -51,6 +50,7 @@ nowcast:
     - {msg: model run finished, time: '03:21:41'}
     - {msg: 100% completed - STABLE, time: '03:22:02'}
     - {msg: hotstart ready for next forecast, time: '03:22:55'}
+    - {msg: nowcast cycle completed, time: '03:22:57'}
     start: '2026-04-10 02:53:35'
     status: completed
 post:
