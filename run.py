@@ -67,9 +67,35 @@ st.markdown("""
 st_autorefresh(interval=60000, key="nws_refresh")
 
 # -------------------------
-# Helpers
+# send slack alerts
 # -------------------------
 
+def send_slack_instability_alert(task_name):
+    # Retrieve URL from secrets
+    webhook_url = st.secrets["SLACK_WEBHOOK_URL"]
+    
+    payload = {
+        "text": f"⚠️ *MODEL INSTABILITY DETECTED*\n"
+                f"*Task:* {task_name}\n"
+                f"The model has stopped due to an elevation/velocity blow-up. "
+                f"Check the dashboard for details."
+    }
+    
+    try:
+        response = requests.post(
+            webhook_url, 
+            data=json.dumps(payload),
+            headers={'Content-Type': 'application/json'}
+        )
+        return response.status_code == 200
+    except Exception as e:
+        st.error(f"Failed to send Slack alert: {e}")
+        return False
+        
+# -------------------------
+# Helpers
+# -------------------------
+        
 def is_nws_published(iflood):
     try:
         logs = iflood["post"]["gen_nws_forecast"]["log"]
@@ -425,8 +451,15 @@ def render_pipeline(title, pipeline_data):
             if isinstance(log, list):
                 task_crashed = any("CRASHED" in (l.get("msg", "") if isinstance(l, dict) else str(l)) for l in log)
 
-            cols = st.columns([0.1, 0.5, 0.3, 0.3])
+
+            if is_unstable:
+                # Use session state to ensure you only get ONE notification per browser session
+                if f"alert_sent_{unstable_task}" not in st.session_state:
+                    send_slack_instability_alert(unstable_task)
+                    st.session_state[f"alert_sent_{unstable_task}"] = True
             
+            cols = st.columns([0.1, 0.5, 0.3, 0.3])
+  
             # Badge logic: Force FAILED if crashed
             badge_type = "failed" if task_crashed else status
             cols[0].markdown(status_badge(badge_type), unsafe_allow_html=True)
