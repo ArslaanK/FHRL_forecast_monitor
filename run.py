@@ -78,7 +78,8 @@ def send_slack_instability_alert(task_name):
         "text": f"⚠️ *MODEL INSTABILITY DETECTED*\n"
                 f"*Task:* {task_name}\n"
                 f"The ADCIRC model has crashed due to an elevation/velocity blow-up. "
-                f"Check the dashboard for details: https://fhrlforecastmonitor.streamlit.app/"
+                f"Check the dashboard for details: https://fhrlforecastmonitor.streamlit.app/",
+                f"Model needs a restart."
     }
     
     try:
@@ -250,9 +251,7 @@ def get_nws_eta(iflood, estimated_runtime=4):
         return None
 
 
- 
-
-def render_pipeline_overview_single_bar(data):
+ def render_pipeline_overview_single_bar(data):
     PHASE_WIDTHS = {
         "pre": 5.0,
         "nowcast": 15.0,
@@ -260,23 +259,10 @@ def render_pipeline_overview_single_bar(data):
         "post": 15.0
     }
 
-    # -------------------------
-    # Determine if any progress exists
-    # -------------------------
     total_progress = sum(phase_progress(data, phase) for phase in PHASE_WIDTHS)
     has_progress = total_progress > 0
-    
-    # -------------------------
-    # Debug: print phase progress
-    # -------------------------
-    # for phase in PHASE_WIDTHS.keys():
-    #     progress = phase_progress(data, phase)
-    #     st.write(f"DEBUG: phase='{phase}', progress={progress}")
 
-
-    # -------------------------
     # Determine current active phase
-    # -------------------------
     current_phase = None
     if has_progress:
         for phase in ["pre", "nowcast", "forecast", "post"]:
@@ -288,51 +274,51 @@ def render_pipeline_overview_single_bar(data):
                 current_phase = phase
                 break
 
-    # -------------------------
-    # Labels row
-    # -------------------------
+    # Labels row (same as before)
     labels_html = "<div style='display:flex; width:100%; margin-bottom:4px;'>"
     for phase, width in PHASE_WIDTHS.items():
-        if current_phase == phase:
-            color = "#000000"  # Black for current
-            weight = "700"     # Bold
-        else:
-            color = "#555"
-            weight = "400"
+        color = "#000000" if current_phase == phase else "#555"
+        weight = "700" if current_phase == phase else "400"
         labels_html += f"<div style='width:{width}%; text-align:center; font-size:10px; font-weight:{weight}; color:{color}; text-transform:uppercase;'>{phase}</div>"
     labels_html += "</div>"
 
-    # -------------------------
     # Progress bar row
-    # -------------------------
     bar_html = "<div style='display:flex; width:100%; height:24px; border-radius:4px; overflow:hidden; border:1px solid #ddd;'>"
     for phase, width in PHASE_WIDTHS.items():
         progress = phase_progress(data, phase)
+        
+        # --- NEW: Check for instability in this specific phase ---
+        phase_crashed = False
+        tasks = data.get(phase, {})
+        for t_meta in tasks.values():
+            log = t_meta.get("log", [])
+            if isinstance(log, list):
+                if any("CRASHED" in (l.get("msg", "") if isinstance(l, dict) else str(l)) for l in log):
+                    phase_crashed = True
+                    break
 
-        # If the phase is running but progress is zero, set a minimum visible percentage for hatching
         if phase == current_phase and progress == 0:
-            visible_progress = 0.03  # 3%
+            visible_progress = 0.03
         else:
             visible_progress = max(progress, 0.02) if progress > 0 else 0
 
-        # Determine fill style
-        if progress >= 1.0:
+        # --- UPDATED: Fill Style Logic ---
+        if phase_crashed:
+            # Solid red to indicate the phase failed/stopped prematurely
+            fill_style = "background-color:#d62728;" 
+        elif progress >= 1.0:
             fill_style = "background-color:#2ca02c;"  # Completed green
         elif phase == current_phase:
-            fill_style = "background: repeating-linear-gradient(45deg, #2ca02c, #2ca02c 6px, #1f7a1f 6px, #1f7a1f 12px);"  # Running hashed
+            fill_style = "background: repeating-linear-gradient(45deg, #2ca02c, #2ca02c 6px, #1f7a1f 6px, #1f7a1f 12px);"
         else:
-            fill_style = "background-color:#e0e0e0;"  # Waiting gray
+            fill_style = "background-color:#e0e0e0;"
 
         bar_html += f"<div style='width:{width}%; background-color:#f0f0f0; position:relative; border-right:1px solid white;'>"
         bar_html += f"<div style='width:{visible_progress*100}%; height:100%; {fill_style} transition: width 0.5s;'></div>"
         bar_html += "</div>"
 
     bar_html += "</div>"
-
-    # -------------------------
-    # Render in Streamlit
-    # -------------------------
-    st.markdown(f"<!-- {datetime.now()} -->" + labels_html + bar_html, unsafe_allow_html=True)
+    st.markdown(f"" + labels_html + bar_html, unsafe_allow_html=True)
 
 def load_yaml(path_or_url):
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
