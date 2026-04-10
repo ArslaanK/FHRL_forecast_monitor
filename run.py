@@ -384,7 +384,15 @@ def render_pipeline(title, pipeline_data):
     # --- Check for instability across all tasks in this pipeline first ---
     is_unstable = False
     unstable_task = ""
-    
+    # 2. Re-insert the missing helper function
+    def parse_start(meta):
+        start_str = meta.get("start")
+        if start_str:
+            try:
+                return datetime.strptime(start_str, "%Y-%m-%d %H:%M:%S")
+            except:
+                return datetime.max
+        return datetime.max
     for phase in ["nowcast", "forecast"]:
         for t_name, t_meta in pipeline_data.get(phase, {}).items():
             log = t_meta.get("log", [])
