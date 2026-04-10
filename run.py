@@ -442,7 +442,7 @@ def render_pipeline(title, pipeline_data):
     # --- Render the Header and Unstable Banner ---
     st.subheader(title)
     if is_unstable:
-        st.error(f"⚠️ **MODEL INSTABILITY DETECTED**: {unstable_task} has stopped due to elevation/velocity blow-up.")
+        st.error(f"⚠️ **MODEL INSTABILITY DETECTED**: {unstable_task} has stopped due to elevation/velocity blow-up. Model needs a restart.")
 
     # --- Rest of your sorting and task rendering logic ---
     for phase in ["pre", "nowcast", "forecast", "post"]:
