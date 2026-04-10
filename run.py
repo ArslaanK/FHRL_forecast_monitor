@@ -77,9 +77,9 @@ def send_slack_instability_alert(task_name):
     payload = {
         "text": f"⚠️ *MODEL INSTABILITY DETECTED*\n"
                 f"*Task:* {task_name}\n"
-                f"The ADCIRC model has crashed due to an elevation/velocity blow-up. "
-                f"Check the dashboard for details: https://fhrlforecastmonitor.streamlit.app/"
-                f"Model needs a restart.",
+                f"The ADCIRC model has crashed due to an elevation/velocity blow-up.\n"
+                f"Model needs a restart.\n"       
+                f"Check the dashboard for details: https://fhrlforecastmonitor.streamlit.app/",
     }
     
     try:
@@ -93,6 +93,33 @@ def send_slack_instability_alert(task_name):
         st.error(f"Failed to send Slack alert: {e}")
         return False
         
+# 1. Create a cached function that handles the logic
+@st.cache_resource(ttl=43200)  # 43200 seconds = 12 hours
+def check_and_send_slack(task_name, cycle_time):
+    """
+    This function will only actually execute its contents once every 12 hours
+    per unique task_name/cycle_time combination.
+    """
+    webhook_url = st.secrets["SLACK_WEBHOOK_URL"]
+    
+    payload = {
+        "text": f"⚠️ *MODEL INSTABILITY DETECTED*\n"
+                f"*Task:* {task_name}\n"
+                f"The ADCIRC model has crashed due to an elevation/velocity blow-up.\n"
+                f"Cycle: {cycle_time}\n"
+                f"Model needs a restart.\n"
+                f"Check dashboard: https://fhrlforecastmonitor.streamlit.app/"
+    }
+    
+    try:
+        response = requests.post(
+            webhook_url, 
+            data=json.dumps(payload),
+            headers={'Content-Type': 'application/json'}
+        )
+        return True
+    except Exception as e:
+        return False        
 # -------------------------
 # Helpers
 # -------------------------
@@ -435,12 +462,14 @@ def render_pipeline(title, pipeline_data):
             if isinstance(log, list):
                 task_crashed = any("CRASHED" in (l.get("msg", "") if isinstance(l, dict) else str(l)) for l in log)
 
-
+            # 2. Inside your render_pipeline logic where instability is detected:
             if is_unstable:
-                # Use session state to ensure you only get ONE notification per browser session
-                if f"alert_sent_{unstable_task}" not in st.session_state:
-                    send_slack_instability_alert(unstable_task)
-                    st.session_state[f"alert_sent_{unstable_task}"] = True
+                # Use the cycle_start time as part of the key so if a NEW cycle 
+                # crashes later, it can still alert if needed.
+                cycle_id = iflood.get("cycle_start", "unknown")
+                
+                # This call effectively "checks the 12-hour timer"
+                check_and_send_slack(unstable_task, cycle_id)
             
             cols = st.columns([0.1, 0.5, 0.3, 0.3])
   
