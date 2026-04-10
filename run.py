@@ -147,18 +147,20 @@ def phase_progress(data, phase_name):
     return min(average_progress, 1.0)  # Ensure progress never exceeds 1.0
     
 
+
 def get_progress_color(status):
     if status.lower() == "completed":
         return "#2ca02c"  # green
     elif status.lower() == "running":
-        return "#2ca02c"  # blue
+        return "#1f77b4"  # blue
+    elif status.lower() == "crashed":
+        return "#d62728"  # red
     elif status.lower() == "waiting":
         return "#9e9e9e"  # gray
-    # elif status.lower() == "failed":
-    #     return "#d62728"  # red
+    elif status.lower() == "failed":
+        return "#d62728"  # red     
     else:
-        return "#FFC107"  # amber for other statuses
-
+        return "#FFC107"
 
 def get_latest_progress(data, phase_name):
     """
@@ -382,7 +384,7 @@ def render_pipeline(title, pipeline_data):
     st.subheader(title)
 
     for phase in ["pre", "nowcast", "forecast", "post"]:
-        tasks = pipeline_data.get(phase, {})   # get phase tasks
+        tasks = pipeline_data.get(phase, {})
 
         if not tasks:
             continue
@@ -394,75 +396,75 @@ def render_pipeline(title, pipeline_data):
                 try:
                     return datetime.strptime(start_str, "%Y-%m-%d %H:%M:%S")
                 except:
-                    return datetime.max  # put invalid/missing start at the end
-            else:
-                return datetime.max
+                    return datetime.max
+            return datetime.max
 
         sorted_tasks = sorted(tasks.items(), key=lambda x: parse_start(x[1]))
 
-        # --- Render sorted tasks ---
         for task_name, meta in sorted_tasks:
             status = meta.get("status", "waiting")
             start = meta.get("start")
             end = meta.get("end")
             log = meta.get("log")
 
+            # --- NEW: Check logs for CRASHED message ---
+            is_crashed = False
+            if isinstance(log, list):
+                if any("CRASHED" in (item.get("msg", "") if isinstance(item, dict) else str(item)) for item in log):
+                    is_crashed = True
+                    status = "failed" # Use failed badge/color
+
             cols = st.columns([0.1, 0.5, 0.3, 0.3])
-            cols[0].markdown(status_badge(status), unsafe_allow_html=True)
+            
+            # Show "FAILED" badge if crashed
+            badge_status = "failed" if is_crashed else status
+            cols[0].markdown(status_badge(badge_status), unsafe_allow_html=True)
 
             base_label = f"{phase.upper()} / {task_name}"
-
             progress_val = 0
             progress_text = ""
 
             # --- Extract progress from logs ---
-            if status == "running" and isinstance(log, list):
+            if isinstance(log, list):
                 for item in reversed(log):
                     msg = item.get("msg") if isinstance(item, dict) else str(item)
                     match = re.search(r"([\d\.]+)%", msg)
                     if match:
                         progress_val = float(match.group(1)) / 100
                         progress_text = f" — {match.group(1)}%"
+                        if is_crashed:
+                            progress_text += " [INSTABILITY CRASH]"
                         break
 
-                # Ensure at least a small visible progress for hatching
-                if progress_val < 0.02:
-                    progress_val = 0.02
-
-                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}", unsafe_allow_html=True)
-
-            elif status == "completed":
-                progress_val = 1.0
-                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label} — 100%**", unsafe_allow_html=True)
-            else:
-                cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**", unsafe_allow_html=True)
-
-            # --- Timing ---
-            if start:
-                if status == "completed" and end:
-                    cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
-                else:
-                    cols[2].write(f"Start: {start.split()[1]} | ⏱ waiting")
-
-            # --- Progress bar with hatching for running ---
-            if status == "running":
-                # green hatching
+            # --- Determine fill style ---
+            if is_crashed:
+                fill_style = "background-color:#d62728;" # Red
+                progress_val = max(progress_val, 0.05) # Keep bar visible
+            elif status == "running":
                 fill_style = """
                     background: repeating-linear-gradient(
-                        45deg,
-                        #2ca02c,
-                        #2ca02c 8px,
-                        #1f7a1f 8px,
-                        #1f7a1f 16px
+                        45deg, #2ca02c, #2ca02c 8px, #1f7a1f 8px, #1f7a1f 16px
                     );
                 """
             elif status == "completed":
                 fill_style = "background-color:#2ca02c;"
-            elif status == "failed":
-                fill_style = "background-color:#d62728;"
+                progress_val = 1.0
             else:
                 fill_style = "background-color:#e0e0e0;"
 
+            # Render text
+            cols[1].markdown(f"&nbsp;&nbsp;&nbsp;**{base_label}**{progress_text}", unsafe_allow_html=True)
+
+            # Timing
+            if start:
+                if status == "completed" and end:
+                    cols[2].write(f"Start: {start.split()[1]} | ⏱ {duration(start, end)}")
+                elif is_crashed:
+                    cols[2].write(f"Start: {start.split()[1]} | 🛑 CRASHED")
+                else:
+                    cols[2].write(f"Start: {start.split()[1]} | ⏱ running")
+
+            # Progress Bar
             progress_html = f"""
             <div style='background-color:#e0e0e0; border-radius:4px; height:16px; width:100%;'>
                 <div style='width:{progress_val*100}%; height:16px; border-radius:4px; {fill_style} transition: width 0.5s;'></div>
@@ -470,12 +472,17 @@ def render_pipeline(title, pipeline_data):
             """
             cols[3].markdown(progress_html, unsafe_allow_html=True)
 
-            # --- Logs ---
+            # Logs with Auto-Expansion on Crash
             if isinstance(log, list):
-                with st.expander("More info", expanded=False):
+                with st.expander("More info", expanded=is_crashed):
                     for item in log:
                         if isinstance(item, dict):
-                            st.write(f"[{item['time']}] {item['msg']}")
+                            msg_text = item['msg']
+                            # Highlight the crash message in red
+                            if "CRASHED" in msg_text:
+                                st.error(f"[{item['time']}] {msg_text}")
+                            else:
+                                st.write(f"[{item['time']}] {msg_text}")
                         else:
                             st.write(f"- {item}")
 
