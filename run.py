@@ -78,8 +78,8 @@ def send_slack_instability_alert(task_name):
         "text": f"⚠️ *MODEL INSTABILITY DETECTED*\n"
                 f"*Task:* {task_name}\n"
                 f"The ADCIRC model has crashed due to an elevation/velocity blow-up. "
-                f"Check the dashboard for details: https://fhrlforecastmonitor.streamlit.app/",
-                f"Model needs a restart."
+                f"Check the dashboard for details: https://fhrlforecastmonitor.streamlit.app/"
+                f"Model needs a restart.",
     }
     
     try:
