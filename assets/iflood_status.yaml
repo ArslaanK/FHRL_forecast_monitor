@@ -142,12 +142,17 @@ post:
     start: '2026-04-11 06:23:11'
     status: completed
   gen_spatial_maps:
-    end: null
+    end: '2026-04-11 06:58:57'
     log:
     - {msg: max water spatial maps generated, time: '06:45:43'}
     - {msg: max pressure maps generated, time: '06:51:05'}
+    - {msg: max wind maps generated, time: '06:58:55'}
+    - {msg: max inundations maps generated, time: '06:58:55'}
+    - {msg: max wave height maps generated, time: '06:58:56'}
+    - {msg: max wave period maps generated, time: '06:58:56'}
+    - {msg: max and timeseries spatial maps generated, time: '06:58:57'}
     start: '2026-04-11 06:45:43'
-    status: running
+    status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
