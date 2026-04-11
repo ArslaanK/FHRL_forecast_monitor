@@ -36,6 +36,7 @@ forecast:
     - {msg: 38% completed - RUNNING, time: '17:04:01'}
     - {msg: 39% completed - RUNNING, time: '17:06:01'}
     - {msg: 40% completed - RUNNING, time: '17:08:02'}
+    - {msg: 41% completed - RUNNING, time: '17:10:02'}
     start: '2026-04-11 15:51:21'
     status: running
 nowcast:
