@@ -128,11 +128,12 @@ post:
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
-    end: null
+    end: '2026-04-12 06:02:54'
     log:
     - {msg: started NWS forecast processing, time: '05:59:51'}
+    - {msg: iFLOOD forecasts uploaded for NWS, time: '06:02:54'}
     start: '2026-04-12 05:59:51'
-    status: running
+    status: completed
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
@@ -151,7 +152,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:11:32'}
     start: '2026-04-12 02:11:25'
     status: completed
-system:
-  cpu: 2.30
-  ram: 7.55
-  timestamp: "2026-04-12 06:00:02"
+system: {cpu: 2.3, ram: 7.55, timestamp: '2026-04-12 06:00:02'}
