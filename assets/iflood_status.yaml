@@ -102,7 +102,12 @@ nowcast:
     start: '2026-04-16 02:40:24'
     status: completed
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: null
+    log:
+    - {msg: timeseries extraction started, time: '06:20:15'}
+    start: '2026-04-16 06:20:15'
+    status: running
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
@@ -129,4 +134,4 @@ post:
 pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system: {cpu: 2.8, ram: 5.71, timestamp: '2026-04-16 06:10:02'}
+system: {cpu: 14.97, ram: 6.88, timestamp: '2026-04-16 06:20:02'}
