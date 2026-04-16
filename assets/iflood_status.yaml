@@ -1,4 +1,4 @@
-cycle_start: '2026-04-16 02:03:02'
+cycle_start: null
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
@@ -6,23 +6,8 @@ nowcast:
   run_nowcast:
     end: null
     log:
-    - {msg: copying previous restart file, time: '02:11:47'}
-    - {msg: 0% completed - ERROR, time: '02:12:01'}
-    - {msg: Nowcast simulation started, time: '02:12:05'}
-    - {msg: 0% completed - ERROR, time: '02:12:05'}
-    - {msg: 12% completed - RUNNING, time: '02:16:02'}
-    - {msg: 17% completed - RUNNING, time: '02:18:01'}
-    - {msg: 25% completed - RUNNING, time: '02:20:02'}
-    - {msg: 34% completed - RUNNING, time: '02:22:01'}
-    - {msg: 38% completed - RUNNING, time: '02:24:01'}
-    - {msg: 50% completed - RUNNING, time: '02:26:01'}
-    - {msg: 55% completed - RUNNING, time: '02:28:02'}
-    - {msg: 62% completed - RUNNING, time: '02:30:01'}
-    - {msg: 73% completed - RUNNING, time: '02:32:01'}
-    - {msg: 76% completed - RUNNING, time: '02:34:01'}
-    - {msg: 87% completed - RUNNING, time: '02:36:01'}
-    - {msg: 94% completed - RUNNING, time: '02:38:01'}
-    start: '2026-04-16 02:11:47'
+    - {msg: model run finished, time: '02:40:24'}
+    start: '2026-04-16 02:40:24'
     status: running
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
@@ -33,18 +18,6 @@ post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  metforecast_processor:
-    end: '2026-04-16 02:11:40'
-    log:
-    - {msg: downloading met, time: '02:03:02'}
-    - {msg: processed met, time: '02:11:40'}
-    start: '2026-04-16 02:03:02'
-    status: completed
-  prep_simulation:
-    end: '2026-04-16 02:11:46'
-    log:
-    - {msg: Preparing Model files, time: '02:11:40'}
-    - {msg: Model files prepared for simulations, time: '02:11:46'}
-    start: '2026-04-16 02:11:40'
-    status: completed
-system: {cpu: 98.39, ram: 26.87, timestamp: '2026-04-16 02:30:02'}
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
+system: {cpu: 99.12, ram: 27.0, timestamp: '2026-04-16 02:40:02'}
