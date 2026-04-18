@@ -81,6 +81,7 @@ forecast:
     - {msg: 96% completed - RUNNING, time: '05:52:01'}
     - {msg: 98% completed - RUNNING, time: '05:56:01'}
     - {msg: 99% completed - RUNNING, time: '05:58:01'}
+    - {msg: 100% completed - STABLE, time: '06:00:02'}
     start: '2026-04-18 02:51:13'
     status: running
 nowcast:
