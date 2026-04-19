@@ -1,41 +1,13 @@
-cycle_start: '2026-04-19 15:03:01'
+cycle_start: '2026-04-19 15:11:45'
 forecast:
-  copy_forecast_results:
-    end: '2026-04-19 15:03:04'
-    log:
-    - {msg: copying results, time: '15:03:02'}
-    - {msg: copied results, time: '15:03:04'}
-    start: '2026-04-19 15:03:02'
-    status: completed
-  run_forecast:
-    end: '2026-04-19 15:03:01'
-    log:
-    - {msg: 100% completed, time: '15:03:01'}
-    start: '2026-04-19 15:03:01'
-    status: completed
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
   run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
-  pipeline_completion:
-    end: '2026-04-19 15:05:05'
-    log:
-    - {msg: forecast cycle completed, time: '15:05:05'}
-    start: '2026-04-19 15:05:05'
-    status: completed
-  process_forecast:
-    end: '2026-04-19 15:04:25'
-    log:
-    - {msg: running post processing workflow, time: '15:03:04'}
-    - {msg: post processing workflow completed, time: '15:04:25'}
-    start: '2026-04-19 15:03:04'
-    status: completed
-  push_to_s3:
-    end: '2026-04-19 15:05:02'
-    log:
-    - {msg: new forecast files are ready to be uploaded, time: '15:04:25'}
-    - {msg: new forecast files uploaded to s3, time: '15:05:02'}
-    start: '2026-04-19 15:04:25'
-    status: completed
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  process_forecast: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   get_flow_stage: {end: null, log: null, start: null, status: waiting}
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
