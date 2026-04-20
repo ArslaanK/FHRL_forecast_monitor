@@ -197,6 +197,6 @@ pre:
     start: '2026-04-20 02:11:33'
     status: completed
 system:
-  cpu: 41.24
-  ram: 24.66
-  timestamp: "2026-04-20 10:00:03"
+  cpu: 94.74
+  ram: 25.18
+  timestamp: "2026-04-20 10:10:02"
