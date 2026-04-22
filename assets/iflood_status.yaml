@@ -1,4 +1,34 @@
-system:
-  cpu: 98.30
-  ram: 26.75
-  timestamp: "2026-04-22 05:40:02"
+cycle_start: null
+forecast:
+  copy_forecast_results:
+    end: '2026-04-22 05:44:51'
+    log:
+    - {msg: copying results, time: '05:44:48'}
+    - {msg: copied results, time: '05:44:51'}
+    start: '2026-04-22 05:44:48'
+    status: completed
+  run_forecast:
+    end: '2026-04-22 05:44:47'
+    log:
+    - {msg: model run finished, time: '05:44:47'}
+    start: '2026-04-22 05:44:47'
+    status: completed
+nowcast:
+  run_nowcast: {end: null, log: null, start: null, status: waiting}
+post:
+  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast:
+    end: null
+    log:
+    - {msg: started NWS forecast processing, time: '05:44:52'}
+    start: '2026-04-22 05:44:52'
+    status: running
+  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
+pre:
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
+system: {cpu: 98.3, ram: 26.75, timestamp: '2026-04-22 05:40:02'}
