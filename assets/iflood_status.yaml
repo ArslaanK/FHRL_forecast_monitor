@@ -14,13 +14,16 @@ post:
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   metforecast_processor:
-    end: null
+    end: '2026-04-25 15:12:00'
     log:
     - {msg: downloading met, time: '15:03:02'}
+    - {msg: processed met, time: '15:12:00'}
     start: '2026-04-25 15:03:02'
+    status: completed
+  prep_simulation:
+    end: null
+    log:
+    - {msg: Preparing Model files, time: '15:12:00'}
+    start: '2026-04-25 15:12:00'
     status: running
-  prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 2.36
-  ram: 5.44
-  timestamp: "2026-04-25 15:10:02"
+system: {cpu: 2.36, ram: 5.44, timestamp: '2026-04-25 15:10:02'}
