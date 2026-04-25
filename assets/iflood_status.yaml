@@ -19,6 +19,7 @@ nowcast:
     - {msg: 62% completed - RUNNING, time: '02:28:02'}
     - {msg: 75% completed - RUNNING, time: '02:30:01'}
     - {msg: 81% completed - RUNNING, time: '02:32:01'}
+    - {msg: 88% completed - RUNNING, time: '02:34:01'}
     start: '2026-04-25 02:11:28'
     status: running
 post:
