@@ -24,6 +24,7 @@ nowcast:
     - {msg: 87% completed - RUNNING, time: '02:38:01'}
     - {msg: 92% completed - RUNNING, time: '02:40:01'}
     - {msg: 100% completed - STABLE, time: '02:42:01'}
+    - {msg: model run finished, time: '02:42:58'}
     start: '2026-04-26 02:11:55'
     status: running
 post:
