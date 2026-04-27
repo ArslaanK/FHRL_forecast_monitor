@@ -1,8 +1,14 @@
 cycle_start: '2026-04-27 08:45:03'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  copy_forecast_results:
+    end: '2026-04-27 10:48:25'
+    log:
+    - {msg: copying results, time: '10:48:23'}
+    - {msg: copied results, time: '10:48:25'}
+    start: '2026-04-27 10:48:23'
+    status: completed
   run_forecast:
-    end: null
+    end: '2026-04-27 10:48:23'
     log:
     - {msg: starting forecast, time: '09:35:23'}
     - {msg: 0% completed, time: '09:36:02'}
@@ -41,8 +47,10 @@ forecast:
     - {msg: 95% completed, time: '10:42:02'}
     - {msg: 96% completed, time: '10:44:01'}
     - {msg: 98% completed, time: '10:46:01'}
+    - {msg: 99% completed, time: '10:48:01'}
+    - {msg: 100% completed, time: '10:48:23'}
     start: '2026-04-27 09:35:23'
-    status: running
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-04-27 09:35:21'
@@ -56,7 +64,12 @@ nowcast:
     status: completed
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
-  process_forecast: {end: null, log: null, start: null, status: waiting}
+  process_forecast:
+    end: null
+    log:
+    - {msg: running post processing workflow, time: '10:48:26'}
+    start: '2026-04-27 10:48:26'
+    status: running
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   get_flow_stage:
