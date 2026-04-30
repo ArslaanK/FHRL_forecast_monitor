@@ -16,7 +16,12 @@ forecast:
 nowcast:
   run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-04-30 02:05:06'
+    log:
+    - {msg: forecast cycle completed, time: '02:05:06'}
+    start: '2026-04-30 02:05:06'
+    status: completed
   process_forecast:
     end: '2026-04-30 02:04:27'
     log:
@@ -25,11 +30,12 @@ post:
     start: '2026-04-30 02:03:04'
     status: completed
   push_to_s3:
-    end: null
+    end: '2026-04-30 02:05:02'
     log:
     - {msg: new forecast files are ready to be uploaded, time: '02:04:27'}
+    - {msg: new forecast files uploaded to s3, time: '02:05:02'}
     start: '2026-04-30 02:04:27'
-    status: running
+    status: completed
 pre:
   get_flow_stage: {end: null, log: null, start: null, status: waiting}
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
