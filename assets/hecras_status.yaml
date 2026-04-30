@@ -8,6 +8,7 @@ nowcast:
     log:
     - {msg: copying previous restart file, time: '09:30:30'}
     - {msg: Nowcast simulation started, time: '09:30:30'}
+    - {msg: model run finished, time: '09:33:01'}
     start: '2026-04-30 09:30:30'
     status: running
 post:
