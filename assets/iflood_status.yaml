@@ -40,6 +40,7 @@ forecast:
     - {msg: 43% completed - RUNNING, time: '04:12:01'}
     - {msg: 44% completed - RUNNING, time: '04:14:02'}
     - {msg: 46% completed - RUNNING, time: '04:16:01'}
+    - {msg: 48% completed - RUNNING, time: '04:20:01'}
     start: '2026-05-01 02:43:15'
     status: running
 nowcast:
@@ -62,4 +63,7 @@ post:
 pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system: {cpu: 98.48, ram: 26.43, timestamp: '2026-05-01 04:10:02'}
+system:
+  cpu: 98.52
+  ram: 26.44
+  timestamp: "2026-05-01 04:20:02"
