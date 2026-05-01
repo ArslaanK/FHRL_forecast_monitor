@@ -1,4 +1,4 @@
-cycle_start: '2026-05-01 02:03:01'
+cycle_start: null
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
@@ -6,9 +6,8 @@ nowcast:
   run_nowcast:
     end: null
     log:
-    - {msg: copying previous restart file, time: '02:11:36'}
-    - {msg: 0% completed - ERROR, time: '02:12:01'}
-    start: '2026-05-01 02:11:36'
+    - {msg: model run finished, time: '02:42:34'}
+    start: '2026-05-01 02:42:34'
     status: running
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
@@ -19,22 +18,6 @@ post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  metforecast_processor:
-    end: '2026-05-01 02:11:29'
-    log:
-    - {msg: downloading met, time: '02:03:02'}
-    - {msg: processed met, time: '02:11:29'}
-    start: '2026-05-01 02:03:02'
-    status: completed
-  prep_simulation:
-    end: '2026-05-01 02:11:36'
-    log:
-    - {msg: Preparing Model files, time: '02:11:29'}
-    - {msg: Model files prepared for simulations, time: '02:11:36'}
-    start: '2026-05-01 02:11:29'
-    status: completed
-:02'}
-system:
-  cpu: 98.29
-  ram: 26.42
-  timestamp: "2026-05-01 02:40:02"
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
+system: {cpu: 0.0, ram: 0.0, timestamp: null}
