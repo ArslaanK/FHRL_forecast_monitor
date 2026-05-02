@@ -115,12 +115,18 @@ nowcast:
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast:
-    end: null
+    end: '2026-05-02 12:44:30'
     log:
     - {msg: running post processing workflow, time: '12:43:10'}
+    - {msg: post processing workflow completed, time: '12:44:30'}
     start: '2026-05-02 12:43:10'
+    status: completed
+  push_to_s3:
+    end: null
+    log:
+    - {msg: new forecast files are ready to be uploaded, time: '12:44:31'}
+    start: '2026-05-02 12:44:31'
     status: running
-  push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   get_flow_stage:
     end: '2026-05-02 08:45:12'
