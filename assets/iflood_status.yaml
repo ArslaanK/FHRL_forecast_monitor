@@ -1,8 +1,14 @@
 cycle_start: '2026-05-02 02:03:02'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  copy_forecast_results:
+    end: '2026-05-02 05:50:50'
+    log:
+    - {msg: copying results, time: '05:50:46'}
+    - {msg: copied results, time: '05:50:50'}
+    start: '2026-05-02 05:50:46'
+    status: completed
   run_forecast:
-    end: null
+    end: '2026-05-02 05:50:46'
     log:
     - {msg: starting forecast, time: '02:48:46'}
     - {msg: 0% completed - ERROR, time: '02:50:02'}
@@ -90,8 +96,9 @@ forecast:
     - {msg: 97% completed - RUNNING, time: '05:46:01'}
     - {msg: 98% completed - RUNNING, time: '05:48:01'}
     - {msg: 100% completed - STABLE, time: '05:50:02'}
+    - {msg: model run finished, time: '05:50:46'}
     start: '2026-05-02 02:48:46'
-    status: running
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-05-02 02:48:44'
@@ -126,7 +133,12 @@ post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
-  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast:
+    end: null
+    log:
+    - {msg: started NWS forecast processing, time: '05:50:51'}
+    start: '2026-05-02 05:50:51'
+    status: running
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
@@ -145,4 +157,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:11:20'}
     start: '2026-05-02 02:11:13'
     status: completed
-system: {cpu: 98.61, ram: 26.7, timestamp: '2026-05-02 05:40:02'}
+system: {cpu: 98.41, ram: 26.71, timestamp: '2026-05-02 05:50:03'}
