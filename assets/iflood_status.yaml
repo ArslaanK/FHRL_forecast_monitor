@@ -1,0 +1,37 @@
+cycle_start: '2026-05-03 02:03:01'
+forecast:
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
+nowcast:
+  run_nowcast:
+    end: null
+    log:
+    - {msg: copying previous restart file, time: '02:11:28'}
+    - {msg: Nowcast simulation started, time: '02:11:47'}
+    - {msg: 0% completed - ERROR, time: '02:11:48'}
+    start: '2026-05-03 02:11:28'
+    status: running
+post:
+  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
+pre:
+  metforecast_processor:
+    end: '2026-05-03 02:11:23'
+    log:
+    - {msg: downloading met, time: '02:03:02'}
+    - {msg: processed met, time: '02:11:23'}
+    start: '2026-05-03 02:03:02'
+    status: completed
+  prep_simulation:
+    end: '2026-05-03 02:11:27'
+    log:
+    - {msg: Preparing Model files, time: '02:11:24'}
+    - {msg: Model files prepared for simulations, time: '02:11:27'}
+    start: '2026-05-03 02:11:24'
+    status: completed
+system: {cpu: 2.41, ram: 5.18, timestamp: '2026-05-03 02:10:02'}
