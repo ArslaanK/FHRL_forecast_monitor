@@ -169,6 +169,6 @@ pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
 system:
-  cpu: 1.09
-  ram: 4.92
-  timestamp: "2026-05-04 13:40:02"
+  cpu: 1.05
+  ram: 4.91
+  timestamp: "2026-05-04 13:50:02"
