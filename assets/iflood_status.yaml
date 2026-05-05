@@ -10,6 +10,7 @@ nowcast:
     - {msg: 0% completed - ERROR, time: '15:12:01'}
     - {msg: Nowcast simulation started, time: '15:12:07'}
     - {msg: 0% completed - ERROR, time: '15:12:08'}
+    - {msg: 0% completed - RUNNING, time: '15:14:01'}
     start: '2026-05-05 15:11:45'
     status: running
 post:
