@@ -7,6 +7,7 @@ forecast:
     - {msg: starting forecast, time: '02:41:49'}
     - {msg: 0% completed - ERROR, time: '02:42:01'}
     - {msg: 0% completed - RUNNING, time: '02:44:01'}
+    - {msg: 1% completed - RUNNING, time: '02:46:01'}
     start: '2026-05-09 02:41:49'
     status: running
 nowcast:
