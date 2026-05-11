@@ -134,12 +134,14 @@ nowcast:
     status: completed
 post:
   create_timeseries:
-    end: null
+    end: '2026-05-11 07:30:10'
     log:
     - {msg: timeseries extraction started, time: '07:16:15'}
     - {msg: vector json files extracted, time: '07:29:48'}
+    - {msg: wse and wave validation timeseries generated, time: '07:30:09'}
+    - {msg: timeseries completed, time: '07:30:10'}
     start: '2026-05-11 07:16:15'
-    status: running
+    status: completed
   fetch_competing_model:
     end: '2026-05-11 07:18:11'
     log:
@@ -188,4 +190,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:11:50'}
     start: '2026-05-11 02:11:45'
     status: completed
-system: {cpu: 7.91, ram: 5.95, timestamp: '2026-05-11 07:20:02'}
+system: {cpu: 20.56, ram: 6.67, timestamp: '2026-05-11 07:30:02'}
