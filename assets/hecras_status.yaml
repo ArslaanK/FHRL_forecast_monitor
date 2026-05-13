@@ -50,6 +50,7 @@ forecast:
     - {msg: 72% completed, time: '11:58:01'}
     - {msg: 73% completed, time: '12:02:01'}
     - {msg: 74% completed, time: '12:08:01'}
+    - {msg: 75% completed, time: '12:12:02'}
     start: '2026-05-13 10:08:26'
     status: running
 nowcast:
