@@ -1,4 +1,4 @@
-cycle_start: '2026-05-16 15:50:40'
+cycle_start: '2026-05-16 19:25:00'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
