@@ -172,12 +172,13 @@ post:
     status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3:
-    end: null
+    end: '2026-05-22 20:25:26'
     log:
     - {msg: data upload to S3 started, time: '20:17:40'}
     - {msg: flood alerts issues via MSG and Emails, time: '20:24:32'}
+    - {msg: data upload to S3 completed, time: '20:25:26'}
     start: '2026-05-22 20:17:40'
-    status: running
+    status: completed
 pre:
   metforecast_processor:
     end: '2026-05-22 15:12:03'
