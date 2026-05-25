@@ -117,7 +117,12 @@ nowcast:
     start: '2026-05-25 02:12:04'
     status: completed
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: null
+    log:
+    - {msg: timeseries extraction started, time: '06:12:44'}
+    start: '2026-05-25 06:12:44'
+    status: running
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
@@ -128,12 +133,17 @@ post:
     start: '2026-05-25 05:25:41'
     status: completed
   gen_spatial_maps:
-    end: null
+    end: '2026-05-25 06:12:25'
     log:
     - {msg: max water spatial maps generated, time: '05:58:58'}
     - {msg: max pressure maps generated, time: '06:04:22'}
+    - {msg: max wind maps generated, time: '06:12:23'}
+    - {msg: max inundations maps generated, time: '06:12:23'}
+    - {msg: max wave height maps generated, time: '06:12:23'}
+    - {msg: max wave period maps generated, time: '06:12:24'}
+    - {msg: max and timeseries spatial maps generated, time: '06:12:25'}
     start: '2026-05-25 05:58:58'
-    status: running
+    status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
@@ -151,7 +161,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:12:04'}
     start: '2026-05-25 02:11:57'
     status: completed
-system:
-  cpu: 2.36
-  ram: 5.25
-  timestamp: "2026-05-25 06:10:02"
+system: {cpu: 2.36, ram: 5.25, timestamp: '2026-05-25 06:10:02'}
