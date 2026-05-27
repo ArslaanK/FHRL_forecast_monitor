@@ -4,7 +4,7 @@ forecast:
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
   run_nowcast:
-    end: null
+    end: '2026-05-27 15:45:01'
     log:
     - {msg: copying previous restart file, time: '15:11:49'}
     - {msg: 0% completed - ERROR, time: '15:12:01'}
@@ -26,8 +26,10 @@ nowcast:
     - {msg: 96% completed - RUNNING, time: '15:42:01'}
     - {msg: model run finished, time: '15:43:56'}
     - {msg: 100% completed - STABLE, time: '15:44:02'}
+    - {msg: hotstart ready for next forecast, time: '15:45:01'}
+    - {msg: nowcast cycle completed, time: '15:45:01'}
     start: '2026-05-27 15:11:49'
-    status: running
+    status: completed
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
