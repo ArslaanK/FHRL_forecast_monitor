@@ -25,6 +25,7 @@ forecast:
     - {msg: 20% completed, time: '23:42:01'}
     - {msg: 21% completed, time: '23:44:01'}
     - {msg: 22% completed, time: '23:46:01'}
+    - {msg: 24% completed, time: '23:48:01'}
     start: '2026-05-27 23:07:05'
     status: running
 nowcast:
