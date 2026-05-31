@@ -28,14 +28,26 @@ nowcast:
     start: '2026-05-31 09:14:16'
     status: completed
 post:
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-05-31 10:43:54'
+    log:
+    - {msg: forecast cycle completed, time: '10:43:54'}
+    start: '2026-05-31 10:43:54'
+    status: completed
   process_forecast:
-    end: null
+    end: '2026-05-31 10:43:17'
     log:
     - {msg: running post processing workflow, time: '10:42:02'}
+    - {msg: post processing workflow completed, time: '10:43:17'}
     start: '2026-05-31 10:42:02'
-    status: running
-  push_to_s3: {end: null, log: null, start: null, status: waiting}
+    status: completed
+  push_to_s3:
+    end: '2026-05-31 10:43:51'
+    log:
+    - {msg: new forecast files are ready to be uploaded, time: '10:43:17'}
+    - {msg: new forecast files uploaded to s3, time: '10:43:51'}
+    start: '2026-05-31 10:43:17'
+    status: completed
 pre:
   get_flow_stage:
     end: '2026-05-31 08:45:09'
