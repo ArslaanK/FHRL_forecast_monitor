@@ -1,80 +1,23 @@
-cycle_start: null
+cycle_start: '2026-06-03 02:03:02'
 forecast:
-  copy_forecast_results:
-    end: '2026-06-02 19:07:20'
-    log:
-    - {msg: copying results, time: '19:07:16'}
-    - {msg: copied results, time: '19:07:20'}
-    start: '2026-06-02 19:07:16'
-    status: completed
-  run_forecast:
-    end: '2026-06-02 19:07:16'
-    log:
-    - {msg: model run finished, time: '19:07:16'}
-    start: '2026-06-02 19:07:16'
-    status: completed
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
   run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
-  create_timeseries:
-    end: '2026-06-02 20:03:18'
-    log:
-    - {msg: timeseries extraction started, time: '19:49:30'}
-    - {msg: vector json files extracted, time: '20:02:55'}
-    - {msg: wse and wave validation timeseries generated, time: '20:03:17'}
-    - {msg: timeseries completed, time: '20:03:18'}
-    start: '2026-06-02 19:49:30'
-    status: completed
-  fetch_competing_model:
-    end: '2026-06-02 19:51:26'
-    log:
-    - {msg: pulling timeseries forecast for other models, time: '19:51:26'}
-    start: '2026-06-02 19:51:26'
-    status: completed
-  gen_flood_alerts:
-    end: '2026-06-02 20:03:09'
-    log:
-    - {msg: Flood alerts generated, time: '20:03:09'}
-    start: '2026-06-02 20:03:09'
-    status: completed
-  gen_nws_forecast:
-    end: '2026-06-02 19:10:12'
-    log:
-    - {msg: started NWS forecast processing, time: '19:07:20'}
-    - {msg: iFLOOD forecasts uploaded for NWS, time: '19:10:12'}
-    start: '2026-06-02 19:07:20'
-    status: completed
-  gen_spatial_maps:
-    end: '2026-06-02 19:49:11'
-    log:
-    - {msg: max water spatial maps generated, time: '19:35:58'}
-    - {msg: max pressure maps generated, time: '19:41:20'}
-    - {msg: max wind maps generated, time: '19:49:10'}
-    - {msg: max inundations maps generated, time: '19:49:10'}
-    - {msg: max wave height maps generated, time: '19:49:10'}
-    - {msg: max wave period maps generated, time: '19:49:11'}
-    - {msg: max and timeseries spatial maps generated, time: '19:49:11'}
-    start: '2026-06-02 19:35:58'
-    status: completed
-  pipeline_completion:
-    end: '2026-06-02 20:36:23'
-    log:
-    - {msg: forecast cycle completed, time: '20:36:23'}
-    start: '2026-06-02 20:36:23'
-    status: completed
-  push_to_s3:
-    end: '2026-06-02 20:36:22'
-    log:
-    - {msg: data upload to S3 started, time: '20:29:53'}
-    - {msg: flood alerts issues via MSG and Emails, time: '20:33:28'}
-    - {msg: data upload to S3 completed, time: '20:34:11'}
-    - {msg: new forecast files are uploaded to S3, time: '20:36:22'}
-    start: '2026-06-02 20:29:53'
-    status: completed
+  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  metforecast_processor:
+    end: null
+    log:
+    - {msg: downloading met, time: '02:03:02'}
+    start: '2026-06-03 02:03:02'
+    status: running
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 0.62
-  ram: 4.02
-  timestamp: "2026-06-03 02:00:02"
+system: {cpu: 0.0, ram: 0.0, timestamp: null}
