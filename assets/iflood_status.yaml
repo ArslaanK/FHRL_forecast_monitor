@@ -61,12 +61,10 @@ post:
     end: null
     log:
     - {msg: data upload to S3 started, time: '20:29:53'}
+    - {msg: flood alerts issues via MSG and Emails, time: '20:33:28'}
     start: '2026-06-02 20:29:53'
     status: running
 pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 5.77
-  ram: 7.01
-  timestamp: "2026-06-02 20:30:02"
+system: {cpu: 5.77, ram: 7.01, timestamp: '2026-06-02 20:30:02'}
