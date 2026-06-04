@@ -125,7 +125,12 @@ nowcast:
     start: '2026-06-04 02:11:48'
     status: completed
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: null
+    log:
+    - {msg: timeseries extraction started, time: '06:48:42'}
+    start: '2026-06-04 06:48:42'
+    status: running
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
@@ -136,12 +141,17 @@ post:
     start: '2026-06-04 06:07:12'
     status: completed
   gen_spatial_maps:
-    end: null
+    end: '2026-06-04 06:48:17'
     log:
     - {msg: max water spatial maps generated, time: '06:36:21'}
     - {msg: max pressure maps generated, time: '06:41:45'}
+    - {msg: max wind maps generated, time: '06:48:14'}
+    - {msg: max inundations maps generated, time: '06:48:15'}
+    - {msg: max wave height maps generated, time: '06:48:15'}
+    - {msg: max wave period maps generated, time: '06:48:16'}
+    - {msg: max and timeseries spatial maps generated, time: '06:48:17'}
     start: '2026-06-04 06:36:21'
-    status: running
+    status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
