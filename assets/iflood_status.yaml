@@ -8,6 +8,7 @@ nowcast:
     log:
     - {msg: copying previous restart file, time: '15:11:28'}
     - {msg: 0% completed - ERROR, time: '15:12:02'}
+    - {msg: 0% completed - RUNNING, time: '15:14:02'}
     start: '2026-06-06 15:11:28'
     status: running
 post:
