@@ -165,6 +165,7 @@ post:
     end: null
     log:
     - {msg: data upload to S3 started, time: '07:02:52'}
+    - {msg: flood alerts issues via MSG and Emails, time: '07:06:54'}
     start: '2026-06-09 07:02:52'
     status: running
 pre:
