@@ -1,10 +1,15 @@
 cycle_start: '2026-06-13 15:03:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '15:52:23'}
+    start: '2026-06-13 15:52:23'
+    status: running
 nowcast:
   run_nowcast:
-    end: null
+    end: '2026-06-13 15:52:21'
     log:
     - {msg: copying previous restart file, time: '15:11:46'}
     - {msg: Nowcast simulation started, time: '15:12:00'}
@@ -30,8 +35,10 @@ nowcast:
     - {msg: 100% completed - STABLE, time: '15:50:01'}
     - {msg: model run finished, time: '15:51:31'}
     - {msg: 100% completed - STABLE, time: '15:52:01'}
+    - {msg: hotstart ready for next forecast, time: '15:52:21'}
+    - {msg: nowcast cycle completed, time: '15:52:21'}
     start: '2026-06-13 15:11:46'
-    status: running
+    status: completed
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
