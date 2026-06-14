@@ -1,0 +1,62 @@
+cycle_start: '2026-06-13 20:45:02'
+forecast:
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '23:24:34'}
+    - {msg: 0% completed, time: '23:26:01'}
+    - {msg: 1% completed, time: '23:32:01'}
+    - {msg: 2% completed, time: '23:36:01'}
+    - {msg: 3% completed, time: '23:40:01'}
+    - {msg: 4% completed, time: '23:46:01'}
+    - {msg: 5% completed, time: '23:50:01'}
+    - {msg: 6% completed, time: '23:54:01'}
+    - {msg: 7% completed, time: '00:00:01'}
+    - {msg: 8% completed, time: '00:04:01'}
+    - {msg: 9% completed, time: '00:08:02'}
+    - {msg: 10% completed, time: '00:12:01'}
+    - {msg: 11% completed, time: '00:16:01'}
+    - {msg: 12% completed, time: '00:22:01'}
+    - {msg: 13% completed, time: '00:26:01'}
+    - {msg: 14% completed, time: '00:30:02'}
+    - {msg: 15% completed, time: '00:34:01'}
+    start: '2026-06-13 23:24:34'
+    status: running
+nowcast:
+  run_nowcast:
+    end: '2026-06-13 23:24:32'
+    log:
+    - {msg: copying previous restart file, time: '21:20:15'}
+    - {msg: Nowcast simulation started, time: '21:20:15'}
+    - {msg: model run finished, time: '21:21:27'}
+    - {msg: hotstart ready for next forecast, time: '23:24:32'}
+    - {msg: 100% completed, time: '23:24:32'}
+    start: '2026-06-13 21:20:15'
+    status: completed
+post:
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  process_forecast: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
+pre:
+  get_flow_stage:
+    end: '2026-06-13 20:45:06'
+    log:
+    - {msg: downloading stage and flow observations, time: '20:45:06'}
+    start: '2026-06-13 20:45:06'
+    status: completed
+  metforecast_processor:
+    end: '2026-06-13 21:14:25'
+    log:
+    - {msg: downloading HRRR forecasts, time: '20:45:06'}
+    - {msg: downloading HRRR forecasts, time: '21:14:25'}
+    - {msg: processed HRRR forecasts, time: '21:14:25'}
+    start: '2026-06-13 20:45:06'
+    status: completed
+  prep_simulation:
+    end: '2026-06-13 21:20:15'
+    log:
+    - {msg: Preparing Model files, time: '21:14:25'}
+    - {msg: Prepared Model files, time: '21:20:15'}
+    start: '2026-06-13 21:14:25'
+    status: completed
