@@ -1,47 +1,30 @@
-cycle_start: '2026-06-17 20:45:02'
+cycle_start: '2026-06-18 02:03:02'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast:
-    end: null
+  copy_forecast_results:
+    end: '2026-06-18 02:03:05'
     log:
-    - {msg: starting forecast, time: '23:26:58'}
-    - {msg: 0% completed, time: '23:28:01'}
-    start: '2026-06-17 23:26:58'
-    status: initializing
-nowcast:
-  run_nowcast:
-    end: '2026-06-17 23:26:51'
-    log:
-    - {msg: copying previous restart file, time: '21:14:59'}
-    - {msg: Nowcast simulation started, time: '21:14:59'}
-    - {msg: model run finished, time: '21:16:25'}
-    - {msg: hotstart ready for next forecast, time: '23:26:50'}
-    - {msg: 100% completed, time: '23:26:51'}
-    start: '2026-06-17 21:14:59'
+    - {msg: copying results, time: '02:03:02'}
+    - {msg: copied results, time: '02:03:05'}
+    start: '2026-06-18 02:03:02'
     status: completed
+  run_forecast:
+    end: '2026-06-18 02:03:02'
+    log:
+    - {msg: 100% completed, time: '02:03:02'}
+    start: '2026-06-18 02:03:02'
+    status: completed
+nowcast:
+  run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
-  process_forecast: {end: null, log: null, start: null, status: waiting}
+  process_forecast:
+    end: null
+    log:
+    - {msg: running post processing workflow, time: '02:03:05'}
+    start: '2026-06-18 02:03:05'
+    status: running
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  get_flow_stage:
-    end: '2026-06-17 20:45:08'
-    log:
-    - {msg: downloading stage and flow observations, time: '20:45:08'}
-    start: '2026-06-17 20:45:08'
-    status: completed
-  metforecast_processor:
-    end: '2026-06-17 21:09:20'
-    log:
-    - {msg: downloading HRRR forecasts, time: '20:45:08'}
-    - {msg: downloading HRRR forecasts, time: '21:09:20'}
-    - {msg: processed HRRR forecasts, time: '21:09:20'}
-    start: '2026-06-17 20:45:08'
-    status: completed
-  prep_simulation:
-    end: '2026-06-17 21:14:59'
-    log:
-    - {msg: Preparing Model files, time: '21:09:20'}
-    - {msg: Prepared Model files, time: '21:14:59'}
-    start: '2026-06-17 21:09:20'
-    status: completed
+  get_flow_stage: {end: null, log: null, start: null, status: waiting}
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
