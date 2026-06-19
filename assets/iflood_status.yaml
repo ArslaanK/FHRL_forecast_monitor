@@ -1,8 +1,13 @@
 cycle_start: '2026-06-19 15:03:02'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast:
+  copy_forecast_results:
     end: null
+    log:
+    - {msg: copying results, time: '18:29:59'}
+    start: '2026-06-19 18:29:59'
+    status: running
+  run_forecast:
+    end: '2026-06-19 18:29:59'
     log:
     - {msg: starting forecast, time: '15:41:11'}
     - {msg: 0% completed - ERROR, time: '15:42:01'}
@@ -83,8 +88,9 @@ forecast:
     - {msg: 96% completed - RUNNING, time: '18:24:02'}
     - {msg: 98% completed - RUNNING, time: '18:26:01'}
     - {msg: 99% completed - RUNNING, time: '18:28:01'}
+    - {msg: model run finished, time: '18:29:59'}
     start: '2026-06-19 15:41:11'
-    status: running
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-06-19 15:41:09'
