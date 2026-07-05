@@ -30,6 +30,7 @@ post:
     end: null
     log:
     - {msg: max water spatial maps generated, time: '06:08:49'}
+    - {msg: max pressure maps generated, time: '06:14:11'}
     start: '2026-07-05 06:08:49'
     status: running
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
@@ -37,7 +38,4 @@ post:
 pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 4.23
-  ram: 3.71
-  timestamp: "2026-07-05 06:10:02"
+system: {cpu: 4.23, ram: 3.71, timestamp: '2026-07-05 06:10:02'}
