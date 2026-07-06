@@ -3,7 +3,12 @@ forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast: {end: null, log: null, start: null, status: waiting}
+  run_nowcast:
+    end: null
+    log:
+    - {msg: copying previous restart file, time: '15:10:56'}
+    start: '2026-07-06 15:10:56'
+    status: running
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
@@ -14,10 +19,17 @@ post:
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   metforecast_processor:
-    end: null
+    end: '2026-07-06 15:10:51'
     log:
     - {msg: downloading met, time: '15:03:02'}
+    - {msg: processed met, time: '15:10:51'}
     start: '2026-07-06 15:03:02'
-    status: running
-  prep_simulation: {end: null, log: null, start: null, status: waiting}
-system: {cpu: 0.0, ram: 0.0, timestamp: null}
+    status: completed
+  prep_simulation:
+    end: '2026-07-06 15:10:56'
+    log:
+    - {msg: Preparing Model files, time: '15:10:51'}
+    - {msg: Model files prepared for simulations, time: '15:10:56'}
+    start: '2026-07-06 15:10:51'
+    status: completed
+system: {cpu: 2.32, ram: 8.17, timestamp: '2026-07-06 15:10:02'}
