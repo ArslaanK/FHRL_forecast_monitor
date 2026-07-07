@@ -157,13 +157,19 @@ post:
     - {msg: max and timeseries spatial maps generated, time: '06:36:35'}
     start: '2026-07-07 06:23:37'
     status: completed
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-07-07 07:21:28'
+    log:
+    - {msg: forecast cycle completed, time: '07:21:28'}
+    start: '2026-07-07 07:21:28'
+    status: completed
   push_to_s3:
-    end: '2026-07-07 07:19:16'
+    end: '2026-07-07 07:21:28'
     log:
     - {msg: data upload to S3 started, time: '07:14:31'}
     - {msg: flood alerts issues via MSG and Emails, time: '07:18:29'}
     - {msg: data upload to S3 completed, time: '07:19:16'}
+    - {msg: new forecast files are uploaded to S3, time: '07:21:28'}
     start: '2026-07-07 07:14:31'
     status: completed
 pre:
@@ -181,7 +187,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:12:19'}
     start: '2026-07-07 02:12:14'
     status: completed
-system:
-  cpu: 4.34
-  ram: 10.29
-  timestamp: "2026-07-07 07:20:02"
+system: {cpu: 4.34, ram: 10.29, timestamp: '2026-07-07 07:20:02'}
