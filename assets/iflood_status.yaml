@@ -137,6 +137,7 @@ post:
     end: null
     log:
     - {msg: max water spatial maps generated, time: '19:18:57'}
+    - {msg: max pressure maps generated, time: '19:24:20'}
     start: '2026-07-10 19:18:57'
     status: running
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
@@ -156,7 +157,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '15:11:51'}
     start: '2026-07-10 15:11:44'
     status: completed
-system:
-  cpu: 4.30
-  ram: 8.27
-  timestamp: "2026-07-10 19:20:03"
+system: {cpu: 4.3, ram: 8.27, timestamp: '2026-07-10 19:20:03'}
