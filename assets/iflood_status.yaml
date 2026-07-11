@@ -20,11 +20,12 @@ post:
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
-    end: null
+    end: '2026-07-11 19:05:05'
     log:
     - {msg: started NWS forecast processing, time: '19:02:22'}
+    - {msg: iFLOOD forecasts uploaded for NWS, time: '19:05:05'}
     start: '2026-07-11 19:02:22'
-    status: running
+    status: completed
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
