@@ -156,6 +156,7 @@ post:
     end: null
     log:
     - {msg: timeseries extraction started, time: '12:12:04'}
+    - {msg: vector json files extracted, time: '12:42:05'}
     start: '2026-07-13 12:12:04'
     status: running
   fetch_competing_model:
@@ -164,7 +165,12 @@ post:
     - {msg: pulling timeseries forecast for other models, time: '12:15:23'}
     start: '2026-07-13 12:15:23'
     status: completed
-  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts:
+    end: '2026-07-13 12:42:58'
+    log:
+    - {msg: Flood alerts generated, time: '12:42:58'}
+    start: '2026-07-13 12:42:58'
+    status: completed
   gen_nws_forecast:
     end: '2026-07-13 11:21:07'
     log:
@@ -201,7 +207,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:19:38'}
     start: '2026-07-13 02:19:22'
     status: completed
-system:
-  cpu: 100.00
-  ram: 32.20
-  timestamp: "2026-07-13 12:40:03"
+system: {cpu: 100.0, ram: 32.2, timestamp: '2026-07-13 12:40:03'}
