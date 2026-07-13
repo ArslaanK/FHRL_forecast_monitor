@@ -8,6 +8,8 @@ nowcast:
     log:
     - {msg: copying previous restart file, time: '02:19:39'}
     - {msg: 0% completed - ERROR, time: '02:20:02'}
+    - {msg: Nowcast simulation started, time: '02:20:07'}
+    - {msg: 0% completed - ERROR, time: '02:20:08'}
     start: '2026-07-13 02:19:39'
     status: running
 post:
@@ -33,4 +35,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:19:38'}
     start: '2026-07-13 02:19:22'
     status: completed
-system: {cpu: 95.16, ram: 30.64, timestamp: '2026-07-13 02:10:02'}
+system: {cpu: 95.96, ram: 30.52, timestamp: '2026-07-13 02:20:02'}
