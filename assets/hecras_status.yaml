@@ -1,12 +1,28 @@
-cycle_start: '2026-07-13 23:13:53'
+cycle_start: '2026-07-14 02:03:02'
 forecast:
-  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  copy_forecast_results:
+    end: '2026-07-14 02:03:06'
+    log:
+    - {msg: copying results, time: '02:03:03'}
+    - {msg: copied results, time: '02:03:06'}
+    start: '2026-07-14 02:03:03'
+    status: completed
+  run_forecast:
+    end: '2026-07-14 02:03:03'
+    log:
+    - {msg: 100% completed, time: '02:03:03'}
+    start: '2026-07-14 02:03:03'
+    status: completed
 nowcast:
   run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
-  process_forecast: {end: null, log: null, start: null, status: waiting}
+  process_forecast:
+    end: null
+    log:
+    - {msg: running post processing workflow, time: '02:03:06'}
+    start: '2026-07-14 02:03:06'
+    status: running
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
   get_flow_stage: {end: null, log: null, start: null, status: waiting}
