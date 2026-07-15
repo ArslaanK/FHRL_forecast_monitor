@@ -1,39 +1,14 @@
-cycle_start: '2026-07-14 20:45:03'
+cycle_start: '2026-07-14 22:56:54'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast:
-    end: null
-    log:
-    - {msg: copying previous restart file, time: '21:29:45'}
-    - {msg: Nowcast simulation started, time: '21:29:45'}
-    - {msg: model run finished, time: '21:31:10'}
-    start: '2026-07-14 21:29:45'
-    status: running
+  run_nowcast: {end: null, log: null, start: null, status: waiting}
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
-  get_flow_stage:
-    end: '2026-07-14 20:45:12'
-    log:
-    - {msg: downloading stage and flow observations, time: '20:45:12'}
-    start: '2026-07-14 20:45:12'
-    status: completed
-  metforecast_processor:
-    end: '2026-07-14 21:22:06'
-    log:
-    - {msg: downloading HRRR forecasts, time: '20:45:12'}
-    - {msg: downloading HRRR forecasts, time: '21:22:05'}
-    - {msg: processed HRRR forecasts, time: '21:22:06'}
-    start: '2026-07-14 20:45:12'
-    status: completed
-  prep_simulation:
-    end: '2026-07-14 21:29:44'
-    log:
-    - {msg: Preparing Model files, time: '21:22:06'}
-    - {msg: Prepared Model files, time: '21:29:44'}
-    start: '2026-07-14 21:22:06'
-    status: completed
+  get_flow_stage: {end: null, log: null, start: null, status: waiting}
+  metforecast_processor: {end: null, log: null, start: null, status: waiting}
+  prep_simulation: {end: null, log: null, start: null, status: waiting}
