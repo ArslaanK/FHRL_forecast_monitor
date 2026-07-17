@@ -127,7 +127,12 @@ post:
     - {msg: timeseries extraction started, time: '19:38:56'}
     start: '2026-07-17 19:38:56'
     status: running
-  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model:
+    end: '2026-07-17 19:40:55'
+    log:
+    - {msg: pulling timeseries forecast for other models, time: '19:40:55'}
+    start: '2026-07-17 19:40:55'
+    status: completed
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
     end: '2026-07-17 19:00:28'
@@ -165,4 +170,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '15:12:11'}
     start: '2026-07-17 15:12:04'
     status: completed
-system: {cpu: 2.5, ram: 7.74, timestamp: '2026-07-17 19:30:02'}
+system: {cpu: 10.59, ram: 10.71, timestamp: '2026-07-17 19:40:03'}
