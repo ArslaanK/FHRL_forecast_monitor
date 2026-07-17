@@ -2,7 +2,7 @@ cycle_start: '2026-07-16 20:45:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast:
-    end: null
+    end: '2026-07-16 23:48:01'
     log:
     - {msg: starting forecast, time: '22:32:47'}
     - {msg: 0% completed, time: '22:34:01'}
@@ -42,8 +42,9 @@ forecast:
     - {msg: 95% completed, time: '23:42:01'}
     - {msg: 96% completed, time: '23:44:01'}
     - {msg: 98% completed, time: '23:46:01'}
+    - {msg: 100% completed, time: '23:48:01'}
     start: '2026-07-16 22:32:47'
-    status: running
+    status: completed
 nowcast:
   run_nowcast:
     end: '2026-07-16 22:32:45'
