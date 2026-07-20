@@ -1,0 +1,57 @@
+cycle_start: '2026-07-19 20:45:02'
+forecast:
+  copy_forecast_results: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '22:18:11'}
+    - {msg: 0% completed, time: '22:20:01'}
+    - {msg: 1% completed, time: '22:22:01'}
+    - {msg: 2% completed, time: '22:24:01'}
+    - {msg: 4% completed, time: '22:26:01'}
+    - {msg: 5% completed, time: '22:28:01'}
+    - {msg: 7% completed, time: '22:30:01'}
+    - {msg: 8% completed, time: '22:32:01'}
+    - {msg: 10% completed, time: '22:34:01'}
+    - {msg: 11% completed, time: '22:36:01'}
+    - {msg: 12% completed, time: '22:38:01'}
+    - {msg: 14% completed, time: '22:40:01'}
+    start: '2026-07-19 22:18:11'
+    status: running
+nowcast:
+  run_nowcast:
+    end: '2026-07-19 22:18:08'
+    log:
+    - {msg: copying previous restart file, time: '21:31:44'}
+    - {msg: Nowcast simulation started, time: '21:31:44'}
+    - {msg: model run finished, time: '21:33:32'}
+    - {msg: hotstart ready for next forecast, time: '22:18:08'}
+    - {msg: 100% completed, time: '22:18:08'}
+    start: '2026-07-19 21:31:44'
+    status: completed
+post:
+  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  process_forecast: {end: null, log: null, start: null, status: waiting}
+  push_to_s3: {end: null, log: null, start: null, status: waiting}
+pre:
+  get_flow_stage:
+    end: '2026-07-19 20:45:09'
+    log:
+    - {msg: downloading stage and flow observations, time: '20:45:09'}
+    start: '2026-07-19 20:45:09'
+    status: completed
+  metforecast_processor:
+    end: '2026-07-19 21:25:42'
+    log:
+    - {msg: downloading HRRR forecasts, time: '20:45:09'}
+    - {msg: downloading HRRR forecasts, time: '21:25:41'}
+    - {msg: processed HRRR forecasts, time: '21:25:42'}
+    start: '2026-07-19 20:45:09'
+    status: completed
+  prep_simulation:
+    end: '2026-07-19 21:31:44'
+    log:
+    - {msg: Preparing Model files, time: '21:25:42'}
+    - {msg: Prepared Model files, time: '21:31:44'}
+    start: '2026-07-19 21:25:42'
+    status: completed
