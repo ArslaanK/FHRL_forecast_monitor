@@ -20,6 +20,7 @@ post:
     end: null
     log:
     - {msg: timeseries extraction started, time: '06:37:49'}
+    - {msg: vector json files extracted, time: '06:50:54'}
     start: '2026-07-23 06:37:49'
     status: running
   fetch_competing_model:
@@ -53,7 +54,4 @@ post:
 pre:
   metforecast_processor: {end: null, log: null, start: null, status: waiting}
   prep_simulation: {end: null, log: null, start: null, status: waiting}
-system:
-  cpu: 8.24
-  ram: 12.44
-  timestamp: "2026-07-23 06:40:02"
+system: {cpu: 7.73, ram: 9.38, timestamp: '2026-07-23 06:50:02'}
