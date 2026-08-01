@@ -6,6 +6,7 @@ forecast:
     log:
     - {msg: starting forecast, time: '02:43:52'}
     - {msg: 0% completed - ERROR, time: '02:44:01'}
+    - {msg: 0% completed - RUNNING, time: '02:46:02'}
     start: '2026-08-01 02:43:52'
     status: running
 nowcast:
@@ -52,13 +53,19 @@ post:
     status: completed
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-08-01 02:45:31'
+    log:
+    - {msg: forecast cycle completed, time: '02:45:31'}
+    start: '2026-08-01 02:45:31'
+    status: completed
   push_to_s3:
-    end: '2026-08-01 02:43:19'
+    end: '2026-08-01 02:45:31'
     log:
     - {msg: data upload to S3 started, time: '02:36:18'}
     - {msg: flood alerts issues via MSG and Emails, time: '02:42:39'}
     - {msg: data upload to S3 completed, time: '02:43:19'}
+    - {msg: new forecast files are uploaded to S3, time: '02:45:31'}
     start: '2026-08-01 02:36:18'
     status: completed
 pre:
