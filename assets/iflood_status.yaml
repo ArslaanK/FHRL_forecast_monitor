@@ -1,10 +1,15 @@
 cycle_start: '2026-08-01 02:03:01'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '02:43:52'}
+    start: '2026-08-01 02:43:52'
+    status: running
 nowcast:
   run_nowcast:
-    end: null
+    end: '2026-08-01 02:43:51'
     log:
     - {msg: copying previous restart file, time: '02:12:04'}
     - {msg: Nowcast simulation started, time: '02:12:22'}
@@ -23,8 +28,11 @@ nowcast:
     - {msg: 84% completed - RUNNING, time: '02:38:01'}
     - {msg: 88% completed - RUNNING, time: '02:40:01'}
     - {msg: 100% completed - STABLE, time: '02:42:01'}
+    - {msg: model run finished, time: '02:43:10'}
+    - {msg: hotstart ready for next forecast, time: '02:43:51'}
+    - {msg: nowcast cycle completed, time: '02:43:51'}
     start: '2026-08-01 02:12:04'
-    status: running
+    status: completed
 post:
   create_timeseries:
     end: '2026-08-01 02:13:29'
@@ -45,12 +53,13 @@ post:
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3:
-    end: null
+    end: '2026-08-01 02:43:19'
     log:
     - {msg: data upload to S3 started, time: '02:36:18'}
     - {msg: flood alerts issues via MSG and Emails, time: '02:42:39'}
+    - {msg: data upload to S3 completed, time: '02:43:19'}
     start: '2026-08-01 02:36:18'
-    status: running
+    status: completed
 pre:
   metforecast_processor:
     end: '2026-08-01 02:11:59'
