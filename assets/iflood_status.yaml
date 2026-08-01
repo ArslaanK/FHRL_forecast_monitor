@@ -12,9 +12,21 @@ nowcast:
     start: '2026-08-01 02:12:04'
     status: running
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: '2026-08-01 02:13:29'
+    log:
+    - {msg: vector json files extracted, time: '02:13:13'}
+    - {msg: wse and wave validation timeseries generated, time: '02:13:28'}
+    - {msg: timeseries completed, time: '02:13:29'}
+    start: '2026-08-01 02:13:13'
+    status: completed
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
-  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts:
+    end: '2026-08-01 02:13:16'
+    log:
+    - {msg: Flood alerts generated, time: '02:13:16'}
+    start: '2026-08-01 02:13:16'
+    status: completed
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
