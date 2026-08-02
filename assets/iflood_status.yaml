@@ -135,19 +135,26 @@ nowcast:
     status: completed
 post:
   create_timeseries:
-    end: null
+    end: '2026-08-02 07:14:16'
     log:
     - {msg: timeseries extraction started, time: '06:59:23'}
     - {msg: vector json files extracted, time: '07:13:52'}
+    - {msg: wse and wave validation timeseries generated, time: '07:14:15'}
+    - {msg: timeseries completed, time: '07:14:16'}
     start: '2026-08-02 06:59:23'
-    status: running
+    status: completed
   fetch_competing_model:
     end: '2026-08-02 07:02:23'
     log:
     - {msg: pulling timeseries forecast for other models, time: '07:02:23'}
     start: '2026-08-02 07:02:23'
     status: completed
-  gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
+  gen_flood_alerts:
+    end: '2026-08-02 07:14:03'
+    log:
+    - {msg: Flood alerts generated, time: '07:14:03'}
+    start: '2026-08-02 07:14:03'
+    status: completed
   gen_nws_forecast:
     end: '2026-08-02 06:16:08'
     log:
