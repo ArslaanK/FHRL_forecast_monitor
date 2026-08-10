@@ -163,6 +163,7 @@ post:
     end: null
     log:
     - {msg: timeseries extraction started, time: '12:45:52'}
+    - {msg: vector json files extracted, time: '13:06:01'}
     start: '2026-08-10 12:45:52'
     status: running
   fetch_competing_model:
@@ -208,7 +209,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:18:13'}
     start: '2026-08-10 02:17:59'
     status: completed
-system:
-  cpu: 99.98
-  ram: 57.35
-  timestamp: "2026-08-10 13:00:02"
+system: {cpu: 99.98, ram: 57.35, timestamp: '2026-08-10 13:00:02'}
