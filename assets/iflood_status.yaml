@@ -1,7 +1,12 @@
 cycle_start: '2026-08-10 02:03:02'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '03:30:06'}
+    start: '2026-08-10 03:30:06'
+    status: running
 nowcast:
   run_nowcast:
     end: '2026-08-10 03:30:00'
@@ -67,4 +72,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:18:13'}
     start: '2026-08-10 02:17:59'
     status: completed
-system: {cpu: 98.68, ram: 56.13, timestamp: '2026-08-10 03:20:02'}
+system: {cpu: 99.93, ram: 34.43, timestamp: '2026-08-10 03:30:02'}
