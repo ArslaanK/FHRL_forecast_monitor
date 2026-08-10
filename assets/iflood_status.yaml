@@ -3,7 +3,14 @@ forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
   run_forecast: {end: null, log: null, start: null, status: waiting}
 nowcast:
-  run_nowcast: {end: null, log: null, start: null, status: waiting}
+  run_nowcast:
+    end: null
+    log:
+    - {msg: copying previous restart file, time: '02:18:14'}
+    - {msg: Nowcast simulation started, time: '02:18:42'}
+    - {msg: 0% completed - ERROR, time: '02:18:43'}
+    start: '2026-08-10 02:18:14'
+    status: running
 post:
   create_timeseries: {end: null, log: null, start: null, status: waiting}
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
@@ -21,9 +28,10 @@ pre:
     start: '2026-08-10 02:03:02'
     status: completed
   prep_simulation:
-    end: null
+    end: '2026-08-10 02:18:13'
     log:
     - {msg: Preparing Model files, time: '02:17:59'}
+    - {msg: Model files prepared for simulations, time: '02:18:13'}
     start: '2026-08-10 02:17:59'
-    status: running
+    status: completed
 system: {cpu: 99.93, ram: 34.01, timestamp: '2026-08-10 02:10:02'}
