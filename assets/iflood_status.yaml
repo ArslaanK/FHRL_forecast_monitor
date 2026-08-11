@@ -24,6 +24,7 @@ nowcast:
     - {msg: 28% completed - RUNNING, time: '02:52:01'}
     - {msg: 31% completed - RUNNING, time: '02:54:01'}
     - {msg: 34% completed - RUNNING, time: '02:56:02'}
+    - {msg: 35% completed - RUNNING, time: '02:58:01'}
     start: '2026-08-11 02:14:59'
     status: running
 post:
@@ -60,13 +61,19 @@ post:
     - {msg: max and timeseries spatial maps generated, time: '02:15:19'}
     start: '2026-08-11 02:04:21'
     status: completed
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-08-11 02:57:30'
+    log:
+    - {msg: forecast cycle completed, time: '02:57:30'}
+    start: '2026-08-11 02:57:30'
+    status: completed
   push_to_s3:
-    end: '2026-08-11 02:55:17'
+    end: '2026-08-11 02:57:30'
     log:
     - {msg: data upload to S3 started, time: '02:41:47'}
     - {msg: flood alerts issues via MSG and Emails, time: '02:54:42'}
     - {msg: data upload to S3 completed, time: '02:55:17'}
+    - {msg: new forecast files are uploaded to S3, time: '02:57:30'}
     start: '2026-08-11 02:41:47'
     status: completed
 pre:
