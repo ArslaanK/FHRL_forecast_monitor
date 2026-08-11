@@ -23,6 +23,7 @@ nowcast:
     - {msg: 22% completed - RUNNING, time: '15:46:01'}
     - {msg: 24% completed - RUNNING, time: '15:48:01'}
     - {msg: 25% completed - RUNNING, time: '15:50:01'}
+    - {msg: 27% completed - RUNNING, time: '15:56:01'}
     start: '2026-08-11 15:15:31'
     status: running
 post:
@@ -62,12 +63,13 @@ post:
     status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3:
-    end: null
+    end: '2026-08-11 15:55:11'
     log:
     - {msg: data upload to S3 started, time: '15:42:43'}
     - {msg: flood alerts issues via MSG and Emails, time: '15:54:34'}
+    - {msg: data upload to S3 completed, time: '15:55:11'}
     start: '2026-08-11 15:42:43'
-    status: running
+    status: completed
 pre:
   metforecast_processor:
     end: '2026-08-11 15:15:22'
