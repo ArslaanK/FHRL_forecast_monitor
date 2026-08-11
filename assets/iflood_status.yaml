@@ -14,8 +14,19 @@ nowcast:
     start: '2026-08-11 15:15:31'
     status: running
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
-  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: null
+    log:
+    - {msg: timeseries extraction started, time: '15:22:16'}
+    - {msg: vector json files extracted, time: '15:22:58'}
+    start: '2026-08-11 15:22:16'
+    status: running
+  fetch_competing_model:
+    end: '2026-08-11 15:22:30'
+    log:
+    - {msg: pulling timeseries forecast for other models, time: '15:22:30'}
+    start: '2026-08-11 15:22:30'
+    status: completed
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps:
