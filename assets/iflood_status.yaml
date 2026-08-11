@@ -7,19 +7,30 @@ nowcast:
     end: null
     log:
     - {msg: copying previous restart file, time: '02:14:59'}
+    - {msg: 0% completed - ERROR, time: '02:16:02'}
     start: '2026-08-11 02:14:59'
     status: running
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: null
+    log:
+    - {msg: timeseries extraction started, time: '02:15:58'}
+    start: '2026-08-11 02:15:58'
+    status: running
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps:
-    end: null
+    end: '2026-08-11 02:15:19'
     log:
     - {msg: max pressure maps generated, time: '02:04:21'}
+    - {msg: max wind maps generated, time: '02:15:14'}
+    - {msg: max inundations maps generated, time: '02:15:15'}
+    - {msg: max wave height maps generated, time: '02:15:16'}
+    - {msg: max wave period maps generated, time: '02:15:16'}
+    - {msg: max and timeseries spatial maps generated, time: '02:15:19'}
     start: '2026-08-11 02:04:21'
-    status: running
+    status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
