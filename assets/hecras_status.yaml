@@ -1,9 +1,21 @@
-cycle_start: '2026-08-11 14:38:28'
+cycle_start: '2026-08-11 15:03:03'
 forecast:
   copy_forecast_results: {end: null, log: null, start: null, status: waiting}
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '15:03:17'}
+    - {msg: 0% completed, time: '15:04:01'}
+    start: '2026-08-11 15:03:17'
+    status: initializing
 nowcast:
-  run_nowcast: {end: null, log: null, start: null, status: waiting}
+  run_nowcast:
+    end: '2026-08-11 15:03:03'
+    log:
+    - {msg: hotstart ready for next forecast, time: '15:03:03'}
+    - {msg: 100% completed, time: '15:03:03'}
+    start: '2026-08-11 15:03:03'
+    status: completed
 post:
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   process_forecast: {end: null, log: null, start: null, status: waiting}
