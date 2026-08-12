@@ -6,10 +6,16 @@ forecast:
     - {msg: copied results, time: '02:03:41'}
     start: '2026-08-12 02:03:41'
     status: completed
-  run_forecast: {end: null, log: null, start: null, status: waiting}
+  run_forecast:
+    end: null
+    log:
+    - {msg: starting forecast, time: '04:59:35'}
+    - {msg: 0% completed - ERROR, time: '05:00:01'}
+    start: '2026-08-12 04:59:35'
+    status: running
 nowcast:
   run_nowcast:
-    end: null
+    end: '2026-08-12 04:59:24'
     log:
     - {msg: copying previous restart file, time: '02:14:23'}
     - {msg: Nowcast simulation started, time: '02:15:09'}
@@ -72,8 +78,10 @@ nowcast:
     - {msg: 97% completed - RUNNING, time: '04:52:01'}
     - {msg: 100% completed - STABLE, time: '04:54:02'}
     - {msg: model run finished, time: '04:58:54'}
+    - {msg: hotstart ready for next forecast, time: '04:59:24'}
+    - {msg: nowcast cycle completed, time: '04:59:24'}
     start: '2026-08-12 02:14:23'
-    status: running
+    status: completed
 post:
   create_timeseries:
     end: '2026-08-12 02:41:38'
