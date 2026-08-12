@@ -44,6 +44,7 @@ nowcast:
     - {msg: 80% completed - RUNNING, time: '16:28:01'}
     - {msg: 82% completed - RUNNING, time: '16:30:01'}
     - {msg: 84% completed - RUNNING, time: '16:32:02'}
+    - {msg: 87% completed - RUNNING, time: '16:34:02'}
     start: '2026-08-12 15:14:59'
     status: running
 post:
@@ -92,6 +93,7 @@ post:
     end: null
     log:
     - {msg: data upload to S3 started, time: '16:20:33'}
+    - {msg: flood alerts issues via MSG and Emails, time: '16:33:39'}
     start: '2026-08-12 16:20:33'
     status: running
 pre:
