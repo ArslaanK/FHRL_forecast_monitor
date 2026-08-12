@@ -17,6 +17,7 @@ nowcast:
     - {msg: 2% completed - RUNNING, time: '02:20:01'}
     - {msg: 3% completed - RUNNING, time: '02:22:02'}
     - {msg: 5% completed - RUNNING, time: '02:24:01'}
+    - {msg: 6% completed - RUNNING, time: '02:26:01'}
     start: '2026-08-12 02:14:23'
     status: running
 post:
@@ -30,7 +31,12 @@ post:
     - {msg: iFLOOD forecasts uploaded for NWS, time: '02:10:13'}
     start: '2026-08-12 02:03:42'
     status: completed
-  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps:
+    end: null
+    log:
+    - {msg: max water spatial maps generated, time: '02:26:07'}
+    start: '2026-08-12 02:26:07'
+    status: running
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
