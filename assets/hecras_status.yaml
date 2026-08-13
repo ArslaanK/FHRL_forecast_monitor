@@ -24,8 +24,9 @@ pre:
     start: '2026-08-12 20:46:15'
     status: completed
   prep_simulation:
-    end: null
+    end: '2026-08-12 21:36:06'
     log:
     - {msg: Preparing Model files, time: '21:26:56'}
+    - {msg: Prepared Model files, time: '21:36:06'}
     start: '2026-08-12 21:26:56'
-    status: running
+    status: completed
