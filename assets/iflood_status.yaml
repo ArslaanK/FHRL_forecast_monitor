@@ -35,7 +35,12 @@ post:
     - {msg: iFLOOD forecasts uploaded for NWS, time: '02:08:26'}
     start: '2026-08-13 02:03:48'
     status: completed
-  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps:
+    end: null
+    log:
+    - {msg: max water spatial maps generated, time: '02:33:08'}
+    start: '2026-08-13 02:33:08'
+    status: running
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
