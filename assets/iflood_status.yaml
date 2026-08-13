@@ -195,13 +195,14 @@ post:
     start: '2026-08-13 02:53:22'
     status: completed
   gen_nws_forecast:
-    end: '2026-08-13 02:08:26'
+    end: '2026-08-13 14:49:38'
     log:
     - {msg: started NWS forecast processing, time: '02:03:48'}
     - {msg: iFLOOD forecasts uploaded for NWS, time: '02:08:26'}
     - {msg: started NWS forecast processing, time: '14:45:41'}
+    - {msg: iFLOOD forecasts uploaded for NWS, time: '14:49:38'}
     start: '2026-08-13 02:03:48'
-    status: running
+    status: completed
   gen_spatial_maps:
     end: '2026-08-13 02:52:15'
     log:
