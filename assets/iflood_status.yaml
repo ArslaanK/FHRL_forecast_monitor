@@ -188,15 +188,17 @@ post:
     start: '2026-08-14 02:22:46'
     status: completed
   push_to_s3:
-    end: '2026-08-14 02:22:46'
+    end: '2026-08-14 08:41:51'
     log:
     - {msg: data upload to S3 started, time: '02:14:52'}
     - {msg: flood alerts issues via MSG and Emails, time: '02:20:00'}
     - {msg: data upload to S3 completed, time: '02:20:34'}
     - {msg: new forecast files are uploaded to S3, time: '02:22:46'}
     - {msg: data upload to S3 started, time: '08:34:18'}
+    - {msg: flood alerts issues via MSG and Emails, time: '08:41:14'}
+    - {msg: data upload to S3 completed, time: '08:41:51'}
     start: '2026-08-14 02:14:52'
-    status: running
+    status: completed
 pre:
   metforecast_processor:
     end: '2026-08-14 02:12:10'
@@ -212,7 +214,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:12:16'}
     start: '2026-08-14 02:12:10'
     status: completed
-system:
-  cpu: 6.17
-  ram: 10.42
-  timestamp: "2026-08-14 08:40:02"
+system: {cpu: 6.17, ram: 10.42, timestamp: '2026-08-14 08:40:02'}
