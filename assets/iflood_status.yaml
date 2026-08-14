@@ -11,6 +11,7 @@ nowcast:
     - {msg: 0% completed - ERROR, time: '02:12:35'}
     - {msg: 2% completed - RUNNING, time: '02:16:01'}
     - {msg: 6% completed - RUNNING, time: '02:18:02'}
+    - {msg: 11% completed - RUNNING, time: '02:20:02'}
     start: '2026-08-14 02:12:17'
     status: running
 post:
@@ -21,12 +22,13 @@ post:
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3:
-    end: null
+    end: '2026-08-14 02:20:34'
     log:
     - {msg: data upload to S3 started, time: '02:14:52'}
     - {msg: flood alerts issues via MSG and Emails, time: '02:20:00'}
+    - {msg: data upload to S3 completed, time: '02:20:34'}
     start: '2026-08-14 02:14:52'
-    status: running
+    status: completed
 pre:
   metforecast_processor:
     end: '2026-08-14 02:12:10'
@@ -42,4 +44,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:12:16'}
     start: '2026-08-14 02:12:10'
     status: completed
-system: {cpu: 7.66, ram: 13.83, timestamp: '2026-08-14 02:10:02'}
+system: {cpu: 99.93, ram: 32.0, timestamp: '2026-08-14 02:20:03'}
