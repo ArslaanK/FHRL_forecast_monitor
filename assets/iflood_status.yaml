@@ -18,7 +18,12 @@ post:
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
-  push_to_s3: {end: null, log: null, start: null, status: waiting}
+  push_to_s3:
+    end: null
+    log:
+    - {msg: data upload to S3 started, time: '02:14:52'}
+    start: '2026-08-14 02:14:52'
+    status: running
 pre:
   metforecast_processor:
     end: '2026-08-14 02:12:10'
