@@ -21,13 +21,19 @@ post:
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
   gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-08-14 02:22:46'
+    log:
+    - {msg: forecast cycle completed, time: '02:22:46'}
+    start: '2026-08-14 02:22:46'
+    status: completed
   push_to_s3:
-    end: '2026-08-14 02:20:34'
+    end: '2026-08-14 02:22:46'
     log:
     - {msg: data upload to S3 started, time: '02:14:52'}
     - {msg: flood alerts issues via MSG and Emails, time: '02:20:00'}
     - {msg: data upload to S3 completed, time: '02:20:34'}
+    - {msg: new forecast files are uploaded to S3, time: '02:22:46'}
     start: '2026-08-14 02:14:52'
     status: completed
 pre:
