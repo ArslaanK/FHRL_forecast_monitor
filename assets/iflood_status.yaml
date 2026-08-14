@@ -200,11 +200,12 @@ post:
     start: '2026-08-13 15:30:22'
     status: completed
   gen_nws_forecast:
-    end: null
+    end: '2026-08-14 01:12:44'
     log:
     - {msg: started NWS forecast processing, time: '01:09:18'}
+    - {msg: iFLOOD forecasts uploaded for NWS, time: '01:12:44'}
     start: '2026-08-14 01:09:18'
-    status: running
+    status: completed
   gen_spatial_maps:
     end: '2026-08-13 15:29:12'
     log:
@@ -247,7 +248,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '15:14:33'}
     start: '2026-08-13 15:14:24'
     status: completed
-system:
-  cpu: 95.07
-  ram: 27.40
-  timestamp: "2026-08-14 01:10:02"
+system: {cpu: 95.07, ram: 27.4, timestamp: '2026-08-14 01:10:02'}
