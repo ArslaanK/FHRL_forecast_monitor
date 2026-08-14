@@ -5,23 +5,27 @@ forecast:
     log:
     - {msg: copying results, time: '20:45:03'}
     - {msg: 16% completed, time: '20:46:01'}
+    - {msg: 0% completed, time: '00:06:01'}
     start: '2026-08-13 20:45:03'
-    status: running
+    status: initializing
   run_forecast:
     end: '2026-08-13 20:45:03'
     log:
     - {msg: 100% completed, time: '20:45:03'}
+    - {msg: starting forecast, time: '00:05:22'}
     start: '2026-08-13 20:45:03'
-    status: completed
+    status: running
 nowcast:
   run_nowcast:
-    end: null
+    end: '2026-08-14 00:05:19'
     log:
     - {msg: copying previous restart file, time: '21:26:08'}
     - {msg: Nowcast simulation started, time: '21:26:08'}
     - {msg: model run finished, time: '21:27:37'}
+    - {msg: hotstart ready for next forecast, time: '00:05:19'}
+    - {msg: 100% completed, time: '00:05:19'}
     start: '2026-08-13 21:26:08'
-    status: running
+    status: completed
 post:
   pipeline_completion:
     end: '2026-08-13 20:47:19'
