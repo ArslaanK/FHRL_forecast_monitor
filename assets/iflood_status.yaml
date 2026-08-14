@@ -1,11 +1,12 @@
 cycle_start: '2026-08-13 15:03:02'
 forecast:
   copy_forecast_results:
-    end: null
+    end: '2026-08-14 01:09:18'
     log:
     - {msg: copying results, time: '01:08:59'}
+    - {msg: copied results, time: '01:09:18'}
     start: '2026-08-14 01:08:59'
-    status: running
+    status: completed
   run_forecast:
     end: '2026-08-14 01:08:59'
     log:
@@ -198,7 +199,12 @@ post:
     - {msg: Flood alerts generated, time: '15:30:22'}
     start: '2026-08-13 15:30:22'
     status: completed
-  gen_nws_forecast: {end: null, log: null, start: null, status: waiting}
+  gen_nws_forecast:
+    end: null
+    log:
+    - {msg: started NWS forecast processing, time: '01:09:18'}
+    start: '2026-08-14 01:09:18'
+    status: running
   gen_spatial_maps:
     end: '2026-08-13 15:29:12'
     log:
