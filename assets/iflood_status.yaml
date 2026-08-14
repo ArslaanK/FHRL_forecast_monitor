@@ -217,6 +217,7 @@ post:
     - {msg: max wave period maps generated, time: '15:29:12'}
     - {msg: max and timeseries spatial maps generated, time: '15:29:12'}
     - {msg: max water spatial maps generated, time: '01:30:28'}
+    - {msg: max pressure maps generated, time: '01:32:28'}
     start: '2026-08-13 15:13:51'
     status: running
   pipeline_completion:
