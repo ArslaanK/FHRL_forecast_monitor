@@ -185,8 +185,9 @@ post:
     - {msg: vector json files extracted, time: '15:30:16'}
     - {msg: wse and wave validation timeseries generated, time: '15:30:27'}
     - {msg: timeseries completed, time: '15:30:27'}
+    - {msg: timeseries extraction started, time: '01:40:52'}
     start: '2026-08-13 15:29:32'
-    status: completed
+    status: running
   fetch_competing_model:
     end: '2026-08-13 15:29:46'
     log:
@@ -207,7 +208,7 @@ post:
     start: '2026-08-14 01:09:18'
     status: completed
   gen_spatial_maps:
-    end: '2026-08-13 15:29:12'
+    end: '2026-08-14 01:40:32'
     log:
     - {msg: max water spatial maps generated, time: '15:13:51'}
     - {msg: max pressure maps generated, time: '15:17:49'}
@@ -218,8 +219,13 @@ post:
     - {msg: max and timeseries spatial maps generated, time: '15:29:12'}
     - {msg: max water spatial maps generated, time: '01:30:28'}
     - {msg: max pressure maps generated, time: '01:32:28'}
+    - {msg: max wind maps generated, time: '01:40:30'}
+    - {msg: max inundations maps generated, time: '01:40:30'}
+    - {msg: max wave height maps generated, time: '01:40:30'}
+    - {msg: max wave period maps generated, time: '01:40:31'}
+    - {msg: max and timeseries spatial maps generated, time: '01:40:32'}
     start: '2026-08-13 15:13:51'
-    status: running
+    status: completed
   pipeline_completion:
     end: '2026-08-13 16:10:48'
     log:
@@ -250,4 +256,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '15:14:33'}
     start: '2026-08-13 15:14:24'
     status: completed
-system: {cpu: 78.85, ram: 26.82, timestamp: '2026-08-14 01:30:03'}
+system: {cpu: 82.93, ram: 26.85, timestamp: '2026-08-14 01:40:02'}
