@@ -190,4 +190,7 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:12:06'}
     start: '2026-08-15 02:12:02'
     status: completed
-system: {cpu: 4.28, ram: 10.07, timestamp: '2026-08-15 07:00:02'}
+system:
+  cpu: 99.93
+  ram: 18.64
+  timestamp: "2026-08-15 07:10:02"
