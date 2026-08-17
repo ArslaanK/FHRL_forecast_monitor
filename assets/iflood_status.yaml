@@ -164,12 +164,17 @@ post:
     start: '2026-08-17 08:32:16'
     status: completed
   gen_spatial_maps:
-    end: null
+    end: '2026-08-17 09:11:12'
     log:
     - {msg: max water spatial maps generated, time: '08:58:16'}
     - {msg: max pressure maps generated, time: '09:02:22'}
+    - {msg: max wind maps generated, time: '09:11:10'}
+    - {msg: max inundations maps generated, time: '09:11:11'}
+    - {msg: max wave height maps generated, time: '09:11:11'}
+    - {msg: max wave period maps generated, time: '09:11:11'}
+    - {msg: max and timeseries spatial maps generated, time: '09:11:12'}
     start: '2026-08-17 08:58:16'
-    status: running
+    status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
@@ -187,7 +192,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:10:43'}
     start: '2026-08-17 02:10:37'
     status: completed
-system:
-  cpu: 89.28
-  ram: 24.18
-  timestamp: "2026-08-17 09:10:03"
+system: {cpu: 89.28, ram: 24.18, timestamp: '2026-08-17 09:10:03'}
