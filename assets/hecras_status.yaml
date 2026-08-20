@@ -5,8 +5,9 @@ forecast:
     end: null
     log:
     - {msg: starting forecast, time: '09:35:46'}
+    - {msg: 0% completed, time: '09:36:01'}
     start: '2026-08-20 09:35:46'
-    status: running
+    status: initializing
 nowcast:
   run_nowcast:
     end: '2026-08-20 09:35:43'
