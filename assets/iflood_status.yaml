@@ -116,7 +116,12 @@ nowcast:
     start: '2026-08-21 15:11:44'
     status: completed
 post:
-  create_timeseries: {end: null, log: null, start: null, status: waiting}
+  create_timeseries:
+    end: null
+    log:
+    - {msg: timeseries extraction started, time: '19:07:19'}
+    start: '2026-08-21 19:07:19'
+    status: running
   fetch_competing_model: {end: null, log: null, start: null, status: waiting}
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
