@@ -10,6 +10,7 @@ forecast:
     - {msg: 3% completed, time: '10:04:01'}
     - {msg: 4% completed, time: '10:06:01'}
     - {msg: 5% completed, time: '10:08:01'}
+    - {msg: 7% completed, time: '10:10:01'}
     start: '2026-08-22 09:59:05'
     status: running
 nowcast:
