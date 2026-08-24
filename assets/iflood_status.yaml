@@ -166,6 +166,7 @@ post:
     end: null
     log:
     - {msg: data upload to S3 started, time: '06:59:46'}
+    - {msg: flood alerts issues via MSG and Emails, time: '07:03:45'}
     start: '2026-08-24 06:59:46'
     status: running
 pre:
@@ -183,7 +184,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:11:48'}
     start: '2026-08-24 02:11:40'
     status: completed
-system:
-  cpu: 5.95
-  ram: 9.91
-  timestamp: "2026-08-24 07:00:02"
+system: {cpu: 5.95, ram: 9.91, timestamp: '2026-08-24 07:00:02'}
