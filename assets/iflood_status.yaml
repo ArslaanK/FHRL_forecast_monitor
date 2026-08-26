@@ -133,7 +133,12 @@ post:
     - {msg: iFLOOD forecasts uploaded for NWS, time: '18:54:59'}
     start: '2026-08-26 18:52:27'
     status: completed
-  gen_spatial_maps: {end: null, log: null, start: null, status: waiting}
+  gen_spatial_maps:
+    end: null
+    log:
+    - {msg: max water spatial maps generated, time: '19:22:44'}
+    start: '2026-08-26 19:22:44'
+    status: running
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
   push_to_s3: {end: null, log: null, start: null, status: waiting}
 pre:
@@ -151,7 +156,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '15:12:12'}
     start: '2026-08-26 15:12:07'
     status: completed
-system:
-  cpu: 2.55
-  ram: 8.79
-  timestamp: "2026-08-26 19:20:02"
+system: {cpu: 2.55, ram: 8.79, timestamp: '2026-08-26 19:20:02'}
