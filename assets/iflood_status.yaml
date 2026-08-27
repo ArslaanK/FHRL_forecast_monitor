@@ -158,7 +158,12 @@ post:
     start: '2026-08-27 06:05:29'
     status: completed
   pipeline_completion: {end: null, log: null, start: null, status: waiting}
-  push_to_s3: {end: null, log: null, start: null, status: waiting}
+  push_to_s3:
+    end: null
+    log:
+    - {msg: data upload to S3 started, time: '06:57:07'}
+    start: '2026-08-27 06:57:07'
+    status: running
 pre:
   metforecast_processor:
     end: '2026-08-27 02:11:19'
@@ -174,7 +179,4 @@ pre:
     - {msg: Model files prepared for simulations, time: '02:11:26'}
     start: '2026-08-27 02:11:19'
     status: completed
-system:
-  cpu: 7.78
-  ram: 13.81
-  timestamp: "2026-08-27 06:50:02"
+system: {cpu: 7.78, ram: 13.81, timestamp: '2026-08-27 06:50:02'}
