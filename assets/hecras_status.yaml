@@ -64,7 +64,12 @@ nowcast:
     start: '2026-09-01 09:12:50'
     status: completed
 post:
-  pipeline_completion: {end: null, log: null, start: null, status: waiting}
+  pipeline_completion:
+    end: '2026-09-01 10:54:02'
+    log:
+    - {msg: forecast cycle completed, time: '10:54:02'}
+    start: '2026-09-01 10:54:02'
+    status: completed
   process_forecast:
     end: '2026-09-01 10:53:20'
     log:
