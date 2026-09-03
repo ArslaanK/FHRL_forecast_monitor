@@ -127,7 +127,12 @@ post:
     - {msg: timeseries extraction started, time: '06:21:08'}
     start: '2026-09-03 06:21:08'
     status: running
-  fetch_competing_model: {end: null, log: null, start: null, status: waiting}
+  fetch_competing_model:
+    end: '2026-09-03 06:23:08'
+    log:
+    - {msg: pulling timeseries forecast for other models, time: '06:23:08'}
+    start: '2026-09-03 06:23:08'
+    status: completed
   gen_flood_alerts: {end: null, log: null, start: null, status: waiting}
   gen_nws_forecast:
     end: '2026-09-03 05:38:38'
